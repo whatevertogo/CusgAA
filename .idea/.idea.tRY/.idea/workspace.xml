@@ -5,25 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3da3543e-c56a-4fce-999b-c59fb0e322a6" name="更改" comment="add initial project files and configuration for Unity project setup">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.plastic/plastic.changes" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.plastic/plastic.selector" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.plastic/plastic.wktree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.plastic/plastic.workspace" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Managers.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Managers/SceneManager.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ProjectSettings/MultiplayerManager.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-2022.dwlt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-6000.dwlt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UserSettings/Search.index" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ignore.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.plastic/plastic.lck.operation" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +32,7 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock://D:/UnityProjects/tRY/Assets/Managers/AudioManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/UnityProjects/tRY/Assets/Managers/AudioManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Managers/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -110,10 +94,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="附加到 Unity 编辑器" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="12100">
+    <configuration name="附加到 Unity 编辑器" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
-      <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="12100" />
+      <option name="listenPortForConnections" value="true" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
         <list>
@@ -137,7 +121,7 @@
       <workItem from="1739632378305" duration="318000" />
       <workItem from="1740051138316" duration="566000" />
       <workItem from="1740412650556" duration="60000" />
-      <workItem from="1740412733385" duration="2840000" />
+      <workItem from="1740412733385" duration="3145000" />
     </task>
     <task id="LOCAL-00001" summary="update package dependencies and project settings">
       <option name="closed" value="true" />
@@ -179,7 +163,23 @@
       <option name="project" value="LOCAL" />
       <updated>1740415537841</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="add initial project configuration files and metadata for Unity project">
+      <option name="closed" value="true" />
+      <created>1740415840560</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1740415840560</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add initial project files and configuration for Unity project setup">
+      <option name="closed" value="true" />
+      <created>1740415879263</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1740415879263</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -213,6 +213,7 @@
     <MESSAGE value="add metadata file for AudioManager" />
     <MESSAGE value="refactor AudioManager singleton initialization for improved readability" />
     <MESSAGE value="add initial project configuration files and metadata" />
+    <MESSAGE value="add initial project configuration files and metadata for Unity project" />
     <MESSAGE value="add initial project files and configuration for Unity project setup" />
     <option name="LAST_COMMIT_MESSAGE" value="add initial project files and configuration for Unity project setup" />
   </component>

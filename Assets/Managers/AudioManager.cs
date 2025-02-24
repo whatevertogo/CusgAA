@@ -9,7 +9,7 @@ namespace Managers
         public static AudioManager Instance
         {
             get
-            {
+            { 
                 if (_instance != null) return _instance;
                 _instance = FindFirstObjectByType<AudioManager>();
                 if (_instance != null) return _instance;

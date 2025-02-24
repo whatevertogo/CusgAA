@@ -10,21 +10,16 @@ namespace Managers
         {
             get
             {
-                if (_instance == null)
-                {
-                    _instance = FindFirstObjectByType<AudioManager>();
-                    if (_instance == null)
-                    {
-                        GameObject go = new GameObject(nameof(AudioManager));
-                        _instance = go.AddComponent<AudioManager>();
-                        DontDestroyOnLoad(go);
-                    }
-                }
+                if (_instance != null) return _instance;
+                _instance = FindFirstObjectByType<AudioManager>();
+                if (_instance != null) return _instance;
+                GameObject go = new GameObject(nameof(AudioManager));
+                _instance = go.AddComponent<AudioManager>();
+                DontDestroyOnLoad(go);
 
                 return _instance;
             }
         }
-
         private void Awake()
         {
             if (_instance == null)

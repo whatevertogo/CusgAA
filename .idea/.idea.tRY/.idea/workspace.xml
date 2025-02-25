@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3da3543e-c56a-4fce-999b-c59fb0e322a6" name="更改" comment="" />
+    <list default="true" id="3da3543e-c56a-4fce-999b-c59fb0e322a6" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -58,7 +60,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.配色方案字体",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true",
     "附加到 Unity 编辑器.附加到 Unity 编辑器.executor": "Debug"
   }
@@ -121,7 +123,7 @@
       <workItem from="1740412733385" duration="4984000" />
       <workItem from="1740485812364" duration="676000" />
       <workItem from="1740488475347" duration="197000" />
-      <workItem from="1740488683662" duration="1036000" />
+      <workItem from="1740488683662" duration="2513000" />
     </task>
     <task id="LOCAL-00001" summary="update package dependencies and project settings">
       <option name="closed" value="true" />
@@ -246,7 +248,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>

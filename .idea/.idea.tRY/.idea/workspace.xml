@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3da3543e-c56a-4fce-999b-c59fb0e322a6" name="更改" comment="1">
+    <list default="true" id="3da3543e-c56a-4fce-999b-c59fb0e322a6" name="更改" comment="">
       <change afterPath="$PROJECT_DIR$/Assets/ObjectScripts.meta" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Assets/ScriptObjects.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.plastic/plastic.changes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserSettings/Layouts/default-6000.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-6000.dwlt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +69,7 @@
 }</component>
   <component name="RunManager" selected="附加到 Unity 编辑器.附加到 Unity 编辑器">
     <configuration name="启动 Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="D:\UnityEditor\6000.0.38f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="D:\UnityEditor\6000.0.39f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath D:\UnityProjects\tRY -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="D:\UnityProjects\tRY" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -79,7 +77,7 @@
       <method v="2" />
     </configuration>
     <configuration name="单元测试(批处理模式)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="D:\UnityEditor\6000.0.38f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="D:\UnityEditor\6000.0.39f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath D:\UnityProjects\tRY -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="D:\UnityProjects\tRY" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -126,6 +124,8 @@
       <workItem from="1740412650556" duration="60000" />
       <workItem from="1740412733385" duration="4984000" />
       <workItem from="1740485812364" duration="676000" />
+      <workItem from="1740488475347" duration="197000" />
+      <workItem from="1740488683662" duration="379000" />
     </task>
     <task id="LOCAL-00001" summary="update package dependencies and project settings">
       <option name="closed" value="true" />
@@ -223,7 +223,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740417679662</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="update layout and configuration settings for Unity project, including editor version bump and control ID adjustments">
+      <option name="closed" value="true" />
+      <created>1740488510945</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1740488510945</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -265,6 +273,7 @@
     <MESSAGE value="add player input actions and update project settings for Unity" />
     <MESSAGE value="add player input actions, update encoding settings, and modify project configuration for Unity" />
     <MESSAGE value="1" />
-    <option name="LAST_COMMIT_MESSAGE" value="1" />
+    <MESSAGE value="update layout and configuration settings for Unity project, including editor version bump and control ID adjustments" />
+    <option name="LAST_COMMIT_MESSAGE" value="update layout and configuration settings for Unity project, including editor version bump and control ID adjustments" />
   </component>
 </project>

@@ -1,0 +1,14 @@
+<changelist name="在变基之前未提交的更改_[更改]" date="1740587152848" recycled="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/.idea.tRY/.idea/shelf/在变基之前未提交的更改_[更改]/shelved.patch" />
+  <option name="DESCRIPTION" value="在变基之前未提交的更改 [更改]" />
+  <binary>
+    <option name="BEFORE_PATH" value=".plastic/plastic.wktree" />
+    <option name="AFTER_PATH" value=".plastic/plastic.wktree" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/.idea.tRY/.idea/shelf/在变基之前未提交的更改_[更改]/plastic.wktree" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value=".plastic/plastic.changes" />
+    <option name="AFTER_PATH" value=".plastic/plastic.changes" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/.idea.tRY/.idea/shelf/在变基之前未提交的更改_[更改]/plastic.changes" />
+  </binary>
+</changelist>

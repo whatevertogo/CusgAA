@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 888730321323515632}
   - component: {fileID: 951591155627945054}
   - component: {fileID: 7301824621628417098}
-  - component: {fileID: 5201028796414667764}
+  - component: {fileID: 9220320157337651672}
   m_Layer: 5
   m_Name: stopMenu
   m_TagString: Untagged
@@ -103,7 +103,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &5201028796414667764
+--- !u!114 &9220320157337651672
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,10 +112,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2958851581586480571}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5d8f9ea92ae0a2479db4d1e3db09469, type: 3}
+  m_Script: {fileID: 11500000, guid: de2597fb9c0431f47b55de13c22796d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stopMenuPanel: {fileID: 9129926833258479933}
+  panel: {fileID: 9129926833258479933}
 --- !u!1 &3029542825432726512
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,7 +487,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c83caa05aca5e142801a69714783111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _button: {fileID: 282384431709228548}
   stopMenuPanel: {fileID: 9129926833258479933}
 --- !u!1 &7987288421816769719
 GameObject:
@@ -702,7 +701,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1091d96abbdcb7b41bb2c29a1f203c75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _button: {fileID: 61800998998773988}
   stopMenuPanel: {fileID: 9129926833258479933}
 --- !u!1 &9104507341987401729
 GameObject:
@@ -838,7 +836,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4322181afb332848a14d9c8dc8b3c09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _button: {fileID: 2449080400365508394}
   stopMenuPanel: {fileID: 9129926833258479933}
   sceneName: 
 --- !u!1 &9129926833258479933
@@ -1054,6 +1051,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e342e5ce0b6e0e44e8b4600028b30795, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _button: {fileID: 667344599046501508}
   stopMenuPanel: {fileID: 9129926833258479933}
   sceneName: 

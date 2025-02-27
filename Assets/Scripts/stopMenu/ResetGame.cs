@@ -1,17 +1,23 @@
 using UnityEngine;
-
-public class ResetGame : StopMenuButton
+using UnityEngine.UI;
+public class ResetGame : MonoBehaviour
 {
+    private Button _button;
     [SerializeField] private string sceneName;
-    protected override void OnButtonClicked()
+   
+    void Awake()
     {
-        Debug.Log("ResetGame");
-        //base.OnButtonClicked();可以调用基类的方法
-        Reset_Game();
+        _button = GetComponent<Button>();
+        if (_button != null)
+        {
+            Debug.Log("绑定了");
+            _button.onClick.AddListener(Reset_Game);
+        }
     }
 
     private void Reset_Game()//没办法了不能和类名相同，纠结了类名好久要逝去了捏
     {
+        Debug.Log("ResetGame");
         Time.timeScale = 1f;
         //暂时的
         sceneName = "First";

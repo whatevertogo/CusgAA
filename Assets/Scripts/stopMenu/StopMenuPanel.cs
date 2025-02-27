@@ -24,6 +24,7 @@ public class StopMenuPanel : MonoBehaviour
             _isOpen = !_isOpen;
             // 切换面板的激活状态
             panel.SetActive(_isOpen);
+            
         }
     }
 }

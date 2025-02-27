@@ -1,8 +1,19 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-public class ExitGame : StopMenuButton
+public class ExitGame : MonoBehaviour
 {
-    protected override void OnButtonClicked()
+    private Button button1;
+
+    private void Awake(){
+        button1 = GetComponent<Button>();
+        if(button1 != null){
+            button1.onClick.AddListener(OnButtonClicked);
+        }
+    }
+
+
+    void OnButtonClicked()
     {
         Debug.Log("ExitGame");
         //base.OnButtonClicked();可以调用基类的方法

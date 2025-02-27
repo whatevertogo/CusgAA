@@ -1,25 +1,19 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-public class SetGuanQia : StopMenuButton
+public class SetGuanQia : MonoBehaviour
 {
     [SerializeField] private string sceneName;
-    protected override void OnButtonClicked()
+    private Button _button;
+
+    private void Start()
     {
-        //base.OnButtonClicked();可以调用基类的方法
-        Set_Guan_Qia();
+        _button = GetComponent<Button>();
+        _button.onClick.AddListener(OnButtonClicked);
     }
 
-    private void Set_Guan_Qia()
+    private void OnButtonClicked()
     {
-        Time.timeScale = 1f;
-        stopMenuPanel.SetActive(false);
-        
-       
-        
         Managers.MySceneManager.Instance.LoadSceneByName(sceneName);
-        //后面我们还是最好单独搞个选择关卡的关卡，当然也可以重构
     }
-
-
-
 }

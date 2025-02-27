@@ -6,7 +6,6 @@ public class StopMenuPanel : MonoBehaviour
 
     [SerializeField] private GameObject panel;
 
-
     private void Update()
     {
         if (panel.activeSelf)

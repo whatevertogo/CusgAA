@@ -24,6 +24,7 @@ namespace Managers
             }
         }
 
+
         protected virtual void Awake()
         {
             if (_instance == null)

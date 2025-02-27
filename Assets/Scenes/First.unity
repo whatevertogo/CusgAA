@@ -224,6 +224,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4260485090496541246, guid: 6eb195e504b758b4080e3b3f775fc124, type: 3}
+      propertyPath: a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4260485090496541246, guid: 6eb195e504b758b4080e3b3f775fc124, type: 3}
       propertyPath: _button
       value: 
       objectReference: {fileID: 783900131}

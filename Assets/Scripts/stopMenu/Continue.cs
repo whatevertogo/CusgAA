@@ -1,11 +1,17 @@
 using UnityEngine;
-
-public class Continue : StopMenuButton
+using UnityEngine.UI;
+public class Continue : MonoBehaviour
 {
-    protected override void OnButtonClicked()
+    private Button _button;
+    [SerializeField] private GameObject stopMenuPanel;
+    void Awake()
     {
-        base.OnButtonClicked();
-        Continue_Game();
+        _button = GetComponent<Button>();
+        if (_button != null)
+        {
+            Debug.Log("绑定了");
+            _button.onClick.AddListener(Continue_Game);
+        }
     }
 
     private void Continue_Game()

@@ -1,16 +1,22 @@
 using UnityEngine;
-
-public class ExitGame : StopMenuButton
+using UnityEngine.UI;
+public class ExitGame : MonoBehaviour
 {
-    protected override void OnButtonClicked()
+    private Button _button;
+   
+    void Awake()
     {
-        Debug.Log("ExitGame");
-        //base.OnButtonClicked();可以调用基类的方法
-        Exit_Game();
+        _button = GetComponent<Button>();
+        if (_button != null)
+        {
+            Debug.Log("绑定了");
+            _button.onClick.AddListener(Exit_Game);
+        }
     }
 
     private void Exit_Game()
     {
+        Debug.Log("ExitGame");
         Application.Quit(); // 退出游戏
 
         // 如果是在编辑器中运行，则停止播放模式

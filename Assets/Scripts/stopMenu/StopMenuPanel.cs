@@ -3,11 +3,13 @@ using UnityEngine;
 
 public class StopMenuPanel : MonoBehaviour
 {
-
     [SerializeField] private GameObject panel;
+
 
     private void Update()
     {
+        if (!Input.GetKeyDown(KeyCode.Escape))
+            return;
         if (panel.activeSelf)
         {
             ResumeGame();
@@ -28,6 +30,5 @@ public class StopMenuPanel : MonoBehaviour
     {
         Time.timeScale = 1;
         panel.SetActive(false);
-        
     }
 }

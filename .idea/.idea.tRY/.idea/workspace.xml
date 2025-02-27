@@ -8,7 +8,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3da3543e-c56a-4fce-999b-c59fb0e322a6" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.plastic/plastic.wktree" beforeDir="false" afterPath="$PROJECT_DIR$/.plastic/plastic.wktree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Perfabs/stopMenu/stopMenu.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Perfabs/stopMenu/stopMenu.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/stopMenu/StopMenuPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/stopMenu/StopMenuPanel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/Layouts/default-6000.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-6000.dwlt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,12 +81,18 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/82a2fd073ee449928e161903460426d72ae00/59/f865dbee/DOTween.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/UnityProjects/tRY/Assets/Managers/AudioManager.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/UnityProjects/tRY/Assets/Managers/AudioManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Managers/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Test.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/UnityProjects/tRY/Assets/Scripts/stopMenu/Continue.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/UnityProjects/tRY/Assets/Scripts/stopMenu/Continue.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/stopMenu/Continue.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/UnityProjects/tRY/Assets/Scripts/stopMenu/ExitGame.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/UnityProjects/tRY/Assets/Scripts/stopMenu/ExitGame.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/UnityProjects/tRY/Assets/Scripts/stopMenu/ResetGame.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/UnityProjects/tRY/Assets/Scripts/stopMenu/ResetGame.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/UnityProjects/tRY/Assets/Scripts/stopMenu/SetGuanQia.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/UnityProjects/tRY/Assets/Scripts/stopMenu/SetGuanQia.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/UnityProjects/tRY/Assets/Scripts/stopMenu/StopMenuPanel.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/UnityProjects/tRY/Assets/Scripts/stopMenu/StopMenuPanel.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -292,7 +301,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740502508085</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="清除杂鱼代码">
+      <option name="closed" value="true" />
+      <created>1740660588821</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1740660588821</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -347,10 +364,9 @@
     <MESSAGE value="add player input actions, update encoding settings, and modify project configuration for Unity" />
     <MESSAGE value="1" />
     <MESSAGE value="update layout and configuration settings for Unity project, including editor version bump and control ID adjustments" />
-    <MESSAGE value="清除杂鱼代码" />
     <MESSAGE value="取消杂鱼代码" />
-    <option name="LAST_COMMIT_MESSAGE" value="取消杂鱼代码" />
-    <option name="LAST_CHUNK_COMMIT_MESSAGE" value="清除杂鱼代码" />
+    <MESSAGE value="清除杂鱼代码" />
+    <option name="LAST_COMMIT_MESSAGE" value="清除杂鱼代码" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

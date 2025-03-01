@@ -13,13 +13,8 @@ MonoBehaviour:
   m_Name: Dialogue1
   m_EditorClassIdentifier: 
   characterName: 
-  characterSprite: {fileID: 0}
-  dialogueLines: []
-  typingSpeed: 0.05
-  voiceClip: {fileID: 0}
-  autoAdvance: 0
-  autoAdvanceDelay: 2
-  hasBranch: 0
-  branches: []
-  eventID: 
-  emotion: normal
+  dialoguelinesList:
+  - "\u5367\u69FD"
+  - "\u5C3C\u739B\u4E0D\u8BB2\u6B66\u5FB7\uFF0C\u5077\u88AD\u54C8\u54C8\u54C8\u554A\u54C8\u54C8\u54C8\u54C8\u54C8\u54C8\u54C8\u54C8\u54C8\u54C8\u54C8\u54C8\u54C8"
+  - "\u54C8\u54C8\u54C8"
+  - "\u597D\u7D2F\u554A"

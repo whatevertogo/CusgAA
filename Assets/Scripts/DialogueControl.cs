@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class DialogueControl : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class DialogueControl : MonoBehaviour
 
     [Header("对话显示速度")] [SerializeField] private float typingSpeed = 0.1f;
 
-    [SerializeField] private float nextLineDelay = 2f;
+    [SerializeField] private float nextLineDelay = 2f;//下一行的时间
 
     private int currentLineIndex;
 
@@ -24,12 +25,7 @@ public class DialogueControl : MonoBehaviour
     private bool isTyping;
     private Coroutine typingCoroutine;
 
-    public GameObject DialoguePanel
-    {
-        get => dialoguePanel;
-        set => dialoguePanel = value;
-    }
-
+    public GameObject DialoguePanel { get => dialoguePanel; set => dialoguePanel = value; }
 
     private void Awake()
     {
@@ -55,7 +51,7 @@ public class DialogueControl : MonoBehaviour
     }
 
     // 显示对话框
-    private void ShowDialogue()
+    public void ShowDialogue()
     {
         if (DialoguePanel != null)
         {
@@ -65,7 +61,6 @@ public class DialogueControl : MonoBehaviour
             {
                 currentLineIndex = 0;
                 ShowNextLine(); //调用对话
-                Debug.Log("Started typing dialogue");
             }
             else
             {
@@ -74,6 +69,7 @@ public class DialogueControl : MonoBehaviour
         }
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     private void ShowNextLine()
     {
         // 如果正在打字，停止当前打字过程并立即显示完整的当前行
@@ -118,7 +114,7 @@ public class DialogueControl : MonoBehaviour
         isTyping = false;
         Debug.Log($"Finished showing line {currentLineIndex}");
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(nextLineDelay);
         ShowNextLine();
     }
 
@@ -135,4 +131,17 @@ public class DialogueControl : MonoBehaviour
         StopAllCoroutines();
         Debug.Log("All dialogues skipped");
     }
+
+
+    public void FadeInCharacter(Image characterImage) {
+    // DOTween实现立绘淡入
+    }
+
+    public void FadeOutCharacter(Image characterImage) {
+    // DOTween实现立绘淡出
+    }
+
+    
+    
+    
 }

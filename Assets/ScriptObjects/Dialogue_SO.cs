@@ -7,7 +7,7 @@ public class Dialogue_SO : ScriptableObject
 {
     public string characterName;
     public string characterName2;
-    public Image Character_Image;
-    public Image Character_Image2;
+    public Sprite Character_Image;
+    public Sprite Character_Image2;
     public List<string> dialoguelinesList;
 }

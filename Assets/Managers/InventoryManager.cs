@@ -11,14 +11,14 @@ namespace Managers
         private void Start()
         {
             HideInventory();
-            GameInput.Instance.OnOpenInventoryAction += InventoryManager_OnOpenInventoryAction;
+            GameInput.Instance.OnOpenInventoryAction += InventoryManager_OnOpenInventoryAction;//
             
         }
 
         private void InventoryManager_OnOpenInventoryAction(object sender, EventArgs e)//通过GameInput的事件来打开背包
         {
-            if(inventoryUI.activeSelf)
-                HideInventory();
+            if (inventoryUI.activeSelf)
+                HideInventory();//
             else
                 ShowInventory();
         }

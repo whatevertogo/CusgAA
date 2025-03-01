@@ -15,10 +15,14 @@ public class DialogueControl : MonoBehaviour
 
     [Header("对话显示速度")]
     [SerializeField] private float typingSpeed = 0.1f;
+    [SerializeField] private float nextLineDelay = 2f;
     
     private List<string> dialogueLinesList = new List<string>();
     
     private int currentLineIndex = 0;
+    
+    private bool isTyping = false;
+    private Coroutine typingCoroutine;
     
     public GameObject DialoguePanel
     {
@@ -50,15 +54,17 @@ public class DialogueControl : MonoBehaviour
         ShowDialogue();
     }
     
+    // 显示对话框
     private void ShowDialogue()
     {
         if (DialoguePanel != null)
         {
             DialoguePanel.SetActive(true);
-            
+
             if (dialogueLinesList.Count > 0)
             {
-                StartCoroutine(TypeDialogue());
+                currentLineIndex = 0;
+                ShowNextLine();//调用对话
                 Debug.Log("Started typing dialogue");
             }
             else
@@ -67,34 +73,73 @@ public class DialogueControl : MonoBehaviour
             }
         }
     }
-    
-    private IEnumerator TypeDialogue()
+
+    private void ShowNextLine()
     {
-        int currentLineIndex = 0;
-        
-        foreach (string line in dialogueLinesList)
+        // 如果正在打字，停止当前打字过程并立即显示完整的当前行
+        if (isTyping)
         {
-            currentLineIndex++;
-            
-            dialogueText.text = "";
-            
-            foreach (char letter in line.ToCharArray())
-            {
-                dialogueText.text += letter;
-                yield return new WaitForSeconds(typingSpeed);
-            }
-            
-            Debug.Log($"Finished showing line {currentLineIndex}");
-            yield return new WaitForSeconds(1);
-        }
+            if (typingCoroutine != null)
+                StopCoroutine(typingCoroutine);
         
+            dialogueText.text = dialogueLinesList[currentLineIndex];
+            isTyping = false;
+            return;
+        }
+
+        // 如果没有打字，前进到下一行
+        currentLineIndex++;
+    
+        // 检查是否还有下一行对话
+        if (currentLineIndex < dialogueLinesList.Count)
+        {
+            // 清空文本，准备显示新一行
+            dialogueText.text = "";
+            typingCoroutine = StartCoroutine(TypeDialogueLineByLine());
+        }
+        else
+        {
+            // 所有对话行已显示完毕
+            Debug.Log("All dialogue lines have been displayed");
+            // 可选：关闭对话面板
+            // DialoguePanel.SetActive(false);
+        }
     }
 
+    private IEnumerator TypeDialogueLineByLine()
+    {
+        isTyping = true;
+        dialogueText.text = "";
+
+        string currentLine = dialogueLinesList[currentLineIndex];
+
+        foreach (char letter in currentLine.ToCharArray())
+        {
+            dialogueText.text += letter;
+            yield return new WaitForSeconds(typingSpeed);
+        }
+
+        isTyping = false;
+        Debug.Log($"Finished showing line {currentLineIndex + 1}");
+        
+            yield return new WaitForSeconds(2f);
+            ShowNextLine();
+        
+
+    }
+
+    //进行下一行 
+    public void SkipDialogueLines()
+    {
+        ShowNextLine();
+        Debug.Log("Moving to next dialogue line");
+    }
+    
+    //跳过所有行
     public void SkipDialogue()
     {
         StopAllCoroutines();
-        dialogueText.text = "";
-        Debug.Log("Dialogue skipped");
+        Debug.Log("All dialogues skipped");
     }
 
 }

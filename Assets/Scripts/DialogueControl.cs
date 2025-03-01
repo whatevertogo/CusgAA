@@ -76,7 +76,6 @@ public class DialogueControl : MonoBehaviour
 
     private void ShowNextLine()
     {
-
         // 如果正在打字，停止当前打字过程并立即显示完整的当前行
         if (isTyping)
         {
@@ -87,16 +86,16 @@ public class DialogueControl : MonoBehaviour
             isTyping = false;
             return;
         }
-        
-        // 清空文本框，准备显示下一行
-        dialogueText.text = ""; 
 
-        // 如果没有打字，前进到下一行
-        currentLineIndex++;
+        // 清空文本框，准备显示下一行
+        dialogueText.text = "";
 
         // 检查是否还有下一行对话
-        if (currentLineIndex < dialogueLinesList.Count)
+        if (currentLineIndex + 1 < dialogueLinesList.Count)
+        {
             typingCoroutine = StartCoroutine(TypeDialogueLineByLine());
+            currentLineIndex++;
+        }
         else
             // 所有对话行已显示完毕
             Debug.Log("All dialogue lines have been displayed");
@@ -117,7 +116,7 @@ public class DialogueControl : MonoBehaviour
         }
 
         isTyping = false;
-        Debug.Log($"Finished showing line {currentLineIndex + 1}");
+        Debug.Log($"Finished showing line {currentLineIndex}");
 
         yield return new WaitForSeconds(2f);
         ShowNextLine();

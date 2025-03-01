@@ -7,10 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3da3543e-c56a-4fce-999b-c59fb0e322a6" name="更改" comment="重构对话系统，更新对话数据结构并添加对话控制器">
+    <list default="true" id="3da3543e-c56a-4fce-999b-c59fb0e322a6" name="更改" comment="优化对话控制逻辑，添加逐行显示和跳过对话功能">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.plastic/plastic.wktree" beforeDir="false" afterPath="$PROJECT_DIR$/.plastic/plastic.wktree" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/DialogueControl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DialogueControl.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/Layouts/default-6000.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-6000.dwlt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,6 +82,8 @@
 }]]></component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8e5a634840fd4c6b9a0a867163b727ec1df200/d7/2d1accb7/MonoBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/UnityProjects/tRY/Assets/Scripts/DialogueControl.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/DialogueController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/stopMenu/Continue.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@03407c6d8751/Runtime/TMP/TextMeshProUGUI.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -108,7 +111,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
+    "settings.editor.selected.configurable": "editor.preferences.smartKeys_rider",
     "vue.rearranger.settings.migration": "true",
     "附加到 Unity 编辑器.附加到 Unity 编辑器.executor": "Debug"
   }
@@ -180,7 +183,7 @@
       <workItem from="1740654354121" duration="7000" />
       <workItem from="1740816808353" duration="190000" />
       <workItem from="1740817151210" duration="621000" />
-      <workItem from="1740817804146" duration="3458000" />
+      <workItem from="1740817804146" duration="5473000" />
     </task>
     <task id="LOCAL-00001" summary="update package dependencies and project settings">
       <option name="closed" value="true" />
@@ -318,7 +321,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740820132613</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="优化对话控制逻辑，添加逐行显示和跳过对话功能">
+      <option name="closed" value="true" />
+      <created>1740821692268</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1740821692268</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -392,7 +403,8 @@
     <MESSAGE value="清除杂鱼代码" />
     <MESSAGE value="a" />
     <MESSAGE value="重构对话系统，更新对话数据结构并添加对话控制器" />
-    <option name="LAST_COMMIT_MESSAGE" value="重构对话系统，更新对话数据结构并添加对话控制器" />
+    <MESSAGE value="优化对话控制逻辑，添加逐行显示和跳过对话功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="优化对话控制逻辑，添加逐行显示和跳过对话功能" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -16,8 +16,9 @@ namespace Managers
 	
 		public event EventHandler OnOpenInventoryAction;
 
-		private void Awake()
+		protected override void Awake()
 		{
+			base.Awake();
 			PlayerInput = new PlayerInputSystem(); // 创建 PlayerInputControl 实例	
 			PlayerInput.Enable();
 			PlayerInput.Player.Interact.performed+=Interact_performed;

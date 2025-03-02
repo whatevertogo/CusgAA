@@ -6,7 +6,8 @@ namespace Managers
 {
     public class InventoryManager : Singleton<InventoryManager>
     {
-        [SerializeField] private GameObject inventoryUI;
+        [SerializeField] private GameObject inventoryUIItems;
+        [SerializeField] private ItemsManagerUI itemsManagerUI;
         
         private void Start()
         {
@@ -17,7 +18,7 @@ namespace Managers
 
         private void InventoryManager_OnOpenInventoryAction(object sender, EventArgs e)//通过GameInput的事件来打开背包
         {
-            if (inventoryUI.activeSelf)
+            if (inventoryUIItems.activeSelf)
                 HideInventory();
             else
                 ShowInventory();
@@ -25,11 +26,12 @@ namespace Managers
         
         public void ShowInventory()
         {
-            inventoryUI.SetActive(true);
+            inventoryUIItems.SetActive(true);
+            itemsManagerUI.UpdateVisual();
         }
         public void HideInventory()
         {
-            inventoryUI.SetActive(false);
+            inventoryUIItems.SetActive(false);
         }
 
 

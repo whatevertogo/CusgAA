@@ -36,7 +36,7 @@ namespace Managers
 			OnOpenInventoryAction?.Invoke(this, EventArgs.Empty);//在InventoryManager中执行
 	
 		
-	
+		
 		private void OnEnable()
 		{
 			PlayerInput.Enable();

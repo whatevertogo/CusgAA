@@ -8,7 +8,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3da3543e-c56a-4fce-999b-c59fb0e322a6" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.plastic/plastic.wktree" beforeDir="false" afterPath="$PROJECT_DIR$/.plastic/plastic.wktree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Managers/GameInput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Managers/GameInput.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Managers/InventoryManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Managers/InventoryManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ObjectScripts/Dialogue1.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ObjectScripts/Dialogue1.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ObjectScripts/KeyForFirst.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ObjectScripts/KeyForFirst.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/First.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/First.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DialogueControl.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DialogueControl.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DialogueController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DialogueController.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DialoguePannelClicked.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DialoguePannelClicked.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlayerCotroller.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlayerCotroller.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerController.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/Layouts/default-6000.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-6000.dwlt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,10 +102,13 @@
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8e5a634840fd4c6b9a0a867163b727ec1df200/d7/2d1accb7/MonoBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/966620cfd34f4ee8a58294a20fae688f2f200/f4/22e91eb3/Rigidbody2D.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../My project (6)/Assets/InputSystem/PlayerInputControl.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Managers/GameInput.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Managers/InventoryManager.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/DialogueController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Inventory/ItrmsManagerUI.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/stopMenu/Continue.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@38fdc9b96878/Editor/Volume/VolumeComponentEditor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@03407c6d8751/Runtime/TMP/TextMeshProUGUI.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -109,12 +135,12 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "settings.sync",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
     "vue.rearranger.settings.migration": "true",
     "附加到 Unity 编辑器.附加到 Unity 编辑器.executor": "Debug"
   }
 }]]></component>
-  <component name="RunManager" selected="独立播放器.启动 Unity">
+  <component name="RunManager" selected="附加到 Unity 编辑器.附加到 Unity 编辑器">
     <configuration name="启动 Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="D:\UnityEditor\6000.0.39f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath D:\UnityProjects\tRY -debugCodeOptimization" />
@@ -131,13 +157,15 @@
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <method v="2" />
     </configuration>
-    <configuration name="附加到 Unity 编辑器" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="附加到 Unity 编辑器" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="30328">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="30328" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
-        <list />
+        <list>
+          <MonoRuntime />
+        </list>
       </option>
       <option name="selectedOptions">
         <list />
@@ -194,6 +222,8 @@
       <workItem from="1740858727600" duration="881000" />
       <workItem from="1740859700639" duration="188000" />
       <workItem from="1740859942339" duration="241000" />
+      <workItem from="1740863675495" duration="115000" />
+      <workItem from="1740899351390" duration="15858000" />
     </task>
     <task id="LOCAL-00001" summary="update package dependencies and project settings">
       <option name="closed" value="true" />
@@ -363,7 +393,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740860064335</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="1">
+      <option name="closed" value="true" />
+      <created>1740863695611</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1740863695611</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -431,7 +469,6 @@
     <MESSAGE value="add player input actions and configuration for input system" />
     <MESSAGE value="add player input actions and update project settings for Unity" />
     <MESSAGE value="add player input actions, update encoding settings, and modify project configuration for Unity" />
-    <MESSAGE value="1" />
     <MESSAGE value="update layout and configuration settings for Unity project, including editor version bump and control ID adjustments" />
     <MESSAGE value="取消杂鱼代码" />
     <MESSAGE value="清除杂鱼代码" />
@@ -441,7 +478,8 @@
     <MESSAGE value="增加textmesh并加入部分仓库系统" />
     <MESSAGE value="材料" />
     <MESSAGE value="更新编码设置，添加ItemButton.cs的字符集配置，优化InventoryManager的事件处理逻辑" />
-    <option name="LAST_COMMIT_MESSAGE" value="更新编码设置，添加ItemButton.cs的字符集配置，优化InventoryManager的事件处理逻辑" />
+    <MESSAGE value="1" />
+    <option name="LAST_COMMIT_MESSAGE" value="1" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

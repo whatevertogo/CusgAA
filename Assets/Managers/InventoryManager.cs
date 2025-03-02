@@ -1,5 +1,5 @@
 using System;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Managers
@@ -8,6 +8,7 @@ namespace Managers
     {
         [SerializeField] private GameObject inventoryUIItems;
         [SerializeField] private ItemsManagerUI itemsManagerUI;
+        public List<Items_SO> items= new List<Items_SO>();
         
         private void Start()
         {
@@ -33,7 +34,34 @@ namespace Managers
         {
             inventoryUIItems.SetActive(false);
         }
+        
+        #region 物品类方法
+        public void AddItem(Items_SO itemsSO) 
+        {
+            if (!items.Contains(itemsSO))
+            {
+                items.Add(itemsSO);
+                itemsManagerUI.UpdateVisual();
+                Debug.Log($"Add {itemsSO.itemName}");
+            }
 
+        }
+        
+        public bool HasItem(Items_SO itemsSO)
+        {
+            return items.Contains(itemsSO);
+        }
+        
+        public void RemoveItem(Items_SO itemsSO)
+        {
+            if (items.Contains(itemsSO))
+            {
+                items.Remove(itemsSO);
+                itemsManagerUI.UpdateVisual();
+                Debug.Log($"Remove {itemsSO.itemName}");
+            }
+        }
+        #endregion
 
 
 

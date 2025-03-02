@@ -8,11 +8,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3da3543e-c56a-4fce-999b-c59fb0e322a6" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.plastic/plastic.wktree" beforeDir="false" afterPath="$PROJECT_DIR$/.plastic/plastic.wktree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptObjects/Dialogue_SO.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptObjects/Dialogue_SO.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptObjects/Inventory_SO.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptObjects/Inventory_SO.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Managers/InventoryManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Managers/InventoryManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ObjectScripts/Inventory.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ObjectScripts/Inventory/Inventory_SO.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ObjectScripts/Inventory/Inventory_SO.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/First.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/First.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptObjects/DialogueSO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptObjects/DialogueSO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptObjects/InventorySO.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptObjects/InventorySO.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptObjects/ItemsSO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptObjects/ItemsSO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/ItemsManagerUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Inventory/ItemsManagerUI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/Layouts/default-6000.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-6000.dwlt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,13 +97,14 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/966620cfd34f4ee8a58294a20fae688f2f200/f4/22e91eb3/Rigidbody2D.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../My project (6)/Assets/InputSystem/PlayerInputControl.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/ScriptObjects/InventorySO.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Inventory/Item.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/stopMenu/Continue.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@38fdc9b96878/Editor/Volume/VolumeComponentEditor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@03407c6d8751/Runtime/TMP/TextMeshProUGUI.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -114,14 +126,20 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
+    "settings.editor.selected.configurable": "settings.qodana",
     "vue.rearranger.settings.migration": "true",
     "附加到 Unity 编辑器.附加到 Unity 编辑器.executor": "Debug"
   }
 }]]></component>
+  <component name="QodanaCloudProjectLink">
+    <option name="linkedProjectId" value="1rrLE" />
+    <option name="linkedProjectName" value="Cusaa" />
+    <option name="organizationId" value="p50wa" />
+    <option name="userId" value="ww74g" />
+  </component>
   <component name="RunManager" selected="附加到 Unity 编辑器.附加到 Unity 编辑器">
     <configuration name="启动 Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="D:\UnityEditor\6000.0.39f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="D:\UnityEditor\6000.0.40f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath D:\UnityProjects\tRY -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="D:\UnityProjects\tRY" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -129,7 +147,7 @@
       <method v="2" />
     </configuration>
     <configuration name="单元测试(批处理模式)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="D:\UnityEditor\6000.0.39f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="D:\UnityEditor\6000.0.40f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath D:\UnityProjects\tRY -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="D:\UnityProjects\tRY" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -202,7 +220,7 @@
       <workItem from="1740859700639" duration="188000" />
       <workItem from="1740859942339" duration="241000" />
       <workItem from="1740863675495" duration="115000" />
-      <workItem from="1740899351390" duration="16363000" />
+      <workItem from="1740899351390" duration="21893000" />
     </task>
     <task id="LOCAL-00001" summary="update package dependencies and project settings">
       <option name="closed" value="true" />

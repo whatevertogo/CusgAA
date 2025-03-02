@@ -1,12 +1,32 @@
+using Managers;
 using UnityEngine;
 
 public class ItemsManagerUI : MonoBehaviour
 {
+    [SerializeField] private GameObject itemPrefab;
     [SerializeField] private Transform itemsContainer;
-    
+
+
+    void Start()
+    {
+        UpdateVisual();
+    }
+
+
+
     public void UpdateVisual()
     {
-        //todo-更新视觉效果
+        // foreach(Transform child in itemsContainer)
+        // {
+        //     Destroy(child.gameObject);
+        // }
+        //
+        // foreach(Items_SO itemsSO in InventoryManager.Instance.items)
+        // {
+        //   
+        //   
+        // }
+        
     }
 
 }

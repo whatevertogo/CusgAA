@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Dialogue1
   m_EditorClassIdentifier: 
   characterName: 
+  characterName2: 
   dialoguelinesList:
-  - "\u5367\u69FD"
   - 13
   - "\u54C8\u54C8\u54C8"
+  - "\u6211\u4E0D\u60F3\u8BB2"
   - "\u597D\u7D2F\u554A"

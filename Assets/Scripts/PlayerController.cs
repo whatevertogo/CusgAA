@@ -8,18 +8,28 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeed = 7f; // 移动速度
     [SerializeField] private float rotationSpeed = 8f; // 旋转速度
     [SerializeField] private float newMass = 1f;// 质量
-    [SerializeField] private float acceleration = 50f; // 加速度
+    [Header("人物加减速度,速度曲线参数，空中控制系数，空气阻力")]
+    [SerializeField] private float acceleration = 100f; // 加速度
+    [SerializeField] private float deceleration = 15f; // 减速度
+    [SerializeField] private float velocityPower = 0.96f; // 速度曲线指数
     [SerializeField] private float airControl = 0.8f; // 空中控制系数
+    [SerializeField] private float airDrag = 0.85f; // 空气阻力
     private Vector2 moveDir; // 移动方向
+    private float lastMoveDir; // 记录最后移动方向
 
     [Header("人物跳跃参数")]
-    [SerializeField] private float jumpForce = 10f;// 跳跃力度
+    [SerializeField] private float jumpForce = 11f;// 跳跃力度
+    [SerializeField] private float minJumpForce = 6f;// 最小跳跃力度
+    [SerializeField] private float maxJumpHoldTime = 0.3f;// 最大跳跃按住时间
     [SerializeField] private int maxJumpCount = 2;// 最大跳跃次数
-    [SerializeField] private float rayLength = 0.6f; // 射线长度
+    [SerializeField] private float rayLength = 0.55f; // 射线长度
     [Header("跳跃优化")]
-    [SerializeField] private float coyoteTime = 0.15f; // 土狼时间
-    [SerializeField] private float jumpBuffer = 0.15f; // 跳跃缓冲
-    [SerializeField] private float fallMultiplier = 3f; // 下落加速度倍数
+    [SerializeField] private float coyoteTime = 0.2f; // 土狼时间
+    [SerializeField] private float jumpBuffer = 0.2f; // 跳跃缓冲
+    [SerializeField] private float fallMultiplier = 2.2f; // 下落加速度倍数
+    [Header("未使用")]
+    [SerializeField] private float preLandingTime = 0.15f; // 预落地时间
+    [SerializeField] private float landingVFXTime = 0.15f; // 落地特效时间
 
     [Header("地面检测")]
     [SerializeField] private LayerMask groundLayer;// 地面层
@@ -30,6 +40,12 @@ public class PlayerController : MonoBehaviour
     private float coyoteTimeCounter; // 土狼时间计数器
     private float jumpBufferCounter; // 跳跃缓冲计数器
     private bool hasBufferedJump; // 是否有缓冲的跳跃
+    private float jumpHoldTime; // 跳跃按住时间
+    private bool isJumping; // 是否正在跳跃
+    private float fallDistance; // 下落距离
+    private float lastGroundedY; // 上次着地Y位置
+    private bool isPreLanding; // 是否预落地
+    private bool isLanding; // 是否正在着地
     
     private Vector2 direction; // 向量化后的方向
     private Rigidbody2D _rb2D; // 刚体组件
@@ -44,6 +60,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         _rb2D.mass = newMass; //设置刚体质量
+        lastGroundedY = transform.position.y; // 初始化最后着地位置
         // 订阅跳跃事件
         GameInput.Instance.OnJumpAction += GameInput_OnJumpAction;
     }
@@ -61,6 +78,30 @@ public class PlayerController : MonoBehaviour
     {
         CheckGround(); // 检测地面
         UpdateTimers(); // 更新计时器
+        
+        // 处理跳跃按住时间
+        if (isJumping && GameInput.Instance.JumpPressed)
+        {
+            jumpHoldTime += Time.deltaTime;
+            if (jumpHoldTime >= maxJumpHoldTime)
+            {
+                isJumping = false;
+            }
+        }
+        else if (isJumping)
+        {
+            isJumping = false;
+        }
+
+        // 处理着地效果
+        if (isLanding)
+        {
+            // 可以在这里添加着地动画或特效
+            if (Time.time >= landingVFXTime)
+            {
+                isLanding = false;
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -77,6 +118,7 @@ public class PlayerController : MonoBehaviour
 
         if (direction != Vector2.zero && CanMove())
         {
+            lastMoveDir = direction.x;
             // 基础移动速度
             float targetSpeed = direction.x * moveSpeed;
             
@@ -86,25 +128,44 @@ public class PlayerController : MonoBehaviour
                 targetSpeed *= airControl;
             }
 
-            // 计算速度差
+            // 计算当前速度与目标速度的差值
             float speedDiff = targetSpeed - _rb2D.linearVelocity.x;
-            // 计算加速度
-            float movement = speedDiff * acceleration;
-
+            
+            // 应用加速度曲线
+            float movement = Mathf.Pow(Mathf.Abs(speedDiff) * acceleration, velocityPower) * Mathf.Sign(speedDiff);
+            
             // 应用水平力
             _rb2D.AddForce(Vector2.right * (movement * Time.fixedDeltaTime), ForceMode2D.Force);
-
-            // 角色朝向
-            if (direction.x != 0)
-            {
-                spriteRender.flipX = direction.x > 0;
-            }
         }
-        else if (isGrounded)
+        else
         {
-            // 在地面上时快速停止
-            float friction = 0.7f;
-            _rb2D.linearVelocity = new Vector2(_rb2D.linearVelocity.x * friction, _rb2D.linearVelocity.y);
+            // 停止移动时的减速
+            float friction = isGrounded ? deceleration : (airDrag * deceleration);
+            Vector2 frictionForce = -_rb2D.linearVelocity * friction;
+            _rb2D.AddForce(frictionForce * Time.fixedDeltaTime, ForceMode2D.Force);
+        }
+
+        // 角色朝向 - 使用最后移动方向
+        if (Mathf.Abs(lastMoveDir) > 0.1f)
+        {
+            spriteRender.flipX = lastMoveDir > 0;
+        }
+
+        // 更新下落检测
+        if (!isGrounded && _rb2D.linearVelocity.y < 0)
+        {
+            fallDistance = lastGroundedY - transform.position.y;
+            
+            // 预落地检测
+            if (!isPreLanding && fallDistance > 1f)
+            {
+                RaycastHit2D preHit = Physics2D.Raycast(transform.position, Vector2.down, rayLength * 3f, groundLayer);
+                if (preHit.collider != null)
+                {
+                    isPreLanding = true;
+                    // 这里可以触发预落地动画
+                }
+            }
         }
     }
 
@@ -141,9 +202,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 使用射线检测地面
-    /// </summary>
     private void CheckGround()
     {
         // 从角色中心向下发射射线
@@ -161,11 +219,24 @@ public class PlayerController : MonoBehaviour
             canJumpAgain = true;
             hasBufferedJump = false;
             coyoteTimeCounter = coyoteTime;
+            
+            // 处理着地效果
+            if (fallDistance > 1f)
+            {
+                isLanding = true;
+                // 这里可以添加着地音效或粒子效果
+            }
+            
+            // 重置相关状态
+            isPreLanding = false;
+            fallDistance = 0;
+            lastGroundedY = transform.position.y;
         }
         // 如果刚离开地面
         else if (!isGrounded && wasGrounded)
         {
             coyoteTimeCounter = coyoteTime;
+            lastGroundedY = transform.position.y;
         }
     }
 
@@ -174,6 +245,8 @@ public class PlayerController : MonoBehaviour
         if (isGrounded || coyoteTimeCounter > 0)
         {
             // 第一段跳跃
+            isJumping = true;
+            jumpHoldTime = 0f;
             PerformJump(jumpForce);
             jumpCount = 1;
             canJumpAgain = true;
@@ -182,6 +255,8 @@ public class PlayerController : MonoBehaviour
         else if (jumpCount < maxJumpCount && canJumpAgain)
         {
             // 二段跳跃
+            isJumping = true;
+            jumpHoldTime = 0f;
             PerformJump(jumpForce * 0.8f);
             jumpCount++;
             
@@ -195,7 +270,11 @@ public class PlayerController : MonoBehaviour
     private void PerformJump(float force)
     {
         _rb2D.linearVelocity = new Vector2(_rb2D.linearVelocity.x, 0f); // 重置垂直速度
-        _rb2D.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+        
+        // 根据按住时间调整跳跃力度
+        float finalForce = Mathf.Lerp(minJumpForce, force, jumpHoldTime / maxJumpHoldTime);
+        _rb2D.AddForce(Vector2.up * finalForce, ForceMode2D.Impulse);
+        
         hasBufferedJump = false;
         jumpBufferCounter = 0;
     }
@@ -220,6 +299,13 @@ public class PlayerController : MonoBehaviour
         // 显示地面检测射线
         Gizmos.color = isGrounded ? Color.green : Color.red;
         Gizmos.DrawLine(transform.position, transform.position + Vector3.down * rayLength);
+        
+        // 显示预落地检测射线
+        if (!isGrounded && _rb2D != null && _rb2D.linearVelocity.y < 0)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(transform.position, transform.position + Vector3.down * (rayLength * 3f));
+        }
     }
     #endregion
 }

@@ -102,7 +102,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "XThreadsFramesViewSplitterKey": "0.31308413",
+    "XThreadsFramesViewSplitterKey": "0.50124687",
     "git-widget-placeholder": "common",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
@@ -115,17 +115,6 @@
     "附加到 Unity 编辑器.附加到 Unity 编辑器.executor": "Debug"
   }
 }]]></component>
-  <component name="QodanaCIConfigService">
-    <option name="ciType" value="GITHUB" />
-    <option name="path" value="$PROJECT_DIR$/.github/workflows/qodana_code_quality.yml" />
-  </component>
-  <component name="QodanaCloudProjectLink">
-    <option name="lastReportId" value="9wjEj" />
-    <option name="linkedProjectId" value="P22k7" />
-    <option name="linkedProjectName" value="Cusaa" />
-    <option name="organizationId" value="p50wa" />
-    <option name="userId" value="ww74g" />
-  </component>
   <component name="QodanaSettings">
     <option name="autoLoadCloudReport" value="true" />
   </component>
@@ -216,7 +205,7 @@
       <workItem from="1740899351390" duration="23497000" />
       <workItem from="1740968886072" duration="7269000" />
       <workItem from="1740980341252" duration="4638000" />
-      <workItem from="1741012498132" duration="14953000" />
+      <workItem from="1741012498132" duration="15547000" />
     </task>
     <task id="LOCAL-00001" summary="update package dependencies and project settings">
       <option name="closed" value="true" />

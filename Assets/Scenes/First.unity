@@ -287,7 +287,7 @@ MonoBehaviour:
       Enabled: 1
       Size: {x: 0.05, y: 0.05}
     HardLimits:
-      Enabled: 0
+      Enabled: 1
       Size: {x: 0.8, y: 0.8}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
@@ -295,7 +295,7 @@ MonoBehaviour:
   Damping: {x: 1, y: 1, z: 1}
   Lookahead:
     Enabled: 1
-    Time: 0.04
+    Time: 0.05
     Smoothing: 0.5
     IgnoreY: 1
 --- !u!114 &162239568
@@ -1313,19 +1313,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 20
-  rotationSpeed: 20
+  rotationSpeed: 8
   newMass: 1
-  acceleration: 50
+  acceleration: 100
+  deceleration: 15
+  velocityPower: 0.96
   airControl: 0.8
-  jumpForce: 20
+  airDrag: 0.8
+  jumpForce: 11
+  minJumpForce: 6
+  maxJumpHoldTime: 0.3
   maxJumpCount: 2
-  rayLength: 4
-  coyoteTime: 0.15
-  jumpBuffer: 0.15
-  fallMultiplier: 2.5
+  rayLength: 0.55
+  coyoteTime: 0.2
+  jumpBuffer: 0.2
+  fallMultiplier: 2.2
+  preLandingTime: 0.15
+  landingVFXTime: 0.15
   groundLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
 --- !u!1 &1591297382
 GameObject:
   m_ObjectHideFlags: 0

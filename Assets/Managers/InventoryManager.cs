@@ -16,8 +16,7 @@ namespace Managers
             LoadItems();
             itemsManagerUI.UpdateVisual();
             items.ForEach(item => Debug.Log(item.itemName));
-            AddItem("钥匙");
-            AddItem("KeyForFirst");
+            AddItem("KeyForFirst");//测试是否能加入存在的东西
         }
 
         #region 物品类方法
@@ -66,6 +65,7 @@ namespace Managers
         {
             return items.Contains(itemSO);
         }
+        
         
         // 移除物品
         public void RemoveItem(ItemSO itemSO)

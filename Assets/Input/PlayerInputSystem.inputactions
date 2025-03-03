@@ -15,6 +15,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "Leap",
+                    "type": "Value",
+                    "id": "b32265f2-c015-4f18-83d1-81e9ccbb78a2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Interact",
                     "type": "Button",
                     "id": "2765ee90-833f-4c1d-a055-4851d88b6bf2",
@@ -128,6 +137,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "OpenInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "108af54e-3601-446f-bad2-cedb14ad8bb0",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Leap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d3ed8d6d-dce3-4d91-8726-b3f5fec67c63",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Leap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

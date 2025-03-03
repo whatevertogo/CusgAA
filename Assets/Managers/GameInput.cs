@@ -49,8 +49,22 @@ namespace Managers
 	
 		private void Update()
 		{
-			moveDir = PlayerInput.Player.Move.ReadValue<Vector2>();
+			moveDir =new Vector2(PlayerInput.Player.Move.ReadValue<Vector2>().x,0);
+			
+
 		}
+
+		#region 跳跃注册和注销
+		public void RegisterJumpAction(System.Action<InputAction.CallbackContext> callback)
+		{
+			PlayerInput.Player.Leap.started += callback;
+		}
+
+		public void UnregisterJumpAction(System.Action<InputAction.CallbackContext> callback)
+		{
+			PlayerInput.Player.Leap.started -= callback;
+		}
+		#endregion
 	
 
 	}

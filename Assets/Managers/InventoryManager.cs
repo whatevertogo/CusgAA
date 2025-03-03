@@ -7,7 +7,7 @@ namespace Managers
     {
         [SerializeField] private ItemDatabase itemDatabase; // 物品数据库
         [SerializeField] private ItemsManagerUI itemsManagerUI; // UI 管理
-        private Dictionary<string, ItemSO> itemDictionary = new(); // 物品字典
+        private readonly Dictionary<string, ItemSO> itemDictionary = new(); // 物品字典
         public List<ItemSO> items = new(); // 背包里的物品
         
         

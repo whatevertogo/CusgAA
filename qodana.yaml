@@ -27,3 +27,10 @@ profile:
 #Install IDE plugins before Qodana execution (Applied in CI/CD pipeline)
 #plugins:
 #  - id: <plugin.id> #(plugin id can be found at https://plugins.jetbrains.com)
+version: "1.0"
+linter: jetbrains/qodana-jvm:2024.3
+profile:
+  name: qodana.recommended
+include:
+  - name: CheckDependencyLicenses
+master

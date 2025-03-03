@@ -7,7 +7,7 @@ public enum ItemType
     Common //普通道具
 }
 
-[CreateAssetMenu(fileName = "ItemsSO", menuName = "Scriptable Objects/ItemsSO")]
+[CreateAssetMenu(fileName = "ItemSO", menuName = "Scriptable Objects/ItemsSO")]
 public class ItemSO : ScriptableObject
 {
     public Sprite itemImage; //物品图片

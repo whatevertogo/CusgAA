@@ -12,7 +12,7 @@ public class DialogueControl : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI dialogueText;
 
-    [Header("对话内容")] [SerializeField] private Dialogue_SO dialogue_SO;
+    [Header("对话内容")] [SerializeField] private DialogueSO dialogue_SO;
 
     [Header("对话显示速度")] [SerializeField] private float typingSpeed = 0.1f;
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,64 +5,79 @@ namespace Managers
 {
     public class InventoryManager : Singleton<InventoryManager>
     {
-        [SerializeField] private GameObject inventoryUIItems;
-        [SerializeField] private ItemsManagerUI itemsManagerUI;
-        public List<Items_SO> items= new List<Items_SO>();
+        [SerializeField] private ItemDatabase itemDatabase; // 物品数据库
+        [SerializeField] private ItemsManagerUI itemsManagerUI; // UI 管理
+        private Dictionary<string, ItemSO> itemDictionary = new(); // 物品字典
+        public List<ItemSO> items = new(); // 背包里的物品
+        
         
         private void Start()
         {
-            HideInventory();
-            GameInput.Instance.OnOpenInventoryAction += InventoryManager_OnOpenInventoryAction;//通过GameInput的事件来打开背包
-            
-        }
-
-        private void InventoryManager_OnOpenInventoryAction(object sender, EventArgs e)//通过GameInput的事件来打开背包
-        {
-            if (inventoryUIItems.activeSelf)
-                HideInventory();
-            else
-                ShowInventory();
-        }
-        
-        public void ShowInventory()
-        {
-            inventoryUIItems.SetActive(true);
+            LoadItems();
             itemsManagerUI.UpdateVisual();
+            items.ForEach(item => Debug.Log(item.itemName));
+            AddItem("钥匙");
+            AddItem("KeyForFirst");
         }
-        public void HideInventory()
-        {
-            inventoryUIItems.SetActive(false);
-        }
-        
+
         #region 物品类方法
-        public void AddItem(Items_SO itemsSO) 
+        
+        // 加载物品
+        private void LoadItems()
         {
-            if (!items.Contains(itemsSO))
+            if (itemDatabase == null)
             {
-                items.Add(itemsSO);
-                itemsManagerUI.UpdateVisual();
-                Debug.Log($"Add {itemsSO.itemName}");
+                Debug.LogError("ItemDatabase is missing!");
+                return;
             }
-
+    
+            foreach (var item in itemDatabase.itemsList)
+            {
+                itemDictionary[item.itemName] = item;
+            }
+    
+            Debug.Log($"Loaded {itemDictionary.Count} items.");
         }
         
-        public bool HasItem(Items_SO itemsSO)
+        // 通过物品名称添加物品
+        public void AddItem(string itemName) 
         {
-            return items.Contains(itemsSO);
-        }
-        
-        public void RemoveItem(Items_SO itemsSO)
-        {
-            if (items.Contains(itemsSO))
+            if (itemDictionary.TryGetValue(itemName, out ItemSO itemSO))
             {
-                items.Remove(itemsSO);
-                itemsManagerUI.UpdateVisual();
-                Debug.Log($"Remove {itemsSO.itemName}");
+                if (!items.Contains(itemSO))
+                {
+                    items.Add(itemSO);
+                    itemsManagerUI.UpdateVisual();
+                    Debug.Log($"Added {itemSO.itemName}");
+                }
+                else
+                {
+                    Debug.Log($"Item {itemName} already exists in inventory.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"Item {itemName} not found in database!");
             }
         }
+        
+        // 检查是否有该物品
+        public bool HasItem(ItemSO itemSO)
+        {
+            return items.Contains(itemSO);
+        }
+        
+        // 移除物品
+        public void RemoveItem(ItemSO itemSO)
+        {
+            if (items.Contains(itemSO))
+            {
+                items.Remove(itemSO);
+                itemsManagerUI.UpdateVisual();
+                Debug.Log($"Removed {itemSO.itemName}");
+            }
+        }
+        
         #endregion
-
-
-
     }
 }

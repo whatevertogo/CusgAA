@@ -16,9 +16,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce = 10f;// 跳跃力度
     [SerializeField] private int maxJumpCount = 2;// 最大跳跃次数
     [SerializeField] private float rayLength = 0.6f; // 射线长度
+    [Header("跳跃优化")]
     [SerializeField] private float coyoteTime = 0.15f; // 土狼时间
     [SerializeField] private float jumpBuffer = 0.15f; // 跳跃缓冲
-    [SerializeField] private float fallMultiplier = 2.5f; // 下落加速度倍数
+    [SerializeField] private float fallMultiplier = 3f; // 下落加速度倍数
 
     [Header("地面检测")]
     [SerializeField] private LayerMask groundLayer;// 地面层
@@ -150,7 +151,7 @@ public class PlayerController : MonoBehaviour
         
         // 更新地面状态
         bool wasGrounded = isGrounded;
-        isGrounded = hit.collider != null;
+        isGrounded = hit.collider is not null;
 
         // 如果刚接触地面
         if (isGrounded && !wasGrounded)

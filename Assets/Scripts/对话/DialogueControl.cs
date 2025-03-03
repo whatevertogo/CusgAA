@@ -70,7 +70,7 @@ public class DialogueControl : MonoBehaviour
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
-    private void ShowNextLine()
+    public void ShowNextLine()
     {
         // 如果正在打字，停止当前打字过程并立即显示完整的当前行
         if (isTyping)
@@ -129,6 +129,7 @@ public class DialogueControl : MonoBehaviour
     public void SkipDialogue()
     {
         StopAllCoroutines();
+        //todo-其他工作
         Debug.Log("All dialogues skipped");
     }
 

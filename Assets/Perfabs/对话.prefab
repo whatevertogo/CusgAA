@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9178292000914684985}
   - component: {fileID: 355865834580837451}
   - component: {fileID: 5801245184392000031}
-  - component: {fileID: 3717883998087700164}
+  - component: {fileID: 7066355467287285102}
   m_Layer: 5
   m_Name: "\u5BF9\u8BDD"
   m_TagString: Untagged
@@ -119,10 +119,10 @@ MonoBehaviour:
   dialoguePanel: {fileID: 4649729320683253161}
   nextlineButton: {fileID: 5072630029304168597}
   dialogueText: {fileID: 954164220113363022}
-  dialogue_SO: {fileID: 11400000, guid: 78e7fdc8be103f9478bfef3d5c46ea10, type: 2}
+  dialogue_SO: {fileID: 0}
   typingSpeed: 0.1
   nextLineDelay: 2
---- !u!114 &3717883998087700164
+--- !u!114 &7066355467287285102
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

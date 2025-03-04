@@ -22,7 +22,7 @@ public class ResetGame : MonoBehaviour
         //暂时的
         sceneName = "First";
         Managers.MySceneManager.Instance.LoadSceneByName(sceneName);
-        //todo-后期在mysceneManager里面写个重进场景的方法，现在懒得写，要不你写~(￣▽￣)~*
+        //TODO-后期在mysceneManager里面写个重进场景的方法，现在懒得写，要不你写~(￣▽￣)~*
         //自己写sceneName相当于重新进入场景
         
     }

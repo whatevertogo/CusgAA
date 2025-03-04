@@ -21,10 +21,10 @@ public class PlayerController : MonoBehaviour
     private float _lastMoveDirection; // 记录最后移动方向
 
     [Header("人物跳跃参数")]
-    [SerializeField] private float jumpForce = 13f;// 跳跃力度（调整）
+    [SerializeField] private float jumpForce = 10f;// 跳跃力度（调整）
     [SerializeField] private float maxJumpHoldTime = 0.2f;// 最大跳跃按住时间（调整）
-    [SerializeField] private float rayLength = 0.55f; // 射线长度
-    [SerializeField] private float gravity;
+    [SerializeField] private float rayLength = 1.6f; // 射线长度
+    [SerializeField] private Vector2 gravity;
 
     [Header("跳跃优化")]
     [SerializeField] private float coyoteTime = 0.1f; // 土狼时间（缩短）
@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float shortJumpMultiplier = 2.5f; // 短跳加速倍数（新增）
     [SerializeField] private float landingVFXTime = 0.15f; // 落地特效时间
 
-    [Header("未使用")]
+    //[Header("未使用")]
     //[SerializeField] private float minJumpForce = 7f;// 最小跳跃力度
     //[SerializeField] private float preLandingTime = 0.15f; // 预落地时间
 
@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
     {
         _rb2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        gravity = Physics2D.gravity.y;
+        Physics2D.gravity=gravity;
     }
 
     private void Start()
@@ -195,6 +195,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region 跳跃
+
     private void GameInput_OnJumpAction(object sender, EventArgs e)
     {
         _jumpBufferCounter = jumpBuffer;
@@ -303,4 +304,5 @@ public class PlayerController : MonoBehaviour
         }
     }
     #endregion
+
 }

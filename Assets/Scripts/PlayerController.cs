@@ -34,8 +34,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float shortJumpMultiplier = 2.5f; // 短跳加速倍数（新增）
 
     [Header("未使用")]
-    [SerializeField] private float preLandingTime = 0.15f; // 预落地时间
-    [SerializeField] private float landingVFXTime = 0.15f; // 落地特效时间
+    //[SerializeField] private float preLandingTime = 0.15f; // 预落地时间
+    //[SerializeField] private float landingVFXTime = 0.15f; // 落地特效时间
 
     [Header("地面检测")]
     [SerializeField] private LayerMask groundLayer;// 地面层

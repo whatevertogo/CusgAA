@@ -1325,15 +1325,13 @@ MonoBehaviour:
   airControl: 0.6
   airDrag: 0.4
   jumpForce: 10
-  minJumpForce: 7
   maxJumpHoldTime: 0.2
   rayLength: 1.6
-  gravity: 0
+  gravity: {x: 0, y: -9.81}
   coyoteTime: 0.1
   jumpBuffer: 0.1
   fallMultiplier: 1.8
   shortJumpMultiplier: 2.5
-  preLandingTime: 0.15
   landingVFXTime: 0.15
   groundLayer:
     serializedVersion: 2

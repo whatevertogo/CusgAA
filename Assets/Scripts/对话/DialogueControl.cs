@@ -1,3 +1,16 @@
+/*对话Control类
+ * 1. 显示对话框
+ * 2. 逐字显示对话内容
+ * 3. 跳过对话内容
+ * 4. 切换对话内容
+ * 5. 淡入淡出立绘（未实现）需要自己通过Dotween实现
+
+*/
+
+
+
+
+
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,24 +20,19 @@ using UnityEngine.UI;
 
 public class DialogueControl : MonoBehaviour
 {
-    [FormerlySerializedAs("DialoguePanel")] [Header("对话框UI组件")] [SerializeField]
-    private GameObject dialoguePanel;
-
+    [FormerlySerializedAs("DialoguePanel")]
+    [Header("对话框UI组件")]
+    [SerializeField] private GameObject dialoguePanel;
+    [SerializeField] private Button nextlineButton;
     [SerializeField] private TextMeshProUGUI dialogueText;
-
-    [Header("对话内容")] [SerializeField] private DialogueSO dialogue_SO;
-
-    [Header("对话显示速度")] [SerializeField] private float typingSpeed = 0.1f;
-
+    [Header("对话内容")][SerializeField] private DialogueSO dialogue_SO;
+    [Header("对话显示速度")][SerializeField] private float typingSpeed = 0.1f;
     [SerializeField] private float nextLineDelay = 2f;//下一行的时间
 
     private int currentLineIndex;
-
     private List<string> dialogueLinesList = new();
-
     private bool isTyping;
     private Coroutine typingCoroutine;
-
     public GameObject DialoguePanel { get => dialoguePanel; set => dialoguePanel = value; }
 
     private void Awake()
@@ -36,6 +44,8 @@ public class DialogueControl : MonoBehaviour
             Debug.LogError("dialogueText is not assigned!");
         if (dialogue_SO == null)
             Debug.LogError("dialogue_SO is not assigned!");
+        if (nextlineButton is not null)
+            nextlineButton.onClick.AddListener(SkipDialogueLines);
 
         // 从SO资源中加载对话内容
         if (dialogue_SO != null)
@@ -129,20 +139,56 @@ public class DialogueControl : MonoBehaviour
     public void SkipDialogue()
     {
         StopAllCoroutines();
-        //todo-其他工作
+        //TODO-其他工作
         Debug.Log("All dialogues skipped");
     }
 
+    public void SetDialogueSO(DialogueSO newDialogueSO)
+    {
+        if (newDialogueSO is null)
+        {
+            Debug.LogError("新对话数据为空");
+            return;
+        }
 
-    public void FadeInCharacter(Image characterImage) {
-    // DOTween实现立绘淡入
+        dialogue_SO = newDialogueSO;
+        dialogueLinesList = dialogue_SO.dialoguelinesList;
+        currentLineIndex = 0;
+
+        Debug.Log($"切换对话数据: {newDialogueSO.name}");
+    
+        ShowDialogue();
     }
 
-    public void FadeOutCharacter(Image characterImage) {
-    // DOTween实现立绘淡出
+    public void GoDialogueSOToLine(DialogueSO oldDialogueSO, int lineIndex)
+    {
+        if (oldDialogueSO is null)
+        {
+            Debug.LogError("旧对话数据为空");
+            return;
+        }
+
+        dialogue_SO = oldDialogueSO;
+        dialogueLinesList = dialogue_SO.dialoguelinesList;
+        currentLineIndex = lineIndex;
+
+        Debug.Log($"返回对话数据: {oldDialogueSO.name}");
+    
+        ShowDialogue();
     }
 
-    
-    
-    
+
+    public void FadeInCharacter(Image characterImage)
+    {
+        // DOTween实现立绘淡入
+    }
+
+    public void FadeOutCharacter(Image characterImage)
+    {
+        // DOTween实现立绘淡出
+    }
+
+
+
+
 }

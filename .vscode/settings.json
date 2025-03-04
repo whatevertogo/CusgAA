@@ -57,5 +57,6 @@
         "Temp/": true
     },
     "dotnet.defaultSolution": "tRY.sln",
-    "dotnet.preferCSharpExtension": true
+    "dotnet.preferCSharpExtension": true,
+    "todo-tree.tree.showBadges": false
 }

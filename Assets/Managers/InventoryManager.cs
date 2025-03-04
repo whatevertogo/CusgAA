@@ -9,6 +9,11 @@ namespace Managers
         [SerializeField] private ItemsManagerUI itemsManagerUI; // UI 管理
         private readonly Dictionary<string, ItemSO> itemDictionary = new(); // 物品字典
         public List<ItemSO> items = new(); // 背包里的物品
+
+        protected override void Awake()
+        {
+            base.Awake();
+        }
         
         
         private void Start()

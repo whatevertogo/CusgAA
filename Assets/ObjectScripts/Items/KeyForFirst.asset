@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd5d1ff1d2283264882e5dd3e9f3ffe3, type: 3}
   m_Name: KeyForFirst
   m_EditorClassIdentifier: 
-  itemImage: {fileID: 0}
+  itemImage: {fileID: 21300000, guid: af03c40ec98611c4db072b65d26e8df5, type: 3}
   itemName: KeyForFirst
   itemType: 0
   isCollected: 0

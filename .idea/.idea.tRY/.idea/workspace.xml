@@ -7,7 +7,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3da3543e-c56a-4fce-999b-c59fb0e322a6" name="更改" comment="" />
+    <list default="true" id="3da3543e-c56a-4fce-999b-c59fb0e322a6" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.tRY/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.plastic/plastic.wktree" beforeDir="false" afterPath="$PROJECT_DIR$/.plastic/plastic.wktree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/First.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/First.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/First/LightingData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/First/LightingData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/URP/UniversalRenderPipelineGlobalSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/URP/UniversalRenderPipelineGlobalSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/Layouts/default-6000.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-6000.dwlt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -97,42 +107,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "XThreadsFramesViewSplitterKey": "0.31308413",
-    "git-widget-placeholder": "common",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "settings.qodana",
-    "vue.rearranger.settings.migration": "true",
-    "附加到 Unity 编辑器.附加到 Unity 编辑器.executor": "Debug"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.50124687&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;common&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;RoslynSettingsId&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;附加到 Unity 编辑器.附加到 Unity 编辑器.executor&quot;: &quot;Debug&quot;
   }
-}]]></component>
-  <component name="QodanaCIConfigService">
-    <option name="ciType" value="GITHUB" />
-    <option name="path" value="$PROJECT_DIR$/.github/workflows/qodana_code_quality.yml" />
-  </component>
-  <component name="QodanaCloudProjectLink">
-    <option name="lastReportId" value="9wjEj" />
-    <option name="linkedProjectId" value="P22k7" />
-    <option name="linkedProjectName" value="Cusaa" />
-    <option name="organizationId" value="p50wa" />
-    <option name="userId" value="ww74g" />
-  </component>
+}</component>
   <component name="QodanaSettings">
     <option name="autoLoadCloudReport" value="true" />
   </component>
   <component name="RiderTodoViewSettings" groupByProject="false" />
   <component name="RunManager" selected="附加到 Unity 编辑器.附加到 Unity 编辑器">
     <configuration name="启动 Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="D:\UnityEditor\6000.0.40f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="D:\UnityEditor\6000.0.39f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath D:\UnityProjects\tRY -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="D:\UnityProjects\tRY" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -140,22 +139,20 @@
       <method v="2" />
     </configuration>
     <configuration name="单元测试(批处理模式)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="D:\UnityEditor\6000.0.40f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="D:\UnityEditor\6000.0.39f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath D:\UnityProjects\tRY -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="D:\UnityProjects\tRY" />
       <option name="PASS_PARENT_ENVS" value="1" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <method v="2" />
     </configuration>
-    <configuration name="附加到 Unity 编辑器" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="26520">
+    <configuration name="附加到 Unity 编辑器" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="26520" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
-        <list>
-          <MonoRuntime />
-        </list>
+        <list />
       </option>
       <option name="selectedOptions">
         <list />
@@ -216,7 +213,11 @@
       <workItem from="1740899351390" duration="23497000" />
       <workItem from="1740968886072" duration="7269000" />
       <workItem from="1740980341252" duration="4638000" />
-      <workItem from="1741012498132" duration="14953000" />
+      <workItem from="1741012498132" duration="15547000" />
+      <workItem from="1741061705484" duration="1557000" />
+      <workItem from="1741063864028" duration="109000" />
+      <workItem from="1741064726568" duration="1552000" />
+      <workItem from="1741067375687" duration="491000" />
     </task>
     <task id="LOCAL-00001" summary="update package dependencies and project settings">
       <option name="closed" value="true" />

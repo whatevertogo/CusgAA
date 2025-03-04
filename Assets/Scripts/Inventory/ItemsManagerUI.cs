@@ -6,9 +6,7 @@ using UnityEngine.UI;
 
 public class ItemsManagerUI : MonoBehaviour
 {
-    [FormerlySerializedAs("itemsContainer")] [SerializeField]
-    private Transform AllItems;
-
+    [SerializeField] private Transform AllItems;
     [SerializeField] private GameObject itemsContainerFirst;
     [SerializeField] private GameObject itemContainerPrefab;
 

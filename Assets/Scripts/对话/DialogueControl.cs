@@ -1,3 +1,16 @@
+/*对话Control类
+ * 1. 显示对话框
+ * 2. 逐字显示对话内容
+ * 3. 跳过对话内容
+ * 4. 切换对话内容
+ * 5. 淡入淡出立绘（未实现）需要自己通过Dotween实现
+
+*/
+
+
+
+
+
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;

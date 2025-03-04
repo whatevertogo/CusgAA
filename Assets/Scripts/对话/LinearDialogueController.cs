@@ -1,3 +1,7 @@
+/*
+普通播放对话
+*/
+
 using UnityEngine;
 
 public class LinearDialogueController : DialogueController

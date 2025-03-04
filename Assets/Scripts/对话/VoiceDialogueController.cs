@@ -1,3 +1,8 @@
+/*播放对话的同时会播放声音
+    目前需要手动添加声音片段
+    添加一个AudioSource组件
+*/
+
 using UnityEngine;
 
 public class VoiceDialogueController : DialogueController

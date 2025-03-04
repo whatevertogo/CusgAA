@@ -1,3 +1,10 @@
+/* 代码功能：对话控制器
+ 作为实际功能组件的基类，用于控制对话的显示和跳过
+ */
+
+
+
+
 using UnityEngine;
 
 public class DialogueController : MonoBehaviour
@@ -13,6 +20,7 @@ public class DialogueController : MonoBehaviour
         }
     }
 
+//开始对话
     public virtual void StartDialogue()
     {
         if (dialogueControl != null)
@@ -21,6 +29,7 @@ public class DialogueController : MonoBehaviour
         }
     }
 
+//跳过对话
     public virtual void SkipDialogue()
     {
         if (dialogueControl != null)

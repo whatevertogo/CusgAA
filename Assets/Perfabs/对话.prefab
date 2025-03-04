@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 9178292000914684985}
   - component: {fileID: 355865834580837451}
   - component: {fileID: 5801245184392000031}
-  - component: {fileID: 7066355467287285102}
   m_Layer: 5
   m_Name: "\u5BF9\u8BDD"
   m_TagString: Untagged
@@ -122,19 +121,6 @@ MonoBehaviour:
   dialogue_SO: {fileID: 0}
   typingSpeed: 0.1
   nextLineDelay: 2
---- !u!114 &7066355467287285102
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2565494210695086614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27e77c2633ea4d39ad0c532c4b00aa5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialogueControl: {fileID: 5801245184392000031}
 --- !u!1 &4649729320683253161
 GameObject:
   m_ObjectHideFlags: 0

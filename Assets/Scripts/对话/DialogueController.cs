@@ -4,7 +4,7 @@ public class DialogueController : MonoBehaviour
 {
     [SerializeField] private DialogueControl dialogueControl;
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
 
         if (dialogueControl is null)

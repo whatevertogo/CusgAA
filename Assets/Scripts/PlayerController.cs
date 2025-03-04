@@ -8,9 +8,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeed = 9f; // 移动速度（参考蔚蓝）
     [SerializeField] private float maxMoveSpeed = 10f; // 最大移动速度限制
     [SerializeField] private float newMass = 1f;// 质量
-    [Header("人物加减速度,速度曲线参数，空中控制系数，空气阻力")]
+    
+    [Header("人物加减速度")]
     [SerializeField] private float acceleration = 90f; // 加速度（调整）
     [SerializeField] private float deceleration = 60f; // 减速度（增加）
+
+    [Header("速度曲线参数，空中控制系数，空气阻力")]
     [SerializeField] private float velocityPower = 0.9f; // 速度曲线指数
     [SerializeField] private float airControl = 0.6f; // 空中控制系数（减小）
     [SerializeField] private float airDrag = 0.4f; // 空气阻力（减小）
@@ -22,11 +25,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float minJumpForce = 7f;// 最小跳跃力度
     [SerializeField] private float maxJumpHoldTime = 0.2f;// 最大跳跃按住时间（调整）
     [SerializeField] private float rayLength = 0.55f; // 射线长度
+    [SerializeField] private float gravity;
+
     [Header("跳跃优化")]
     [SerializeField] private float coyoteTime = 0.1f; // 土狼时间（缩短）
     [SerializeField] private float jumpBuffer = 0.1f; // 跳跃缓冲（缩短）
     [SerializeField] private float fallMultiplier = 1.8f; // 下落加速度倍数
     [SerializeField] private float shortJumpMultiplier = 2.5f; // 短跳加速倍数（新增）
+
     [Header("未使用")]
     [SerializeField] private float preLandingTime = 0.15f; // 预落地时间
     [SerializeField] private float landingVFXTime = 0.15f; // 落地特效时间
@@ -58,6 +64,7 @@ public class PlayerController : MonoBehaviour
     {
         _rb2D = GetComponent<Rigidbody2D>();
         spriteRender = GetComponent<SpriteRenderer>();
+        gravity=Physics2D.gravity.y;
     }
 
     private void Start()
@@ -290,14 +297,14 @@ public class PlayerController : MonoBehaviour
             {
                 // 确保这是一个向下的力
                 float fallForce = fallMultiplier - 1;
-                _rb2D.linearVelocity += Vector2.up * (Physics2D.gravity.y * fallForce * Time.fixedDeltaTime);
+                _rb2D.linearVelocity += Vector2.up * (gravity * fallForce * Time.fixedDeltaTime);
             }
             // 短跳（当玩家释放跳跃键时）
             else if (_rb2D.linearVelocity.y > 0 && !GameInput.Instance.JumpPressed)
             {
                 // 应用更大的向下力量
                 float shortJumpForce = shortJumpMultiplier - 1;
-                _rb2D.linearVelocity += Vector2.up * (Physics2D.gravity.y * shortJumpForce * Time.fixedDeltaTime);
+                _rb2D.linearVelocity += Vector2.up * (gravity * shortJumpForce * Time.fixedDeltaTime);
             }
         }
     }

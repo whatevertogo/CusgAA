@@ -1313,7 +1313,7 @@ MonoBehaviour:
   velocityPower: 0.9
   airControl: 0.6
   airDrag: 0.4
-  jumpForce: 13
+  jumpForce: 10
   minJumpForce: 7
   maxJumpHoldTime: 0.2
   rayLength: 1.6
@@ -1757,7 +1757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AllItems: {fileID: 577538807}
-  itemsContainerFirst: {fileID: 1227040030}
+  itemsContainerFirst: {fileID: 577538806}
   itemContainerPrefab: {fileID: 3432980783960576732, guid: d81e53feee636eb4285ef59e865ccc3a, type: 3}
 --- !u!1001 &2174901743625403971
 PrefabInstance:

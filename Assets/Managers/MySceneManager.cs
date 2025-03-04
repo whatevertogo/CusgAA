@@ -7,11 +7,11 @@ namespace Managers
     public class MySceneManager : Singleton<MySceneManager>
     {
 
-         protected override void Awake()
+        protected override void Awake()
         {
             base.Awake();
         }
-        
+
         // Load scene by name
         public void LoadSceneByName(string sceneName)
         {

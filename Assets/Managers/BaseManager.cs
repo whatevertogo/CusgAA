@@ -12,7 +12,7 @@ namespace Managers
             {
                 if (_instance is null)
                 {
-                   _instance = FindFirstObjectByType<T>();  // 尝试在场景中查找实例
+                    _instance = FindFirstObjectByType<T>();  // 尝试在场景中查找实例
                     if (_instance is null)
                     {
                         GameObject go = new GameObject(typeof(T).Name); // 如果没有找到，创建新的 GameObject

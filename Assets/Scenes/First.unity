@@ -1317,6 +1317,7 @@ MonoBehaviour:
   minJumpForce: 7
   maxJumpHoldTime: 0.2
   rayLength: 1.6
+  gravity: 0
   coyoteTime: 0.1
   jumpBuffer: 0.1
   fallMultiplier: 1.8

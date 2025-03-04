@@ -7,9 +7,9 @@ using UnityEngine.UI;
 
 public class DialogueControl : MonoBehaviour
 {
-    [FormerlySerializedAs("DialoguePanel")] [Header("对话框UI组件")] [SerializeField]
-    private GameObject dialoguePanel;
-
+    [FormerlySerializedAs("DialoguePanel")] [Header("对话框UI组件")] 
+    [SerializeField]private GameObject dialoguePanel;
+    [SerializeField] private Button nextlineButton;
     [SerializeField] private TextMeshProUGUI dialogueText;
 
     [Header("对话内容")] [SerializeField] private DialogueSO dialogue_SO;
@@ -36,6 +36,8 @@ public class DialogueControl : MonoBehaviour
             Debug.LogError("dialogueText is not assigned!");
         if (dialogue_SO == null)
             Debug.LogError("dialogue_SO is not assigned!");
+        if(nextlineButton is not null)
+            nextlineButton.onClick.AddListener(SkipDialogueLines);
 
         // 从SO资源中加载对话内容
         if (dialogue_SO != null)

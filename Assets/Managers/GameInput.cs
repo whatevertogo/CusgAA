@@ -46,7 +46,7 @@ namespace Managers
 
 		// 添加跳跃Space键位
 		private void Jump_performed(InputAction.CallbackContext obj) =>
-			OnJumpAction?.Invoke(this, EventArgs.Empty);
+			OnJumpAction?.Invoke(this, EventArgs.Empty);//在PlayerController中执行
 
 		#endregion
 

@@ -356,6 +356,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2129249107}
+  - {fileID: 1701012365}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1530,11 +1531,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2129249107}
+  m_Father: {fileID: 471384207}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 57.90742, y: -913}
+  m_AnchoredPosition: {x: 1771, y: -992.265}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5000007, y: 0.5}
 --- !u!114 &1701012366
@@ -1688,6 +1689,7 @@ GameObject:
   - component: {fileID: 2129249109}
   - component: {fileID: 2129249108}
   - component: {fileID: 2129249111}
+  - component: {fileID: 2129249112}
   m_Layer: 5
   m_Name: ItemsManagerUI
   m_TagString: Untagged
@@ -1708,7 +1710,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1227040031}
-  - {fileID: 1701012365}
   m_Father: {fileID: 471384207}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1769,6 +1770,23 @@ MonoBehaviour:
   AllItems: {fileID: 577538807}
   itemsContainerFirst: {fileID: 577538806}
   itemContainerPrefab: {fileID: 3432980783960576732, guid: d81e53feee636eb4285ef59e865ccc3a, type: 3}
+  uiPanel: {fileID: 2129249112}
+  fadeDuration: 1
+  uiPanelRectTransform: {fileID: 2129249107}
+  startY: 100
+  endY: 0
+--- !u!225 &2129249112
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129249106}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &2174901743625403971
 PrefabInstance:
   m_ObjectHideFlags: 0

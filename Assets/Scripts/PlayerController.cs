@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer _spriteRenderer; // 精灵渲染器组件
 
     // 缓存射线检测结果
-    private RaycastHit2D _groundHit;
+    private RaycastHit2D _groundHit;// 地面检测结果
 
     private void Awake()
     {
@@ -158,7 +158,7 @@ public class PlayerController : MonoBehaviour
             movement *= controlModifier; // 应用空中/地面控制系数
 
             // 改用脉冲力模式，避免持续累积
-            _rb2D.AddForce(Vector2.right * movement * Time.fixedDeltaTime, ForceMode2D.Impulse);
+            _rb2D.AddForce(Vector2.right * (movement * Time.fixedDeltaTime), ForceMode2D.Impulse);
         }
         else
         {
@@ -183,7 +183,7 @@ public class PlayerController : MonoBehaviour
             if (!_isPreLanding && _fallDistance > 1f)
             {
                 _groundHit = Physics2D.Raycast(transform.position, Vector2.down, rayLength * 3f, groundLayer);
-                if (_groundHit.collider != null)
+                if (_groundHit.collider is not null)
                 {
                     _isPreLanding = true;
                     // 这里可以触发预落地动画
@@ -296,14 +296,14 @@ public class PlayerController : MonoBehaviour
             {
                 // 确保这是一个向下的力
                 float fallForce = fallMultiplier - 1;
-                _rb2D.linearVelocity += Vector2.up * (gravity * fallForce * Time.fixedDeltaTime);
+                _rb2D.linearVelocity += Vector2.up * gravity * (fallForce * Time.fixedDeltaTime);
             }
             // 短跳（当玩家释放跳跃键时）
             else if (_rb2D.linearVelocity.y > 0 && !GameInput.Instance.JumpPressed)
             {
                 // 应用更大的向下力量
                 float shortJumpForce = shortJumpMultiplier - 1;
-                _rb2D.linearVelocity += Vector2.up * (gravity * shortJumpForce * Time.fixedDeltaTime);
+                _rb2D.linearVelocity += Vector2.up * gravity * (shortJumpForce * Time.fixedDeltaTime);
             }
         }
     }

@@ -7,32 +7,51 @@ using System;
 public class PlayerController : MonoBehaviour
 {
     [Header("人物移动参数")]
+    [Tooltip("移动速度（参考蔚蓝）")]
     [SerializeField] private float moveSpeed = 9f; // 移动速度（参考蔚蓝）
+    [Tooltip("最大移动速度限制")]
     [SerializeField] private float maxMoveSpeed = 10f; // 最大移动速度限制
+    [Tooltip("质量")]
     [SerializeField] private float newMass = 1f;// 质量
 
     [Header("人物加减速度")]
+    [Tooltip("加速度（调整）")]
     [SerializeField] private float acceleration = 90f; // 加速度（调整）
+    [Tooltip("减速度（增加）")]
     [SerializeField] private float deceleration = 60f; // 减速度（增加）
 
     [Header("速度曲线参数，空中控制系数，空气阻力")]
+    [Tooltip("速度曲线指数")]
     [SerializeField] private float velocityPower = 0.9f; // 速度曲线指数
+    [Tooltip("空中控制系数（减小）")]
     [SerializeField] private float airControl = 0.6f; // 空中控制系数（减小）
+    [Tooltip("空气阻力（减小）")]
     [SerializeField] private float airDrag = 0.4f; // 空气阻力（减小）
+    [Tooltip("移动方向")]
     private Vector2 _moveDirection; // 移动方向
+    [Tooltip("记录最后移动方向")]
     private float _lastMoveDirection; // 记录最后移动方向
 
     [Header("人物跳跃参数")]
+    [Tooltip("跳跃力度（调整）")]
     [SerializeField] private float jumpForce = 10f;// 跳跃力度（调整）
+    [Tooltip("最大跳跃按住时间（调整）")]
     [SerializeField] private float maxJumpHoldTime = 0.2f;// 最大跳跃按住时间（调整）
+    [Tooltip("射线长度")]
     [SerializeField] private float rayLength = 1.6f; // 射线长度
+    [Tooltip("重力")]
     [SerializeField] private Vector2 gravity;
 
     [Header("跳跃优化")]
+    [Tooltip("土狼时间")]
     [SerializeField] private float coyoteTime = 0.1f; // 土狼时间（缩短）
+    [Tooltip("跳跃缓冲(缩短)")]
     [SerializeField] private float jumpBuffer = 0.1f; // 跳跃缓冲（缩短）
+    [Tooltip("下落加速度倍数")]
     [SerializeField] private float fallMultiplier = 1.8f; // 下落加速度倍数
+    [Tooltip("短跳加速倍数")]
     [SerializeField] private float shortJumpMultiplier = 2.5f; // 短跳加速倍数（新增）
+    [Tooltip("落地特效时间")]
     [SerializeField] private float landingVFXTime = 0.15f; // 落地特效时间
 
     //[Header("未使用")]

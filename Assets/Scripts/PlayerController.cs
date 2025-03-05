@@ -1,3 +1,5 @@
+/* C# 中的 PlayerController 类管理玩家的移动、加速、跳跃和地面
+使用各种参数和优化进行检测。*/
 using Managers;
 using UnityEngine;
 using System;

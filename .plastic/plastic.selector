@@ -1,4 +1,0 @@
-repository "tRY1@tj_wechat_os_qy012dfo38qk0krkps8vzdv_8@cloud.cn"
-  path "/"
-    br "/main"
-    co "/main"

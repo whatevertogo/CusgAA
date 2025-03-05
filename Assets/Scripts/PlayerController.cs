@@ -1,3 +1,5 @@
+/* C# 中的 PlayerController 类管理玩家的移动、加速、跳跃和地面
+使用各种参数和优化进行检测。*/
 using Managers;
 using UnityEngine;
 using System;
@@ -62,7 +64,7 @@ public class PlayerController : MonoBehaviour
     {
         _rb2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        Physics2D.gravity=gravity;
+        Physics2D.gravity = gravity;
     }
 
     private void Start()
@@ -288,18 +290,18 @@ public class PlayerController : MonoBehaviour
         if (!_isGrounded) // 只在非地面状态应用
         {
             // 在下落时应用更大的重力
-        if (_rb2D.linearVelocity.y < 0)
+            if (_rb2D.linearVelocity.y < 0)
             {
                 // 确保这是一个向下的力
                 float fallForce = fallMultiplier - 1;
-            _rb2D.linearVelocity += Vector2.up * (gravity * fallForce * Time.fixedDeltaTime);
+                _rb2D.linearVelocity += Vector2.up * (gravity * fallForce * Time.fixedDeltaTime);
             }
             // 短跳（当玩家释放跳跃键时）
-        else if (_rb2D.linearVelocity.y > 0 && !GameInput.Instance.JumpPressed)
+            else if (_rb2D.linearVelocity.y > 0 && !GameInput.Instance.JumpPressed)
             {
                 // 应用更大的向下力量
                 float shortJumpForce = shortJumpMultiplier - 1;
-            _rb2D.linearVelocity += Vector2.up * (gravity * shortJumpForce * Time.fixedDeltaTime);
+                _rb2D.linearVelocity += Vector2.up * (gravity * shortJumpForce * Time.fixedDeltaTime);
             }
         }
     }

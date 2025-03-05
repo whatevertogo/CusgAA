@@ -73,6 +73,7 @@ public class PlayerController : MonoBehaviour
         _lastGroundedY = transform.position.y; // 初始化最后着地位置
         // 订阅跳跃事件
         GameInput.Instance.OnJumpAction += GameInput_OnJumpAction;
+        GameInput.Instance.OnInteractAction+=GameInput_OnInteractAction;
     }
 
     private void OnDestroy()
@@ -81,6 +82,7 @@ public class PlayerController : MonoBehaviour
         if (GameInput.Instance != null)
         {
             GameInput.Instance.OnJumpAction -= GameInput_OnJumpAction;
+            GameInput.Instance.OnInteractAction-=GameInput_OnInteractAction;
         }
     }
 
@@ -306,5 +308,15 @@ public class PlayerController : MonoBehaviour
         }
     }
     #endregion
+    
+    #region 互动
+    
+    private void GameInput_OnInteractAction(object sender,EventArgs e)
+    {
+        //TODO-互动功能
 
+    }
+
+
+    #endregion
 }

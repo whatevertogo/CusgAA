@@ -15,12 +15,6 @@ namespace Managers
 		public event EventHandler OnJumpAction; // 新增跳跃事件
 		public bool JumpPressed { get; private set; } // 跟踪跳跃按钮状态
 
-		private void Update()
-		{
-			moveDir = PlayerInput.Player.Move.ReadValue<Vector2>();
-			JumpPressed = PlayerInput.Player.Jump.ReadValue<float>() > 0.1f; // 检查跳跃按钮是否被按下
-		}
-
 		protected override void Awake()
 		{
 			base.Awake();
@@ -30,22 +24,29 @@ namespace Managers
 			PlayerInput.Player.OpenInventory.performed += Open_Inventory_performed;
 			PlayerInput.Player.Jump.performed += Jump_performed;
 		}
+
+		private void Update()
+		{
+			moveDir = PlayerInput.Player.Move.ReadValue<Vector2>();
+			JumpPressed = PlayerInput.Player.Jump.ReadValue<float>() > 0.1f; // 检查跳跃按钮是否被按下
+		}
+
 		#region 通过事件委托触发按键事件
 
-		// 添加跳跃事件
+		// 添加互动事件#TODO-写互动功能 
 		private void Interact_performed(InputAction.CallbackContext obj) =>
 			OnInteractAction?.Invoke(this, EventArgs.Empty);//Player里面订阅并执行
 
 		// private void InteractAlternate_performed(InputAction.CallbackContext obj)=>
 		// 	OnInteractAlternateAction?.Invoke(this, EventArgs.Empty);//Player里面订阅并执行
 
-		// 打开背包
+		// 打开背包B键位
 		private void Open_Inventory_performed(InputAction.CallbackContext obj) =>
 			OnOpenInventoryAction?.Invoke(this, EventArgs.Empty);//在InventoryManager中执行
 
-		// 添加跳跃回调
+		// 添加跳跃Space键位
 		private void Jump_performed(InputAction.CallbackContext obj) =>
-			OnJumpAction?.Invoke(this, EventArgs.Empty);
+			OnJumpAction?.Invoke(this, EventArgs.Empty);//在PlayerController中执行
 
 		#endregion
 

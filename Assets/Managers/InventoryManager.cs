@@ -9,8 +9,13 @@ namespace Managers
         [SerializeField] private ItemsManagerUI itemsManagerUI; // UI 管理
         private readonly Dictionary<string, ItemSO> itemDictionary = new(); // 物品字典
         public List<ItemSO> items = new(); // 背包里的物品
-        
-        
+
+        protected override void Awake()
+        {
+            base.Awake();
+        }
+
+
         private void Start()
         {
             LoadItems();
@@ -20,7 +25,7 @@ namespace Managers
         }
 
         #region 物品类方法
-        
+
         // 加载物品
         private void LoadItems()
         {
@@ -29,17 +34,17 @@ namespace Managers
                 Debug.LogError("ItemDatabase is missing!");
                 return;
             }
-    
+
             foreach (var item in itemDatabase.itemsList)
             {
                 itemDictionary[item.itemName] = item;
             }
-    
+
             Debug.Log($"Loaded {itemDictionary.Count} items.");
         }
-        
+
         // 通过物品名称添加物品
-        public void AddItem(string itemName) 
+        public void AddItem(string itemName)
         {
             if (itemDictionary.TryGetValue(itemName, out ItemSO itemSO))
             {
@@ -59,14 +64,14 @@ namespace Managers
                 Debug.LogWarning($"Item {itemName} not found in database!");
             }
         }
-        
+
         // 检查是否有该物品
         public bool HasItem(ItemSO itemSO)
         {
             return items.Contains(itemSO);
         }
-        
-        
+
+
         // 移除物品
         public void RemoveItem(ItemSO itemSO)
         {
@@ -77,7 +82,7 @@ namespace Managers
                 Debug.Log($"Removed {itemSO.itemName}");
             }
         }
-        
+
         #endregion
     }
 }

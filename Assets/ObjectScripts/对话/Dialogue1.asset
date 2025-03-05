@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: 
   characterName2: 
+  Character_Image: {fileID: 0}
+  Character_Image2: {fileID: 0}
   dialoguelinesList:
-  - 13
-  - "\u54C8\u54C8\u54C8"
-  - "\u6211\u4E0D\u60F3\u8BB2"
-  - "\u597D\u7D2F\u554A"
+  - Hello
+  - niko
+  - nikonikoni
+  - Fine

@@ -8,7 +8,7 @@ public class PasswordLock : MonoBehaviour
     // 显示当前密码的文本
     public Text passwordDisplay;
     // 正确密码
-    private string correctPassword = "1234";
+    private const string correctPassword = "1234";
 
     void Start()
     {

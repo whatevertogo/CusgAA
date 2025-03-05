@@ -5,7 +5,7 @@ namespace Managers
 {
     public class InventoryManager : Singleton<InventoryManager>
     {
-        [SerializeField] private ItemDatabase itemDatabase; // 物品数据库
+        [SerializeField] private  ItemDatabaseSO itemDatabaseSO; // 物品数据库
         [SerializeField] private ItemsManagerUI itemsManagerUI; // UI 管理
         private readonly Dictionary<string, ItemSO> itemDictionary = new(); // 物品字典
         public List<ItemSO> items = new(); // 背包里的物品
@@ -29,13 +29,13 @@ namespace Managers
         // 加载物品
         private void LoadItems()
         {
-            if (itemDatabase == null)
+            if (itemDatabaseSO == null)
             {
                 Debug.LogError("ItemDatabase is missing!");
                 return;
             }
 
-            foreach (var item in itemDatabase.itemsList)
+            foreach (var item in itemDatabaseSO.itemsList)
             {
                 itemDictionary[item.itemName] = item;
             }

@@ -1,12 +1,12 @@
-using System.Collections.Generic;
-using UnityEngine;
-
 /*
  * 存储物品的背包scriptObject类
  */
+using System.Collections.Generic;
+using UnityEngine;
+
 
 [CreateAssetMenu(fileName = "ItemDatabase", menuName = "Scriptable Objects/ItemDatabase")]
-public class ItemDatabase : ScriptableObject
+public class ItemDatabaseSO : ScriptableObject
 {
     public List<ItemSO> itemsList=new();
 }

@@ -7,12 +7,12 @@ namespace Managers
 	public class GameInput : Singleton<GameInput>
 	{
 		private PlayerInputSystem PlayerInput; // 玩家输入
-
 		public Vector3 moveDir = Vector2.zero; // 人物的移动方向
-		public event EventHandler OnInteractAction;
 
-		public event EventHandler OnOpenInventoryAction;
-		public event EventHandler OnJumpAction; // 新增跳跃事件
+		public event EventHandler OnInteractAction;//互动事件E
+		public event EventHandler OnOpenInventoryAction;//打开背包事件B
+
+		public event EventHandler OnJumpAction; // 新增跳跃事件SPACE
 		public bool JumpPressed { get; private set; } // 跟踪跳跃按钮状态
 
 		protected override void Awake()
@@ -35,7 +35,7 @@ namespace Managers
 
 		// 添加互动事件#TODO-写互动功能 
 		private void Interact_performed(InputAction.CallbackContext obj) =>
-			OnInteractAction?.Invoke(this, EventArgs.Empty);//Player里面订阅并执行
+			OnInteractAction?.Invoke(this, EventArgs.Empty);//PlayerController里面订阅并执行
 
 		// private void InteractAlternate_performed(InputAction.CallbackContext obj)=>
 		// 	OnInteractAlternateAction?.Invoke(this, EventArgs.Empty);//Player里面订阅并执行

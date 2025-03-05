@@ -9,8 +9,10 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Mm]emoryCaptures/
-/.idea/
-/.plastic/
+#不必要的文件
+**/UserSettings/
+.idea/
+.plastic/
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta

@@ -9,6 +9,8 @@ using System.Collections.Generic;
 public class PlayerController : MonoBehaviour
 {
     #region 人物参数
+    
+    #region 人物移动
 
     [Header("人物移动参数")] [Tooltip("移动速度（参考蔚蓝）")] [SerializeField]
     private float moveSpeed = 9f; // 移动速度（参考蔚蓝）
@@ -18,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("人物加减速度")] [Tooltip("加速度（调整）")] [SerializeField]
     private float acceleration = 90f; // 加速度（调整）
-
+    
     [Tooltip("减速度（增加）")] [SerializeField] private float deceleration = 60f; // 减速度（增加）
 
     [Header("速度曲线参数，空中控制系数，空气阻力")] [Tooltip("速度曲线指数")] [SerializeField]
@@ -30,6 +32,10 @@ public class PlayerController : MonoBehaviour
     [Tooltip("空气阻力（减小）")] [SerializeField] private float airDrag = 0.4f; // 空气阻力（减小）
     [Tooltip("移动方向")] private Vector2 _moveDirection; // 移动方向
     [Tooltip("记录最后移动方向")] private float _lastMoveDirection; // 记录最后移动方向
+    [Header("地面检测")] [SerializeField] private LayerMask groundLayer; // 地面层
+    #endregion
+    
+    #region 人物跳跃
 
     [Header("人物跳跃参数")] [Tooltip("跳跃力度（调整）")] [SerializeField]
     private float jumpForce = 10f; // 跳跃力度（调整）
@@ -47,21 +53,22 @@ public class PlayerController : MonoBehaviour
     [Tooltip("下落加速度倍数")] [SerializeField] private float fallMultiplier = 1.8f; // 下落加速度倍数
     [Tooltip("短跳加速倍数")] [SerializeField] private float shortJumpMultiplier = 2.5f; // 短跳加速倍数（新增）
     [Tooltip("落地特效时间")] [SerializeField] private float landingVFXTime = 0.15f; // 落地特效时间
-
-    [Header("互动参数")] [Tooltip("互动半径")] [SerializeField]
-    private float interactionRadius = 1f; // 互动半径
-
-    [Header("互动物体检测")] private TriggerObject nearestTriggerObject; // 最近的互动物体
-
+    
+    #endregion
     //[Header("未使用")]
     //[SerializeField] private float minJumpForce = 7f;// 最小跳跃力度
     //[SerializeField] private float preLandingTime = 0.15f; // 预落地时间
 
-    [Header("地面检测")] [SerializeField] private LayerMask groundLayer; // 地面层
+    #region 互动
+    [Header("互动参数")] [Tooltip("互动半径")] [SerializeField]
+    private float interactionRadius = 1f; // 互动半径
 
-    #endregion
-
+    [Header("互动物体检测")] private TriggerObject nearestTriggerObject; // 最近的互动物体
+    
     [Header("互动物体")] private List<TriggerObject> triggerObjects = new List<TriggerObject>(); // 互动物体列表
+    #endregion
+    
+    #endregion
 
     #region 私有参数
 
@@ -94,6 +101,8 @@ public class PlayerController : MonoBehaviour
     public event EventHandler<OnTriggerObjectChoosedEventArgs> OnTriggerObjectChoosed; // 选择互动物体事件
 
     #endregion
+
+    #region 生命周期函数
 
     // 初始化组件和物理系统
     // 说明：
@@ -185,6 +194,8 @@ public class PlayerController : MonoBehaviour
             _rb2D.linearVelocity.y
         );
     }
+
+    #endregion
 
     #region 移动
 
@@ -498,7 +509,7 @@ public class PlayerController : MonoBehaviour
         {
             OnTriggerObjectChoosed?.Invoke(this, new OnTriggerObjectChoosedEventArgs());
         }
-
-        #endregion
     }
+
+    #endregion
 }

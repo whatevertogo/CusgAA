@@ -345,8 +345,6 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-
-
     #region 互动
     private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
@@ -369,6 +367,7 @@ public class PlayerController : MonoBehaviour
            distance < Vector3.Distance(transform.position, nearestTriggerObject.transform.position))
             {
                 nearestTriggerObject = triggerObject;
+                FindNearestTriggerObject();
             }
         }
 
@@ -401,6 +400,7 @@ public class PlayerController : MonoBehaviour
             {
                 nearestTriggerObject = obj;
                 nearestDistance = distance;
+                OnnearestTriggerObjectChoosed();
             }
         }
     }
@@ -414,4 +414,7 @@ public class PlayerController : MonoBehaviour
 
         #endregion
     }
+
+
+
 }

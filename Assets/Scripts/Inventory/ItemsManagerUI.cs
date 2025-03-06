@@ -1,7 +1,6 @@
 using System;
 using Managers;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ItemsManagerUI : MonoBehaviour
@@ -11,14 +10,10 @@ public class ItemsManagerUI : MonoBehaviour
     [SerializeField] private GameObject itemContainerPrefab;
 
 
-    private void Awake()
-    {
-        InventoryManager.Instance.OnInventoryUpdated += (sender, args) => UpdateVisual(); // 监听背包更新事件,事件激活在InventoryManager中
-    }
-
     void Start()
     {
         UpdateVisual();
+        InventoryManager.Instance.OnInventoryUpdated += (sender, args) => UpdateVisual(); // 监听背包更新事件,事件激活在InventoryManager中
         GameInput.Instance.OnOpenInventoryAction += InventoryManager_OnOpenInventoryAction; //通过GameInput的事件来打开背包
         itemsContainerFirst.gameObject.SetActive(false);
     }

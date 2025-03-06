@@ -3,6 +3,7 @@
 using Managers;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
@@ -54,14 +55,28 @@ public class PlayerController : MonoBehaviour
     [Tooltip("落地特效时间")]
     [SerializeField] private float landingVFXTime = 0.15f; // 落地特效时间
 
+    [Header("互动参数")]
+    [Tooltip("互动半径")]
+    [SerializeField] private float interactionRadius = 1f; // 互动半径
+    [Header("互动物体检测")]
+    private TriggerObject nearestTriggerObject; // 最近的互动物体
+
     //[Header("未使用")]
     //[SerializeField] private float minJumpForce = 7f;// 最小跳跃力度
     //[SerializeField] private float preLandingTime = 0.15f; // 预落地时间
 
     [Header("地面检测")]
     [SerializeField] private LayerMask groundLayer;// 地面层
-    [Header("互动")]
-    public InterfaceReference<IInteract> interactable;
+
+    [Header("互动物体")]
+    private List<TriggerObject> triggerObjects = new List<TriggerObject>(); // 互动物体列表
+
+    public class OnTriggerObjectChoosedEventArgs:EventArgs
+    {
+
+    }
+
+     public event EventHandler<OnTriggerObjectChoosedEventArgs> OnTriggerObjectChoosed;  // 选择互动物体事件
 
     private bool _isGrounded;// 是否在地面上
     private float _coyoteTimeCounter; // 土狼时间计数器
@@ -335,11 +350,68 @@ public class PlayerController : MonoBehaviour
     #region 互动
     private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
-        //TODO-互动功能
-        
+        //TODO: 互动逻辑
+        if (nearestTriggerObject != null)
+        {
+            nearestTriggerObject.Interact();
+        }
 
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
 
-    #endregion
+        if (other.TryGetComponent<TriggerObject>(out var triggerObject))
+        {
+            triggerObjects.Add(triggerObject);
+            float distance = Vector3.Distance(transform.position, triggerObject.transform.position);
+            if (nearestTriggerObject == null ||
+           distance < Vector3.Distance(transform.position, nearestTriggerObject.transform.position))
+            {
+                nearestTriggerObject = triggerObject;
+            }
+        }
+
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.TryGetComponent<TriggerObject>(out var triggerObject))
+        {
+            // 从列表中移除
+            triggerObjects.Remove(triggerObject);
+
+            // 如果移除的是当前最近的触发物体，需要重新查找最近的触发物体
+            if (triggerObject == nearestTriggerObject)
+            {
+                FindNearestTriggerObject();
+            }
+        }
+    }
+
+    private void FindNearestTriggerObject()
+    {
+        nearestTriggerObject = null;
+        float nearestDistance = float.MaxValue;
+
+        foreach (var obj in triggerObjects)
+        {
+            float distance = Vector3.Distance(transform.position, obj.transform.position);
+            if (distance < nearestDistance)
+            {
+                nearestTriggerObject = obj;
+                nearestDistance = distance;
+            }
+        }
+    }
+
+    private void OnnearestTriggerObjectChoosed()
+    {
+        if (nearestTriggerObject != null)
+        {
+            OnTriggerObjectChoosed?.Invoke(this, new OnTriggerObjectChoosedEventArgs());
+        }
+
+        #endregion
+    }
 }

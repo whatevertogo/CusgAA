@@ -15,5 +15,6 @@ public class ItemSO : ScriptableObject
     public ItemType itemType; //物品类型 
     public bool isCollected; //是否被收集
     public bool canBeUsed; //是否可以使用
+    public GameObject triggerGameObject; //触发物体
     [TextArea] public string useDescription; //使用描述
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,8 +8,12 @@ namespace Managers
     {
         [SerializeField] private  ItemDatabaseSO itemDatabaseSO; // 物品数据库
         [SerializeField] private ItemsManagerUI itemsManagerUI; // UI 管理
+        public event EventHandler OnInventoryUpdated; // 背包更新事件
         private readonly Dictionary<string, ItemSO> itemDictionary = new(); // 物品字典
         public List<ItemSO> items = new(); // 背包里的物品
+
+
+
 
         protected override void Awake()
         {
@@ -39,6 +44,7 @@ namespace Managers
             {
                 itemDictionary[item.itemName] = item;
             }
+           OnInventoryUpdated?.Invoke(this, EventArgs.Empty);
 
             Debug.Log($"Loaded {itemDictionary.Count} items.");
         }
@@ -51,7 +57,8 @@ namespace Managers
                 if (!items.Contains(itemSO))
                 {
                     items.Add(itemSO);
-                    itemsManagerUI.UpdateVisual();
+                    //itemsManagerUI.UpdateVisual();
+                    OnInventoryUpdated?.Invoke(this, EventArgs.Empty);
                     Debug.Log($"Added {itemSO.itemName}");
                 }
                 else
@@ -78,11 +85,18 @@ namespace Managers
             if (items.Contains(itemSO))
             {
                 items.Remove(itemSO);
-                itemsManagerUI.UpdateVisual();
+                //itemsManagerUI.UpdateVisual();
+                OnInventoryUpdated?.Invoke(this, EventArgs.Empty);
                 Debug.Log($"Removed {itemSO.itemName}");
             }
         }
 
         #endregion
+   
+   
+   
+   
+   
+   
     }
 }

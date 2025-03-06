@@ -1,7 +1,6 @@
 using System;
 using Managers;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ItemsManagerUI : MonoBehaviour
@@ -14,6 +13,7 @@ public class ItemsManagerUI : MonoBehaviour
     void Start()
     {
         UpdateVisual();
+        InventoryManager.Instance.OnInventoryUpdated += (sender, args) => UpdateVisual(); // 监听背包更新事件,事件激活在InventoryManager中
         GameInput.Instance.OnOpenInventoryAction += InventoryManager_OnOpenInventoryAction; //通过GameInput的事件来打开背包
         itemsContainerFirst.gameObject.SetActive(false);
     }
@@ -23,6 +23,7 @@ public class ItemsManagerUI : MonoBehaviour
         Open_CloseInventory();
     }
 
+// 打开或关闭背包
     public void Open_CloseInventory()
     {
         if (AllItems.gameObject.activeSelf)
@@ -45,6 +46,9 @@ public class ItemsManagerUI : MonoBehaviour
     {
         AllItems.gameObject.SetActive(false);
     }
+
+
+    
 
 
     public void UpdateVisual()

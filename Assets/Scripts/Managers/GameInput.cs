@@ -7,7 +7,7 @@ namespace Managers
 	public class GameInput : Singleton<GameInput>
 	{
 		private PlayerInputSystem PlayerInput; // 玩家输入
-		public Vector3 moveDir = Vector2.zero; // 人物的移动方向
+		public Vector2 moveDir = Vector2.zero; // 人物的移动方向
 
 		public event EventHandler OnInteractAction;//互动事件E
 		public event EventHandler OnOpenInventoryAction;//打开背包事件B
@@ -19,9 +19,8 @@ namespace Managers
 		{
 			base.Awake();
 			PlayerInput = new PlayerInputSystem(); // 创建 PlayerInputControl 实例	
-			PlayerInput.Enable();
 			PlayerInput.Player.Interact.performed += Interact_performed;
-			PlayerInput.Player.OpenInventory.performed += Open_Inventory_performed;
+			PlayerInput.Player.OpenInventory.performed += OpenClosedInventory_performed;
 			PlayerInput.Player.Jump.performed += Jump_performed;
 		}
 
@@ -41,7 +40,7 @@ namespace Managers
 		// 	OnInteractAlternateAction?.Invoke(this, EventArgs.Empty);//Player里面订阅并执行
 
 		// 打开背包B键位
-		private void Open_Inventory_performed(InputAction.CallbackContext obj) =>
+		private void OpenClosedInventory_performed(InputAction.CallbackContext obj) =>
 			OnOpenInventoryAction?.Invoke(this, EventArgs.Empty);//在InventoryManager中执行
 
 		// 添加跳跃Space键位

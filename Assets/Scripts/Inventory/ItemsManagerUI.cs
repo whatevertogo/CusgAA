@@ -12,8 +12,8 @@ using UnityEngine.UI;
 public class ItemsManagerUI : MonoBehaviour
 {
     [SerializeField] private Transform AllItems;  // 所有物品的容器
-    [SerializeField] private GameObject itemsContainerFirst;  // 第一个物品容器模板
     [SerializeField] private GameObject itemContainerPrefab;  // 物品容器预制体
+    [SerializeField] private GameObject InventoryBackGround;
 
     // 初始化背包UI系统
     // 说明：
@@ -23,10 +23,11 @@ public class ItemsManagerUI : MonoBehaviour
     // 4. 初始设置物品容器为隐藏状态
     void Start()
     {
-        UpdateVisual();
         InventoryManager.Instance.OnInventoryUpdated += (sender, args) => UpdateVisual(); // 监听背包更新事件
         GameInput.Instance.OnOpenInventoryAction += InventoryManager_OnOpenInventoryAction; // 监听背包开关事件
-        itemsContainerFirst.gameObject.SetActive(false);
+        AllItems.gameObject.SetActive(false); // 初始设置所有物品容器为隐藏状态
+        InventoryBackGround.SetActive(false); // 初始设置背包背景为隐藏状态
+        UpdateVisual();
     }
 
     // 处理背包开关事件
@@ -60,6 +61,7 @@ public class ItemsManagerUI : MonoBehaviour
     public void ShowInventory()
     {
         AllItems.gameObject.SetActive(true);
+        InventoryBackGround.SetActive(true); // 显示背包背景
         UpdateVisual();
     }
 
@@ -68,6 +70,7 @@ public class ItemsManagerUI : MonoBehaviour
     public void HideInventory()
     {
         AllItems.gameObject.SetActive(false);
+        InventoryBackGround.SetActive(false); // 隐藏背包背景
     }
 
     // 更新背包界面显示
@@ -84,7 +87,7 @@ public class ItemsManagerUI : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        // 显示所有背包物品
+        // 载入所有背包物品
         foreach (var item in InventoryManager.Instance.items)
         {
             // 创建物品容器

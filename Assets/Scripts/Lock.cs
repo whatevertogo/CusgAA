@@ -17,7 +17,18 @@ public class PasswordLock : MonoBehaviour
     // 3. 当滑动条值改变时自动更新密码显示
     void Start()
     {
-        // 初始化显示密码
+        slider1.minValue = 0;
+        slider1.maxValue = 9;
+        slider1.wholeNumbers = true;
+        slider2.minValue = 0;
+        slider2.maxValue = 9;
+        slider2.wholeNumbers = true;
+        slider3.minValue = 0;
+        slider3.maxValue = 9;
+        slider3.wholeNumbers = true;
+        slider4.minValue = 0;
+        slider4.maxValue = 9;
+        slider4.wholeNumbers = true;
         UpdatePasswordDisplay();
         
         // 监听滑动条变化

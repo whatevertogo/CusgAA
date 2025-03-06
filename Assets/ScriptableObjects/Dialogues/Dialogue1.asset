@@ -9,15 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c33b01491b1a254eaee3a87f1e21c7f, type: 3}
+  m_Script: {fileID: 11500000, guid: 35474ff045e98ed46a517fe5fd0128df, type: 3}
   m_Name: Dialogue1
   m_EditorClassIdentifier: 
   characterName: 
   characterName2: 
   Character_Image: {fileID: 0}
   Character_Image2: {fileID: 0}
-  dialoguelinesList:
-  - Hello
-  - niko
-  - nikonikoni
-  - Fine
+  dialoguelinesList: []

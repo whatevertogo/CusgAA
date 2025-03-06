@@ -336,6 +336,7 @@ public class PlayerController : MonoBehaviour
     private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
         //TODO-互动功能
+        
 
     }
 

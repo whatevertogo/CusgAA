@@ -9,6 +9,8 @@
 /httpRequests/
 /dataSources/
 /dataSources.local.xml
+/.vs
+/.vscode
 
 # ========== Unity 相关文件 ==========
 /[Ll]ibrary/

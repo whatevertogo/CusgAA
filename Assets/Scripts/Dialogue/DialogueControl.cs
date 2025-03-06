@@ -4,7 +4,6 @@
  * 3. 跳过对话内容
  * 4. 切换对话内容
  * 5. 淡入淡出立绘（未实现）需要自己通过Dotween实现
-
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -30,6 +29,12 @@ public class DialogueControl : MonoBehaviour
     private Coroutine _typingCoroutine;
     // dialoguePanel 的访问已经通过 ShowDialogue() 和其他方法进行了合理封装
 
+    // 初始化对话系统组件
+    // 说明：
+    // 1. 检查必要UI组件是否已正确配置
+    // 2. 设置下一行按钮的点击事件监听
+    // 3. 从SO资源加载对话内容到列表
+    // 用途：确保所有必要组件和数据在游戏开始前准备就绪
     private void Awake()
     {
         // 检查必要组件是否存在
@@ -55,7 +60,12 @@ public class DialogueControl : MonoBehaviour
         ShowDialogue();
     }
 
-    // 显示对话框
+    // 显示对话框并开始对话
+    // 说明：
+    // 1. 激活对话面板
+    // 2. 如果有对话内容，从第一行开始显示
+    // 3. 如果没有对话内容，输出警告日志
+    // 用途：开始一段新的对话序列
     public void ShowDialogue()
     {
         if (dialoguePanel != null)
@@ -75,6 +85,13 @@ public class DialogueControl : MonoBehaviour
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
+    // 显示下一行对话
+    // 说明：
+    // 1. 如果当前正在打字，则立即完成当前行
+    // 2. 如果不在打字，清空文本准备显示下一行
+    // 3. 如果还有更多对话，开始打字效果
+    // 4. 如果对话结束，输出日志提示
+    // 用途：推进对话进度，显示下一句对话内容
     public void ShowNextLine()
     {
         // 如果正在打字，停止当前打字过程并立即显示完整的当前行
@@ -104,6 +121,13 @@ public class DialogueControl : MonoBehaviour
         // dialoguePanel.SetActive(false);
     }
 
+    // 逐字显示对话文本的协程
+    // 说明：
+    // 1. 设置正在打字状态
+    // 2. 逐个字符显示文本，每个字符间有时间间隔
+    // 3. 显示完成后等待指定时间
+    // 4. 自动显示下一行
+    // 用途：实现打字机效果，增强对话的表现力
     private IEnumerator TypeDialogueLineByLine()
     {
         _isTyping = true;
@@ -123,14 +147,18 @@ public class DialogueControl : MonoBehaviour
         ShowNextLine();
     }
 
-    //进行下一行 
+    // 跳过当前对话行，显示下一行
+    // 说明：调用ShowNextLine显示下一行对话
+    // 用途：玩家手动跳过当前对话行时调用
     public void SkipDialogueLines()
     {
         ShowNextLine();
         Debug.Log("Moving to next dialogue line");
     }
 
-    //跳过所有行
+    // 跳过当前所有对话
+    // 说明：停止所有协程，结束当前对话
+    // 用途：玩家想要直接结束整段对话时调用
     public void SkipDialogue()
     {
         StopAllCoroutines();
@@ -138,6 +166,14 @@ public class DialogueControl : MonoBehaviour
         Debug.Log("All dialogues skipped");
     }
 
+    // 设置新的对话数据
+    // 参数：newDialogueSO - 新的对话数据SO文件
+    // 说明：
+    // 1. 检查新对话数据是否有效
+    // 2. 更新当前对话数据和列表
+    // 3. 重置对话进度
+    // 4. 开始显示新对话
+    // 用途：切换到新的对话内容时调用
     public void SetDialogueSO(DialogueSO newDialogueSO)
     {
         if (newDialogueSO is null)
@@ -155,6 +191,15 @@ public class DialogueControl : MonoBehaviour
         ShowDialogue();
     }
 
+    // 跳转到指定对话数据的特定行
+    // 参数：
+    // - oldDialogueSO: 要跳转的对话数据
+    // - lineIndex: 目标行索引
+    // 说明：
+    // 1. 检查对话数据有效性
+    // 2. 设置对话数据和当前行索引
+    // 3. 开始显示对话
+    // 用途：在分支对话中返回特定位置时使用
     public void GoDialogueSOToLine(DialogueSO oldDialogueSO, int lineIndex)
     {
         if (oldDialogueSO is null)
@@ -172,18 +217,21 @@ public class DialogueControl : MonoBehaviour
         ShowDialogue();
     }
 
-
+    // 角色立绘淡入效果
+    // 参数：characterImage - 要淡入的角色图片
+    // 说明：通过DOTween实现立绘的淡入效果（待实现）
+    // 用途：显示新角色或切换角色立绘时使用
     public void FadeInCharacter(Image characterImage)
     {
         // DOTween实现立绘淡入
     }
 
+    // 角色立绘淡出效果
+    // 参数：characterImage - 要淡出的角色图片
+    // 说明：通过DOTween实现立绘的淡出效果（待实现）
+    // 用途：隐藏角色或切换角色立绘时使用
     public void FadeOutCharacter(Image characterImage)
     {
         // DOTween实现立绘淡出
     }
-
-
-
-
 }

@@ -96,6 +96,11 @@ public class PlayerController : MonoBehaviour
     // 缓存射线检测结果
     private RaycastHit2D _groundHit;// 地面检测结果
 
+    // 初始化组件和物理系统
+    // 说明：
+    // 1. 获取刚体组件
+    // 2. 获取精灵渲染器组件
+    // 3. 设置全局重力
     private void Awake()
     {
         _rb2D = GetComponent<Rigidbody2D>();
@@ -103,6 +108,11 @@ public class PlayerController : MonoBehaviour
         Physics2D.gravity = gravity;
     }
 
+    // 初始化角色状态和事件订阅
+    // 说明：
+    // 1. 设置刚体质量
+    // 2. 初始化地面检测位置
+    // 3. 订阅输入系统的跳跃和互动事件
     private void Start()
     {
         _rb2D.mass = newMass; // 设置刚体质量
@@ -112,6 +122,8 @@ public class PlayerController : MonoBehaviour
         GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
     }
 
+    // 清理事件订阅，防止内存泄漏
+    // 说明：在对象销毁时取消对输入系统事件的订阅
     private void OnDestroy()
     {
         // 取消订阅以防止内存泄漏
@@ -122,6 +134,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 每帧更新逻辑
+    // 说明：
+    // 1. 进行地面检测
+    // 2. 更新各种计时器
+    // 3. 处理跳跃持续时间
+    // 4. 处理着地效果
     private void Update()
     {
         CheckGround(); // 检测地面
@@ -152,6 +170,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 固定时间间隔的物理更新
+    // 说明：
+    // 1. 处理角色移动
+    // 2. 应用下落加速度
+    // 3. 限制最大水平速度
     private void FixedUpdate()
     {
         HandleMovement(); // 处理移动
@@ -165,6 +188,14 @@ public class PlayerController : MonoBehaviour
     }
 
     #region 移动
+    // 处理角色移动
+    // 说明：
+    // 1. 获取输入方向并归一化
+    // 2. 计算目标速度和当前速度的差值
+    // 3. 应用加速度和控制系数
+    // 4. 处理地面和空中的不同移动状态
+    // 5. 更新角色朝向
+    // 6. 处理下落检测和预落地效果
     private void HandleMovement()
     {
         _moveDirection = GameInput.Instance.moveDir;
@@ -228,6 +259,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 检查角色是否可以移动
+    // 返回：true - 可以移动，false - 不能移动
+    // 说明：可以在这里添加各种移动限制条件
     private bool CanMove()
     {
         return true;
@@ -236,12 +270,21 @@ public class PlayerController : MonoBehaviour
 
     #region 跳跃
 
+    // 处理跳跃输入事件
+    // 说明：
+    // 1. 设置跳跃缓冲计时器
+    // 2. 尝试执行跳跃
     private void GameInput_OnJumpAction(object sender, EventArgs e)
     {
         _jumpBufferCounter = jumpBuffer;
         TryJump();
     }
 
+    // 更新各种计时器状态
+    // 说明：
+    // 1. 更新土狼时间计数器
+    // 2. 更新跳跃缓冲计数器
+    // 3. 在合适的时机尝试执行跳跃
     private void UpdateTimers()
     {
         // 更新土狼时间
@@ -262,6 +305,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 检测角色是否在地面上
+    // 说明：
+    // 1. 使用射线检测地面
+    // 2. 更新地面状态
+    // 3. 处理刚落地和刚离地的状态变化
+    // 4. 重置相关计数器和状态
     private void CheckGround()
     {
         // 从角色中心向下发射射线
@@ -298,6 +347,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 尝试执行跳跃
+    // 说明：
+    // 1. 检查是否满足跳跃条件（在地面上或在土狼时间内）
+    // 2. 检查垂直速度确保不会在上升时二次跳跃
+    // 3. 执行跳跃并重置相关状态
     private void TryJump()
     {
         // 添加垂直速度检查，确保不会在上升过程中再次跳跃
@@ -311,6 +365,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 执行跳跃动作
+    // 参数：force - 跳跃力度
+    // 说明：
+    // 1. 重置垂直速度
+    // 2. 应用跳跃力
+    // 3. 重置跳跃相关状态
     private void PerformJump(float force)
     {
         // 重置垂直速度，确保每次跳跃都从0开始
@@ -323,6 +383,11 @@ public class PlayerController : MonoBehaviour
         _jumpBufferCounter = 0;
     }
 
+    // 应用下落加速度修正
+    // 说明：
+    // 1. 在下落时增加重力
+    // 2. 在短跳时（松开跳跃键）应用更大的下落速度
+    // 目的：实现更好的跳跃手感
     private void ApplyFallMultiplier()
     {
         if (!_isGrounded) // 只在非地面状态应用
@@ -346,6 +411,8 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region 互动
+    // 处理互动输入事件
+    // 说明：当玩家按下互动键时，触发最近的可互动物体的交互功能
     private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
         //TODO: 互动逻辑
@@ -356,6 +423,12 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    // 处理触发器进入事件
+    // 参数：other - 进入触发区域的碰撞体
+    // 说明：
+    // 1. 检查进入的物体是否是可交互物体
+    // 2. 将可交互物体添加到列表
+    // 3. 更新最近的可交互物体
     private void OnTriggerEnter2D(Collider2D other)
     {
 
@@ -373,6 +446,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    // 处理触发器退出事件
+    // 参数：other - 离开触发区域的碰撞体
+    // 说明：
+    // 1. 从列表中移除离开的可交互物体
+    // 2. 如果移除的是当前最近的物体，重新寻找最近物体
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.TryGetComponent<TriggerObject>(out var triggerObject))
@@ -388,6 +466,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 寻找最近的可交互物体
+    // 说明：
+    // 1. 遍历所有可交互物体
+    // 2. 计算与玩家的距离
+    // 3. 更新最近的可交互物体
+    // 4. 触发选中事件
     private void FindNearestTriggerObject()
     {
         nearestTriggerObject = null;
@@ -405,6 +489,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 当选中最近的可交互物体时触发事件
+    // 说明：如果存在最近的可交互物体，触发选中事件
     private void OnnearestTriggerObjectChoosed()
     {
         if (nearestTriggerObject != null)

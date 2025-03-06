@@ -11,6 +11,11 @@ public class DialogueController : MonoBehaviour
 {
     [SerializeField] protected DialogueControl dialogueControl;
 
+    // 初始化对话控制组件
+    // 说明：
+    // 1. 检查是否已经赋值对话控制组件
+    // 2. 如果没有，尝试从当前游戏对象获取组件
+    // 3. 输出日志提示获取组件的尝试
     protected virtual void Awake()
     {
         if (dialogueControl is null)
@@ -20,7 +25,11 @@ public class DialogueController : MonoBehaviour
         }
     }
 
-//开始对话
+    // 开始对话
+    // 说明：
+    // 1. 检查对话控制组件是否存在
+    // 2. 调用对话控制组件的显示方法
+    // 用途：供外部调用以触发对话开始
     public virtual void StartDialogue()
     {
         if (dialogueControl != null)
@@ -29,7 +38,11 @@ public class DialogueController : MonoBehaviour
         }
     }
 
-//跳过对话
+    // 跳过对话
+    // 说明：
+    // 1. 检查对话控制组件是否存在
+    // 2. 调用对话控制组件的跳过方法
+    // 用途：当玩家想要快速结束当前对话时调用
     public virtual void SkipDialogue()
     {
         if (dialogueControl != null)

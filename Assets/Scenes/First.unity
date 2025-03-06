@@ -462,6 +462,7 @@ GameObject:
   - component: {fileID: 549636436}
   - component: {fileID: 549636435}
   - component: {fileID: 549636437}
+  - component: {fileID: 549636438}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: Player
@@ -558,6 +559,26 @@ MonoBehaviour:
     Time: 0.35
     Smoothing: 10
     IgnoreY: 1
+--- !u!114 &549636438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549636433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f453f694addf4275988fac205bc91968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BoundingShape2D: {fileID: 270638068}
+  Damping: 0.5
+  SlowingDistance: 5
+  OversizeWindow:
+    Enabled: 0
+    MaxWindowSize: 0
+    Padding: 0
+  m_LegacyMaxWindowSize: -2
 --- !u!1 &577538806 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3432980783960576732, guid: d81e53feee636eb4285ef59e865ccc3a, type: 3}
@@ -1081,7 +1102,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 404.48, y: 242.58, z: -10}
+  m_LocalPosition: {x: 404.4498, y: 242.626, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1790,7 +1811,6 @@ MonoBehaviour:
   shortJumpMultiplier: 2.5
   landingVFXTime: 0.15
   interactionRadius: 1
-  CameraPlaceholder: CameraPlaceholder
 --- !u!70 &1531025204
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

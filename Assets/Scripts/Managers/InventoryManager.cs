@@ -6,7 +6,7 @@ namespace Managers
 {
     public class InventoryManager : Singleton<InventoryManager>
     {
-        [SerializeField] private  ItemDatabaseSO itemDatabaseSO; // 物品数据库
+        [SerializeField] private ItemDatabaseSO itemDatabaseSO; // 物品数据库
         [SerializeField] private ItemsManagerUI itemsManagerUI; // UI 管理
         public event EventHandler OnInventoryUpdated; // 背包更新事件
         private readonly Dictionary<string, ItemSO> itemDictionary = new(); // 物品字典
@@ -30,7 +30,8 @@ namespace Managers
             LoadItems();
             itemsManagerUI.UpdateVisual();
             items.ForEach(item => Debug.Log(item.itemName));
-            AddItem("KeyForFirst");//测试是否能加入存在的东西
+            AddItem("KeyForFirst"); //测试是否能加入存在的东西
+            AddItem("KeyForFirst1");
         }
 
         #region 物品类方法
@@ -50,7 +51,8 @@ namespace Managers
             {
                 itemDictionary[item.itemName] = item;
             }
-           OnInventoryUpdated?.Invoke(this, EventArgs.Empty);
+
+            OnInventoryUpdated?.Invoke(this, EventArgs.Empty);
 
             Debug.Log($"Loaded {itemDictionary.Count} items.");
         }
@@ -107,11 +109,5 @@ namespace Managers
         }
 
         #endregion
-   
-   
-   
-   
-   
-   
     }
 }

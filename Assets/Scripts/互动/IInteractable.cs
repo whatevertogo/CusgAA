@@ -2,9 +2,9 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class InterfaceReference<T> where T : class
+public class IInteractReference
 {
-    [SerializeField] private MonoBehaviour reference;  // 直接存 MonoBehaviour，而不是 GameObject
+    [SerializeField] private MonoBehaviour reference;  // 直接存 MonoBehaviour 组件
 
-    public T Value => reference as T;
+    public IInteract Value => reference as IInteract;  // 直接转换成 IInteract
 }

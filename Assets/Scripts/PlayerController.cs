@@ -60,6 +60,8 @@ public class PlayerController : MonoBehaviour
 
     [Header("地面检测")]
     [SerializeField] private LayerMask groundLayer;// 地面层
+    [Header("互动")]
+    public InterfaceReference<IInteract> interactable;
 
     private bool _isGrounded;// 是否在地面上
     private float _coyoteTimeCounter; // 土狼时间计数器
@@ -92,7 +94,7 @@ public class PlayerController : MonoBehaviour
         _lastGroundedY = transform.position.y; // 初始化最后着地位置
         // 订阅跳跃事件
         GameInput.Instance.OnJumpAction += GameInput_OnJumpAction;
-        GameInput.Instance.OnInteractAction+=GameInput_OnInteractAction;
+        GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
     }
 
     private void OnDestroy()
@@ -101,7 +103,7 @@ public class PlayerController : MonoBehaviour
         if (GameInput.Instance != null)
         {
             GameInput.Instance.OnJumpAction -= GameInput_OnJumpAction;
-            GameInput.Instance.OnInteractAction-=GameInput_OnInteractAction;
+            GameInput.Instance.OnInteractAction -= GameInput_OnInteractAction;
         }
     }
 
@@ -331,7 +333,7 @@ public class PlayerController : MonoBehaviour
 
 
     #region 互动
-    private void GameInput_OnInteractAction(object sender,EventArgs e)
+    private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
         //TODO-互动功能
 

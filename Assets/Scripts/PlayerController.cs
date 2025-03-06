@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
+    #region 人物参数
     [Header("人物移动参数")]
     [Tooltip("移动速度（参考蔚蓝）")]
     [SerializeField] private float moveSpeed = 9f; // 移动速度（参考蔚蓝）
@@ -67,6 +68,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("地面检测")]
     [SerializeField] private LayerMask groundLayer;// 地面层
+    #endregion
 
     [Header("互动物体")]
     private List<TriggerObject> triggerObjects = new List<TriggerObject>(); // 互动物体列表

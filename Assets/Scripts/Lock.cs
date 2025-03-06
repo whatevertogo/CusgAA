@@ -10,6 +10,11 @@ public class PasswordLock : MonoBehaviour
     // 正确密码
     private const string correctPassword = "1234";
 
+    // 初始化密码锁控件
+    // 说明：
+    // 1. 初始化密码显示
+    // 2. 为四个滑动条添加值变化监听器
+    // 3. 当滑动条值改变时自动更新密码显示
     void Start()
     {
         // 初始化显示密码
@@ -23,6 +28,10 @@ public class PasswordLock : MonoBehaviour
     }
 
     // 实时更新密码显示
+    // 说明：
+    // 1. 获取四个滑动条的当前值并转换为整数
+    // 2. 将四个数字组合成密码字符串
+    // 3. 更新UI文本显示当前密码
     private void UpdatePasswordDisplay()
     {
         string currentPassword = Mathf.RoundToInt(slider1.value).ToString() +
@@ -33,7 +42,12 @@ public class PasswordLock : MonoBehaviour
         passwordDisplay.text = "当前密码: " + currentPassword;
     }
 
-    // 验证密码
+    // 验证输入的密码是否正确
+    // 说明：
+    // 1. 获取当前滑动条组合的密码
+    // 2. 与预设的正确密码进行比较
+    // 3. 根据比较结果执行相应的操作（开锁或提示错误）
+    // 用途：当用户点击确认按钮时调用此方法验证密码
     public void CheckPassword()
     {
         string enteredPassword = Mathf.RoundToInt(slider1.value).ToString() +
@@ -52,4 +66,3 @@ public class PasswordLock : MonoBehaviour
         }
     }
 }
-

@@ -1,0 +1,117 @@
+using System;
+using Managers;
+using UnityEngine;
+using UnityEngine.UI;
+
+// 背包UI管理器
+// 说明：管理背包界面的显示、隐藏和更新
+// 功能：
+// 1. 显示和隐藏背包界面
+// 2. 动态更新背包物品显示
+// 3. 处理背包相关的输入事件
+public class ItemsManagerUI : MonoBehaviour
+{
+    [SerializeField] private Transform AllItems;  // 所有物品的容器
+    [SerializeField] private GameObject itemsContainerFirst;  // 第一个物品容器模板
+    [SerializeField] private GameObject itemContainerPrefab;  // 物品容器预制体
+
+    // 初始化背包UI系统
+    // 说明：
+    // 1. 初始化背包界面显示
+    // 2. 订阅背包更新事件
+    // 3. 订阅背包开关事件
+    // 4. 初始设置物品容器为隐藏状态
+    void Start()
+    {
+        UpdateVisual();
+        InventoryManager.Instance.OnInventoryUpdated += (sender, args) => UpdateVisual(); // 监听背包更新事件
+        GameInput.Instance.OnOpenInventoryAction += InventoryManager_OnOpenInventoryAction; // 监听背包开关事件
+        itemsContainerFirst.gameObject.SetActive(false);
+    }
+
+    // 处理背包开关事件
+    // 参数：
+    // - sender: 事件发送者
+    // - e: 事件参数
+    // 说明：响应输入系统的背包开关命令
+    private void InventoryManager_OnOpenInventoryAction(object sender, EventArgs e)
+    {
+        Open_CloseInventory();
+    }
+
+    // 切换背包显示状态
+    // 说明：根据当前状态打开或关闭背包界面
+    public void Open_CloseInventory()
+    {
+        if (AllItems.gameObject.activeSelf)
+        {
+            HideInventory();
+        }
+        else
+        {
+            ShowInventory();
+        }
+    }
+
+    // 显示背包界面
+    // 说明：
+    // 1. 激活背包界面
+    // 2. 更新物品显示
+    public void ShowInventory()
+    {
+        AllItems.gameObject.SetActive(true);
+        UpdateVisual();
+    }
+
+    // 隐藏背包界面
+    // 说明：禁用背包界面的显示
+    public void HideInventory()
+    {
+        AllItems.gameObject.SetActive(false);
+    }
+
+    // 更新背包界面显示
+    // 说明：
+    // 1. 清理现有的物品显示
+    // 2. 为每个背包中的物品创建显示容器
+    // 3. 设置物品图片和名称
+    // 4. 可选：添加物品使用按钮
+    public void UpdateVisual()
+    {
+        // 清空当前的UI元素
+        foreach (Transform child in AllItems)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // 显示所有背包物品
+        foreach (var item in InventoryManager.Instance.items)
+        {
+            // 创建物品容器
+            GameObject newItemContainer = Instantiate(itemContainerPrefab, AllItems);
+
+            // 设置物品图片
+            Image itemImage = newItemContainer.transform.Find("Image").GetComponent<Image>();
+            if (itemImage != null)
+            {
+                itemImage.sprite = item.itemImage;
+            }
+
+            // 设置物品名称
+            Text itemNameText = newItemContainer.transform.Find("Text").GetComponent<Text>();
+            if (itemNameText != null)
+            {
+                itemNameText.text = item.itemName;
+            }
+
+            #region 可选按钮
+            // 为物品添加使用功能（当前未启用）
+            // Button itemButton = newItemContainer.transform.Find("Button")?.GetComponent<Button>();
+            // if (itemButton != null)
+            // {
+            //     itemButton.onClick.AddListener(() => UseItem(item));
+            // }
+            #endregion
+        }
+    }
+}

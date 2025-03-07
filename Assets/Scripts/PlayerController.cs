@@ -1,5 +1,7 @@
-/* C# 中的 PlayerController 类管理玩家的移动、加速、跳跃和地面
-使用各种参数和优化进行检测。*/
+/* C# 中的 PlayerController 类管理玩家的移动、加速、跳跃和地面使用各种参数和优化进行检测。
+ *加上互动功能
+ * 
+*/
 
 using Managers;
 using UnityEngine;
@@ -100,7 +102,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     //摄像机的移动空间
-    [SerializeField] private const string CameraPlaceholder = "CameraPlaceholder";
+    private const string CameraPlaceholder = "CameraPlaceholder";
 
     #region 事件
 
@@ -374,7 +376,7 @@ public class PlayerController : MonoBehaviour
     // 尝试执行跳跃
     // 说明：
     // 1. 检查是否满足跳跃条件（在地面上或在土狼时间内）
-    // 2. 检查垂直速度确保不会在上升时二次跳跃
+    // 2. 检查垂直速度确保不会在上升时第二次跳跃
     // 3. 执行跳跃并重置相关状态
     private void TryJump()
     {
@@ -411,7 +413,7 @@ public class PlayerController : MonoBehaviour
     // 说明：
     // 1. 在下落时增加重力
     // 2. 在短跳时（松开跳跃键）应用更大的下落速度
-    // 目的：实现更好的跳跃手感
+    // 目的：实现更好地跳跃手感
     private void ApplyFallMultiplier()
     {
         if (!_isGrounded) // 只在非地面状态应用
@@ -421,14 +423,14 @@ public class PlayerController : MonoBehaviour
             {
                 // 确保这是一个向下的力
                 float fallForce = fallMultiplier - 1;
-                _rb2D.linearVelocity += Vector2.up * gravity.y * (fallForce * Time.fixedDeltaTime);
+                _rb2D.linearVelocity += Vector2.up * (gravity.y * (fallForce * Time.fixedDeltaTime));
             }
             // 短跳（当玩家释放跳跃键时）
             else if (_rb2D.linearVelocity.y > 0 && !GameInput.Instance.JumpPressed)
             {
                 // 应用更大的向下力量
                 float shortJumpForce = shortJumpMultiplier - 1;
-                _rb2D.linearVelocity += Vector2.up * gravity.y * (shortJumpForce * Time.fixedDeltaTime);
+                _rb2D.linearVelocity += Vector2.up * (gravity.y * (shortJumpForce * Time.fixedDeltaTime));
             }
         }
     }
@@ -508,7 +510,7 @@ public class PlayerController : MonoBehaviour
         foreach (var obj in triggerObjects)
         {
             float distance = Vector3.Distance(this.transform.position, obj.transform.position);
-            if (distance < nearestDistance && distance <= 30f) //距离小于30才能交互
+            if (distance < nearestDistance && distance <= 30f) //距离小于30f才能交互
             {
                 nearestTriggerObject = obj;
                 nearestDistance = distance;
@@ -530,4 +532,5 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
+    
 }

@@ -20,6 +20,7 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Mm]emoryCaptures/
+/*.log
 
 # Rider 自动生成的插件
 [Aa]ssets/Plugins/Editor/JetBrains*

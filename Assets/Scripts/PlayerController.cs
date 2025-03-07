@@ -421,14 +421,14 @@ public class PlayerController : MonoBehaviour
             {
                 // 确保这是一个向下的力
                 float fallForce = fallMultiplier - 1;
-                _rb2D.linearVelocity += Vector2.up * gravity * (fallForce * Time.fixedDeltaTime);
+                _rb2D.linearVelocity += Vector2.up * gravity.y * (fallForce * Time.fixedDeltaTime);
             }
             // 短跳（当玩家释放跳跃键时）
             else if (_rb2D.linearVelocity.y > 0 && !GameInput.Instance.JumpPressed)
             {
                 // 应用更大的向下力量
                 float shortJumpForce = shortJumpMultiplier - 1;
-                _rb2D.linearVelocity += Vector2.up * gravity * (shortJumpForce * Time.fixedDeltaTime);
+                _rb2D.linearVelocity += Vector2.up * gravity.y * (shortJumpForce * Time.fixedDeltaTime);
             }
         }
     }

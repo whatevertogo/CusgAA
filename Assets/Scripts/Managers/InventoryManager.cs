@@ -28,7 +28,6 @@ namespace Managers
         private void Start()
         {
             LoadItems();
-            //itemsManagerUI.UpdateVisual();
             items.ForEach(item => Debug.Log(item.itemName));
             AddItem("KeyForFirst"); //测试是否能加入存在的东西
             AddItem("KeyForFirst1");

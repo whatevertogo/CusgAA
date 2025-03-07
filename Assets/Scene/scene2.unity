@@ -130,7 +130,6 @@ GameObject:
   - component: {fileID: 125159431}
   - component: {fileID: 125159433}
   - component: {fileID: 125159432}
-  - component: {fileID: 125159434}
   m_Layer: 0
   m_Name: PasswordLock
   m_TagString: Untagged
@@ -179,28 +178,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 125159430}
   m_CullTransparentMesh: 1
---- !u!114 &125159434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 125159430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e85bb9d7992e7e4488382ca9f13b2c67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  digitScrolls:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  correctPassword: 01000000020000000300000004000000
-  snapSpeed: 10
-  numberHeight: 25
-  currentValues: 
-  targetScrollPositions: []
 --- !u!1 &366532607
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,16 +205,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 366532607}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8e4fb9089be4df44a17798a4fb06a60, type: 3}
+  m_Script: {fileID: 11500000, guid: 67f5c56279270d443a8e2285448c0af6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slider1: {fileID: 0}
-  slider2: {fileID: 0}
-  slider3: {fileID: 0}
-  slider4: {fileID: 0}
-  passwordDisplay: {fileID: 0}
+  digitScrolls: []
+  digitImages:
+  - {fileID: 0}
+  numberStrip: {fileID: 0}
+  correctPassword: 01000000020000000300000004000000
+  snapSpeed: 10
 --- !u!114 &366532609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,7 +357,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: d75656be27bc13e43b202c8862a71fea, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -604,6 +582,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1032277356}
   - component: {fileID: 1032277355}
+  - component: {fileID: 1032277357}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -691,6 +670,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1032277357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1032277354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &1630787434
 GameObject:
   m_ObjectHideFlags: 0

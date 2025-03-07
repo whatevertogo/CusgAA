@@ -4,8 +4,8 @@ using UnityEngine.UI;
 public class PasswordLock : MonoBehaviour
 {
     [SerializeField] private ScrollRect[] digitScrolls;    // 4个ScrollRect
-    [SerializeField] private Image[] digitImages;         // 4个显示数字的Image
-    [SerializeField] private Sprite numberStrip;          // 0-9数字条图片
+    [SerializeField] private RawImage[] digitImages;      // 使用RawImage
+    [SerializeField] private Texture numberStrip;         // 使用Texture
     [SerializeField] private int[] correctPassword = {1, 2, 3, 4};
     [SerializeField] private float snapSpeed = 10f;
 
@@ -18,12 +18,12 @@ public class PasswordLock : MonoBehaviour
     {
         currentValues = new int[4];
         targetScrollPositions = new float[4];
-        numberHeight = numberStrip.rect.height / TOTAL_NUMBERS;
+        numberHeight = numberStrip.height / TOTAL_NUMBERS;
 
         for (int i = 0; i < digitScrolls.Length; i++)
         {
             int index = i;
-            digitImages[i].sprite = numberStrip;
+            digitImages[i].texture = numberStrip;
             digitScrolls[i].onValueChanged.AddListener((value) => OnScrollChanged(index, value));
             SetDigitDisplay(i, 0);
         }
@@ -65,7 +65,7 @@ public class PasswordLock : MonoBehaviour
         float uvHeight = 1f / TOTAL_NUMBERS;
         float uvY = (TOTAL_NUMBERS - 1 - currentValues[index]) * uvHeight;
 
-        digitImages[index].uvRect = new Rect(0, uvY, 1, uvHeight);  // 这里报错
+        digitImages[index].uvRect = new Rect(0, uvY, 1, uvHeight);
     }
 
     void CheckPassword()

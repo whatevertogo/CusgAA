@@ -18,12 +18,12 @@ public class SelectedVisual : MonoBehaviour
         if (selectedObject == e.SelectedObject)
         {
             selectedEffect.SetActive(true);
-            Debug.Log("选中了{selectedObject.name}");
+            Debug.Log($"选中了{selectedObject.name}");
         }
         if (e.SelectedObject == null)
         {
             selectedEffect.SetActive(false);
-            Debug.Log("取消选中{selectedObject.name}");
+            Debug.Log($"取消选中{selectedObject.name}");
         }
     }
     

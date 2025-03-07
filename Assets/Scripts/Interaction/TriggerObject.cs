@@ -13,8 +13,8 @@ using UnityEngine;
 // 3. 可以被继承以实现具体的触发行为
 public abstract class TriggerObject : MonoBehaviour, IInteract
 {
-    public PlayerController playerController;
-    public InventoryManager inventoryManager;
+    public  PlayerController playerController;
+    [SerializeField] private  InventoryManager inventoryManager;
     // 初始化触发对象
     // 说明：订阅玩家的触发物体选择事件
     // 用途：当玩家选择该触发物体时接收通知

@@ -436,7 +436,7 @@ public class PlayerController : MonoBehaviour
     // 说明：当玩家按下互动键时，触发最近的可互动物体的交互功能
     private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
-        //TODO: 互动逻辑
+        //TODO: 互动逻辑没写完
         if (nearestTriggerObject != null)
         {
             nearestTriggerObject.Interact();

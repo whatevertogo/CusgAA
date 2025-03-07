@@ -83,9 +83,18 @@ namespace Managers
         }
 
         /// <summary>
+        /// 场景加载完成回调的事件参数
+        /// </summary>
+        public class OnSceneLoadCompleteEventArgs : EventArgs
+        {
+            public string SceneName { get; set; }
+            public float LoadTime { get; set; }
+        }
+
+        /// <summary>
         /// 异步加载场景（推荐使用）
         /// </summary>
-        public void LoadSceneAsync(string sceneName, LoadingConfig config = null, Action onComplete = null)
+        public void LoadSceneAsync(string sceneName, LoadingConfig config = null, EventHandler<OnSceneLoadCompleteEventArgs> onComplete = null)
         {
             if (isLoading)
             {
@@ -98,14 +107,14 @@ namespace Managers
         /// <summary>
         /// 异步加载场景的协程实现
         /// </summary>
-        private IEnumerator LoadSceneAsyncCoroutine(string sceneName, LoadingConfig config, Action onComplete)
+        private IEnumerator LoadSceneAsyncCoroutine(string sceneName, LoadingConfig config, EventHandler<OnSceneLoadCompleteEventArgs> onComplete)
         {
-            isLoading = true;
-            float startTime = Time.time;
+            isLoading = true;// 标记正在加载中
+            float startTime = Time.time;// 记录开始加载时间
             OnLoadingStarted?.Invoke(this, new OnLoadingStartedEventArgs 
             { 
                 SceneName = sceneName 
-            });
+            });// 触发加载开始事件
             Debug.Log($"开始异步加载场景: {sceneName}");
 
             // 使用默认配置
@@ -123,16 +132,16 @@ namespace Managers
             AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName, config.loadMode);
             asyncOperation.allowSceneActivation = false; // 暂时不允许场景激活
 
-            float progress = 0;
+            float progress = 0;// 加载进度
 
             while (!asyncOperation.isDone)
             {
                 // 更新加载进度（0-1）
-                progress = Mathf.Clamp01(asyncOperation.progress / 0.9f);
+                progress = Mathf.Clamp01(asyncOperation.progress / 0.9f);// 限制进度在0-1之间
                 OnLoadingProgressChanged?.Invoke(this, new OnLoadingProgressChangedEventArgs 
                 { 
                     Progress = progress 
-                });
+                });// 触发加载进度变化事件
 
                 if (config.showProgressBar)
                 {
@@ -148,21 +157,30 @@ namespace Managers
                 yield return null;
             }
 
-            float loadTime = Time.time - startTime;
-            isLoading = false;
+            float loadTime = Time.time - startTime;// 计算加载耗时
+            isLoading = false;// 标记加载完成
+            
+            // 触发通用的加载完成事件
             OnLoadingCompleted?.Invoke(this, new OnLoadingCompletedEventArgs 
             { 
                 SceneName = sceneName,
                 LoadTime = loadTime
             });
-            onComplete?.Invoke();
+            
+            // 触发一次性的完成回调
+            onComplete?.Invoke(this, new OnSceneLoadCompleteEventArgs 
+            { 
+                SceneName = sceneName,
+                LoadTime = loadTime
+            });
+            
             Debug.Log($"场景 {sceneName} 加载完成，耗时: {loadTime:F2}秒");
         }
 
         /// <summary>
         /// 重新加载当前场景
         /// </summary>
-        public void ReloadCurrentScene(LoadingConfig config = null, Action onComplete = null)
+        public void ReloadCurrentScene(LoadingConfig config = null, EventHandler<OnSceneLoadCompleteEventArgs> onComplete = null)// 重新加载当前场景
         {
             Scene currentScene = SceneManager.GetActiveScene();
             LoadSceneAsync(currentScene.name, config, onComplete);
@@ -196,6 +214,83 @@ namespace Managers
         // {
         //     // TODO: 实现场景预加载逻辑
         // }
+
+        #endregion
+
+        #region 场景重置
+
+        /// <summary>
+        /// 重置场景配置
+        /// </summary>
+        [System.Serializable]
+        public class ResetConfig
+        {
+            public bool resetPlayerPosition = true;    // 是否重置玩家位置
+            public bool resetGameState = true;         // 是否重置游戏状态
+            public bool showTransition = true;         // 是否显示过渡动画
+            public float transitionTime = 0.5f;        // 过渡动画时间
+        }
+
+        /// <summary>
+        /// 重置当前场景
+        /// </summary>
+        public void ResetCurrentScene(ResetConfig resetConfig = null, EventHandler<OnSceneLoadCompleteEventArgs> onComplete = null)
+        {
+            // 使用默认配置
+            resetConfig ??= new ResetConfig();
+
+            var loadConfig = new LoadingConfig
+            {
+                useLoadingScreen = resetConfig.showTransition,
+                showProgressBar = false,
+                minimumLoadingTime = resetConfig.transitionTime,
+                loadMode = LoadSceneMode.Single
+            };
+
+            // 如果需要重置游戏状态
+            if (resetConfig.resetGameState)
+            {
+                // 这里可以调用GameManager重置游戏状态
+                // GameManager.Instance.ResetGameState();
+                Debug.Log("重置游戏状态");
+            }
+
+            Scene currentScene = SceneManager.GetActiveScene();
+            LoadSceneAsync(currentScene.name, loadConfig, (sender, args) =>
+            {
+                // 如果需要重置玩家位置
+                if (resetConfig.resetPlayerPosition)
+                {
+                    Debug.Log("重置玩家位置");
+                    // TODO: 重置玩家位置逻辑
+                    // 可以通过GameManager或其他方式获取玩家并重置位置
+                    // if (GameManager.Instance.Player != null)
+                    // {
+                    //     GameManager.Instance.Player.transform.position = Vector3.zero;
+                    // }
+                }
+
+                // 调用完成回调
+                onComplete?.Invoke(sender, args);
+            });
+
+            Debug.Log("开始重置场景");
+        }
+
+        /// <summary>
+        /// 快速重置场景（使用默认配置）
+        /// </summary>
+        public void QuickReset(EventHandler<OnSceneLoadCompleteEventArgs> onComplete = null)
+        {
+            var config = new ResetConfig
+            {
+                resetPlayerPosition = true,
+                resetGameState = true,
+                showTransition = false,
+                transitionTime = 0f
+            };
+            ResetCurrentScene(config, onComplete);
+        }
 
         #endregion
 

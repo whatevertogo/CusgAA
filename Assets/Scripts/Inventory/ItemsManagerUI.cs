@@ -106,7 +106,7 @@ public class ItemsManagerUI : MonoBehaviour
             {
                 itemNameText.text = item.itemName;
             }
-
+            
             #region 可选按钮
             // 为物品添加使用功能（当前未启用）
             // Button itemButton = newItemContainer.transform.Find("Button")?.GetComponent<Button>();
@@ -116,5 +116,7 @@ public class ItemsManagerUI : MonoBehaviour
             // }
             #endregion
         }
+        
+        //TODO-写一个更好的视觉效果
     }
 }

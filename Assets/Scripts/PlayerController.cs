@@ -10,8 +10,6 @@ public class PlayerController : MonoBehaviour
 {
     #region 人物参数
 
-    #region 人物移动
-
     [Header("人物移动参数")] [Tooltip("移动速度（参考蔚蓝）")] [SerializeField]
     private float moveSpeed = 9f; // 移动速度（参考蔚蓝）
 
@@ -34,9 +32,12 @@ public class PlayerController : MonoBehaviour
     [Tooltip("记录最后移动方向")] private float _lastMoveDirection; // 记录最后移动方向
     [Header("地面检测")] [SerializeField] private LayerMask groundLayer; // 地面层
 
-    #endregion
+    //====================================================================================================
+    /*跳跃参数
+     *跳跃力度，跳跃按住时间，射线长度等等
+     */
+    //====================================================================================================
 
-    #region 人物跳跃
 
     [Header("人物跳跃参数")] [Tooltip("跳跃力度（调整）")] [SerializeField]
     private float jumpForce = 10f; // 跳跃力度（调整）
@@ -55,8 +56,6 @@ public class PlayerController : MonoBehaviour
     [Tooltip("短跳加速倍数")] [SerializeField] private float shortJumpMultiplier = 2.5f; // 短跳加速倍数（新增）
     [Tooltip("落地特效时间")] [SerializeField] private float landingVFXTime = 0.15f; // 落地特效时间
 
-    #endregion
-
     //[Header("未使用")]
     //[SerializeField] private float minJumpForce = 7f;// 最小跳跃力度
     //[SerializeField] private float preLandingTime = 0.15f; // 预落地时间
@@ -68,6 +67,8 @@ public class PlayerController : MonoBehaviour
 
     [Header("互动物体检测")] private TriggerObject nearestTriggerObject; // 最近的互动物体
 
+    public TriggerObject NearestTriggerObject => nearestTriggerObject; // 最近的互动物体
+
     [Header("互动物体")] private List<TriggerObject> triggerObjects = new List<TriggerObject>(); // 互动物体列表
 
     #endregion
@@ -75,6 +76,8 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region 私有参数
+
+    /*人物跳跃参数*/
 
     private bool _isGrounded; // 是否在地面上
     private float _coyoteTimeCounter; // 土狼时间计数器
@@ -95,16 +98,18 @@ public class PlayerController : MonoBehaviour
     private RaycastHit2D _groundHit; // 地面检测结果
 
     #endregion
-    
-    [SerializeField] private const string CameraPlaceholder="CameraPlaceholder";
+
+    //摄像机的移动空间
+    [SerializeField] private const string CameraPlaceholder = "CameraPlaceholder";
 
     #region 事件
 
-    public class OnTriggerObjectChoosedEventArgs : EventArgs
+    public class TriggerObjectSelectedEventArgs : EventArgs
     {
+        public TriggerObject SelectedObject;
     }
 
-    public event EventHandler<OnTriggerObjectChoosedEventArgs> OnTriggerObjectChoosed; // 选择互动物体事件
+    public event EventHandler<TriggerObjectSelectedEventArgs> OnTriggerObjectSelected; // 选择互动物体事件
 
     #endregion
 
@@ -436,7 +441,7 @@ public class PlayerController : MonoBehaviour
     // 说明：当玩家按下互动键时，触发最近的可互动物体的交互功能
     private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
-        //TODO: 互动逻辑没写完
+        // 检查是否有最近的可互动物体
         if (nearestTriggerObject != null)
         {
             nearestTriggerObject.Interact();
@@ -451,7 +456,7 @@ public class PlayerController : MonoBehaviour
     // 3. 更新最近的可交互物体
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent<TriggerObject>(out var triggerObject)&&other.gameObject.CompareTag(CameraPlaceholder) is false)
+        if (other.TryGetComponent<TriggerObject>(out var triggerObject) && other.gameObject.CompareTag(CameraPlaceholder) is false)
         {
             triggerObjects.Add(triggerObject);
             float distance = Vector3.Distance(transform.position, triggerObject.transform.position);
@@ -468,17 +473,23 @@ public class PlayerController : MonoBehaviour
     // 说明：
     // 1. 从列表中移除离开的可交互物体
     // 2. 如果移除的是当前最近的物体，重新寻找最近物体
+    //3. 如果最近的物体为空，触发选中事件
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.TryGetComponent<TriggerObject>(out var triggerObject))
         {
             // 从列表中移除
             triggerObjects.Remove(triggerObject);
-
+            
             // 如果移除的是当前最近的触发物体，需要重新查找最近的触发物体
             if (triggerObject == nearestTriggerObject)
             {
                 FindNearestTriggerObject();
+            }
+            if (nearestTriggerObject == null)
+            {
+                // 如果没有最近的触发物体，触发选中事件
+                OnnearestTriggerObjectSelected(null);
             }
         }
     }
@@ -492,28 +503,30 @@ public class PlayerController : MonoBehaviour
     private void FindNearestTriggerObject()
     {
         nearestTriggerObject = null;
-        float nearestDistance = float.MaxValue;
+        float nearestDistance = float.MaxValue; // 初始化为最大值
 
         foreach (var obj in triggerObjects)
         {
-            float distance = Vector3.Distance(transform.position, obj.transform.position);
-            if (distance < nearestDistance)
+            float distance = Vector3.Distance(this.transform.position, obj.transform.position);
+            if (distance < nearestDistance && distance <= 30f) //距离小于30才能交互
             {
                 nearestTriggerObject = obj;
                 nearestDistance = distance;
-                OnnearestTriggerObjectChoosed();
+                OnnearestTriggerObjectSelected(nearestTriggerObject); //触发选中事件
+                Debug.Log("最近的可交互物体是：" + nearestTriggerObject.name);
             }
         }
     }
 
     // 当选中最近的可交互物体时触发事件
     // 说明：如果存在最近的可交互物体，触发选中事件
-    private void OnnearestTriggerObjectChoosed()
+    //说明：如果不存在最近的可交互物体，同样触发选中事件但是传递null
+    private void OnnearestTriggerObjectSelected(TriggerObject SelectedObject)
     {
-        if (nearestTriggerObject != null)
+        OnTriggerObjectSelected?.Invoke(this, new TriggerObjectSelectedEventArgs
         {
-            OnTriggerObjectChoosed?.Invoke(this, new OnTriggerObjectChoosedEventArgs());
-        }
+            SelectedObject = SelectedObject
+        });
     }
 
     #endregion

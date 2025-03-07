@@ -30,7 +30,7 @@ namespace Managers
         #endregion
 
         #region 场景加载配置
-        [System.Serializable]
+        [Serializable]
         public class LoadingConfig
         {
             public bool useLoadingScreen = true;              // 是否使用加载界面
@@ -39,7 +39,7 @@ namespace Managers
             public LoadSceneMode loadMode = LoadSceneMode.Single; // 加载模式
         }
 
-        private bool isLoading = false;
+        private bool isLoading;
         public bool IsLoading => isLoading;
         #endregion
 
@@ -124,7 +124,6 @@ namespace Managers
             if (config.useLoadingScreen)
             {
                 // TODO: 显示加载UI
-                Debug.Log("显示加载界面");
             }
 
             yield return new WaitForSeconds(0.1f); // 给UI一点时间来显示
@@ -222,7 +221,7 @@ namespace Managers
         /// <summary>
         /// 重置场景配置
         /// </summary>
-        [System.Serializable]
+        [Serializable]
         public class ResetConfig
         {
             public bool resetPlayerPosition = true;    // 是否重置玩家位置

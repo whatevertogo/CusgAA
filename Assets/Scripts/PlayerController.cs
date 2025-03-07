@@ -64,14 +64,11 @@ public class PlayerController : MonoBehaviour
 
     #region 互动
 
-    [Header("互动参数")] [Tooltip("互动半径")] [SerializeField]
-    private float interactionRadius = 1f; // 互动半径
+    [Header("互动物体检测")] private TriggerObject _nearestTriggerObject; // 最近的互动物体
 
-    [Header("互动物体检测")] private TriggerObject nearestTriggerObject; // 最近的互动物体
+    public TriggerObject NearestTriggerObject => _nearestTriggerObject; // 最近的互动物体
 
-    public TriggerObject NearestTriggerObject => nearestTriggerObject; // 最近的互动物体
-
-    [Header("互动物体")] private List<TriggerObject> triggerObjects = new List<TriggerObject>(); // 互动物体列表
+    [Header("互动物体")] private List<TriggerObject> _triggerObjects = new List<TriggerObject>(); // 互动物体列表
 
     #endregion
 
@@ -444,9 +441,9 @@ public class PlayerController : MonoBehaviour
     private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
         // 检查是否有最近的可互动物体
-        if (nearestTriggerObject != null)
+        if (_nearestTriggerObject != null)
         {
-            nearestTriggerObject.Interact();
+            _nearestTriggerObject.Interact();
         }
     }
 
@@ -460,11 +457,11 @@ public class PlayerController : MonoBehaviour
     {
         if (other.TryGetComponent<TriggerObject>(out var triggerObject) && other.gameObject.CompareTag(CameraPlaceholder) is false)
         {
-            triggerObjects.Add(triggerObject);
+            _triggerObjects.Add(triggerObject);
             float distance = Vector3.Distance(transform.position, triggerObject.transform.position);
-            if (nearestTriggerObject == null || distance < Vector3.Distance(transform.position, nearestTriggerObject.transform.position))
+            if (_nearestTriggerObject == null || distance < Vector3.Distance(transform.position, _nearestTriggerObject.transform.position))
             {
-                nearestTriggerObject = triggerObject;
+                _nearestTriggerObject = triggerObject;
                 FindNearestTriggerObject();
             }
         }
@@ -481,14 +478,14 @@ public class PlayerController : MonoBehaviour
         if (other.TryGetComponent<TriggerObject>(out var triggerObject))
         {
             // 从列表中移除
-            triggerObjects.Remove(triggerObject);
+            _triggerObjects.Remove(triggerObject);
             
             // 如果移除的是当前最近的触发物体，需要重新查找最近的触发物体
-            if (triggerObject == nearestTriggerObject)
+            if (triggerObject == _nearestTriggerObject)
             {
                 FindNearestTriggerObject();
             }
-            if (nearestTriggerObject == null)
+            if (_nearestTriggerObject == null)
             {
                 // 如果没有最近的触发物体，触发选中事件
                 OnnearestTriggerObjectSelected(null);
@@ -504,18 +501,18 @@ public class PlayerController : MonoBehaviour
     // 4. 触发选中事件
     private void FindNearestTriggerObject()
     {
-        nearestTriggerObject = null;
+        _nearestTriggerObject = null;
         float nearestDistance = float.MaxValue; // 初始化为最大值
 
-        foreach (var obj in triggerObjects)
+        foreach (var obj in _triggerObjects)
         {
             float distance = Vector3.Distance(this.transform.position, obj.transform.position);
             if (distance < nearestDistance && distance <= 30f) //距离小于30f才能交互
             {
-                nearestTriggerObject = obj;
+                _nearestTriggerObject = obj;
                 nearestDistance = distance;
-                OnnearestTriggerObjectSelected(nearestTriggerObject); //触发选中事件
-                Debug.Log("最近的可交互物体是：" + nearestTriggerObject.name);
+                OnnearestTriggerObjectSelected(_nearestTriggerObject); //触发选中事件
+                Debug.Log("最近的可交互物体是：" + _nearestTriggerObject.name);
             }
         }
     }

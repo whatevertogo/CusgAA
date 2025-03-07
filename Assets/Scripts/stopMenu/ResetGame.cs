@@ -4,7 +4,7 @@ public class ResetGame : MonoBehaviour
 {
     private Button _button;
     [SerializeField] private string sceneName;
-   
+
     void Awake()
     {
         _button = GetComponent<Button>();
@@ -19,11 +19,8 @@ public class ResetGame : MonoBehaviour
     {
         Debug.Log("ResetGame");
         Time.timeScale = 1f;
-        //暂时的
-        sceneName = "First";
-        Managers.MySceneManager.Instance.LoadSceneByName(sceneName);
-        //TODO-后期在mysceneManager里面写个重进场景的方法，现在懒得写，要不你写~(￣▽￣)~*
-        //自己写sceneName相当于重新进入场景
-        
+        Managers.MySceneManager.Instance.QuickReset((Sender, args) => { Debug.Log($"场景 {args.SceneName} ,耗时:{args.LoadTime}秒"); });
+
+
     }
 }

@@ -1,5 +1,7 @@
-/* C# 中的 PlayerController 类管理玩家的移动、加速、跳跃和地面
-使用各种参数和优化进行检测。*/
+/* C# 中的 PlayerController 类管理玩家的移动、加速、跳跃和地面使用各种参数和优化进行检测。
+ *加上互动功能
+ * 
+*/
 
 using Managers;
 using UnityEngine;
@@ -10,52 +12,63 @@ public class PlayerController : MonoBehaviour
 {
     #region 人物参数
 
-    #region 人物移动
-
-    [Header("人物移动参数")] [Tooltip("移动速度（参考蔚蓝）")] [SerializeField]
+    [Header("人物移动参数")]
+    [Tooltip("移动速度（参考蔚蓝）")]
+    [SerializeField]
     private float moveSpeed = 9f; // 移动速度（参考蔚蓝）
 
-    [Tooltip("最大移动速度限制")] [SerializeField] private float maxMoveSpeed = 10f; // 最大移动速度限制
-    [Tooltip("质量")] [SerializeField] private float newMass = 1f; // 质量
+    [Tooltip("最大移动速度限制")][SerializeField] private float maxMoveSpeed = 10f; // 最大移动速度限制
+    [Tooltip("质量")][SerializeField] private float newMass = 1f; // 质量
 
-    [Header("人物加减速度")] [Tooltip("加速度（调整）")] [SerializeField]
+    [Header("人物加减速度")]
+    [Tooltip("加速度（调整）")]
+    [SerializeField]
     private float acceleration = 90f; // 加速度（调整）
 
-    [Tooltip("减速度（增加）")] [SerializeField] private float deceleration = 60f; // 减速度（增加）
+    [Tooltip("减速度（增加）")][SerializeField] private float deceleration = 60f; // 减速度（增加）
 
-    [Header("速度曲线参数，空中控制系数，空气阻力")] [Tooltip("速度曲线指数")] [SerializeField]
+    [Header("速度曲线参数，空中控制系数，空气阻力")]
+    [Tooltip("速度曲线指数")]
+    [SerializeField]
     private float velocityPower = 0.9f; // 速度曲线指数
 
-    [Tooltip("空中控制系数（减小）")] [SerializeField]
+    [Tooltip("空中控制系数（减小）")]
+    [SerializeField]
     private float airControl = 0.6f; // 空中控制系数（减小）
 
-    [Tooltip("空气阻力（减小）")] [SerializeField] private float airDrag = 0.4f; // 空气阻力（减小）
+    [Tooltip("空气阻力（减小）")][SerializeField] private float airDrag = 0.4f; // 空气阻力（减小）
     [Tooltip("移动方向")] private Vector2 _moveDirection; // 移动方向
     [Tooltip("记录最后移动方向")] private float _lastMoveDirection; // 记录最后移动方向
-    [Header("地面检测")] [SerializeField] private LayerMask groundLayer; // 地面层
+    [Header("地面检测")][SerializeField] private LayerMask groundLayer; // 地面层
 
-    #endregion
+    //====================================================================================================
+    /*跳跃参数
+     *跳跃力度，跳跃按住时间，射线长度等等
+     */
+    //====================================================================================================
 
-    #region 人物跳跃
 
-    [Header("人物跳跃参数")] [Tooltip("跳跃力度（调整）")] [SerializeField]
+    [Header("人物跳跃参数")]
+    [Tooltip("跳跃力度（调整）")]
+    [SerializeField]
     private float jumpForce = 10f; // 跳跃力度（调整）
 
-    [Tooltip("最大跳跃按住时间（调整）")] [SerializeField]
+    [Tooltip("最大跳跃按住时间（调整）")]
+    [SerializeField]
     private float maxJumpHoldTime = 0.2f; // 最大跳跃按住时间（调整）
 
-    [Tooltip("射线长度")] [SerializeField] private float rayLength = 1.6f; // 射线长度
-    [Tooltip("重力")] [SerializeField] private Vector2 gravity;
+    [Tooltip("射线长度")][SerializeField] private float rayLength = 1.6f; // 射线长度
+    [Tooltip("重力")][SerializeField] private Vector2 gravity;
 
-    [Header("跳跃优化")] [Tooltip("土狼时间")] [SerializeField]
+    [Header("跳跃优化")]
+    [Tooltip("土狼时间")]
+    [SerializeField]
     private float coyoteTime = 0.1f; // 土狼时间（缩短）
 
-    [Tooltip("跳跃缓冲(缩短)")] [SerializeField] private float jumpBuffer = 0.1f; // 跳跃缓冲（缩短）
-    [Tooltip("下落加速度倍数")] [SerializeField] private float fallMultiplier = 1.8f; // 下落加速度倍数
-    [Tooltip("短跳加速倍数")] [SerializeField] private float shortJumpMultiplier = 2.5f; // 短跳加速倍数（新增）
-    [Tooltip("落地特效时间")] [SerializeField] private float landingVFXTime = 0.15f; // 落地特效时间
-
-    #endregion
+    [Tooltip("跳跃缓冲(缩短)")][SerializeField] private float jumpBuffer = 0.1f; // 跳跃缓冲（缩短）
+    [Tooltip("下落加速度倍数")][SerializeField] private float fallMultiplier = 1.8f; // 下落加速度倍数
+    [Tooltip("短跳加速倍数")][SerializeField] private float shortJumpMultiplier = 2.5f; // 短跳加速倍数（新增）
+    [Tooltip("落地特效时间")][SerializeField] private float landingVFXTime = 0.15f; // 落地特效时间
 
     //[Header("未使用")]
     //[SerializeField] private float minJumpForce = 7f;// 最小跳跃力度
@@ -63,18 +76,19 @@ public class PlayerController : MonoBehaviour
 
     #region 互动
 
-    [Header("互动参数")] [Tooltip("互动半径")] [SerializeField]
-    private float interactionRadius = 1f; // 互动半径
+    [Header("互动物体检测")] private TriggerObject _nearestTriggerObject; // 最近的互动物体
 
-    [Header("互动物体检测")] private TriggerObject nearestTriggerObject; // 最近的互动物体
+    public TriggerObject NearestTriggerObject => _nearestTriggerObject; // 最近的互动物体
 
-    [Header("互动物体")] private List<TriggerObject> triggerObjects = new List<TriggerObject>(); // 互动物体列表
+    [Header("互动物体")] private List<TriggerObject> _triggerObjects = new List<TriggerObject>(); // 互动物体列表
 
     #endregion
 
     #endregion
 
     #region 私有参数
+
+    /*人物跳跃参数*/
 
     private bool _isGrounded; // 是否在地面上
     private float _coyoteTimeCounter; // 土狼时间计数器
@@ -95,18 +109,27 @@ public class PlayerController : MonoBehaviour
     private RaycastHit2D _groundHit; // 地面检测结果
 
     #endregion
-    
-    [SerializeField] private const string CameraPlaceholder="CameraPlaceholder";
+
+
 
     #region 事件
 
-    public class OnTriggerObjectChoosedEventArgs : EventArgs
+    public class TriggerObjectSelectedEventArgs : EventArgs
     {
+        public TriggerObject SelectedObject;
     }
 
-    public event EventHandler<OnTriggerObjectChoosedEventArgs> OnTriggerObjectChoosed; // 选择互动物体事件
+    public event EventHandler<TriggerObjectSelectedEventArgs> OnTriggerObjectSelected; // 选择互动物体事件
 
     #endregion
+
+    //=====================================================================
+    //摄像机的移动空间
+    private const string CameraPlaceholder = "CameraPlaceholder";
+
+    public static PlayerController Instance { get; private set; }
+
+    Vector3 mousePosition;
 
     #region 生命周期函数
 
@@ -120,6 +143,11 @@ public class PlayerController : MonoBehaviour
         _rb2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         Physics2D.gravity = gravity;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+
     }
 
     // 初始化角色状态和事件订阅
@@ -131,9 +159,9 @@ public class PlayerController : MonoBehaviour
     {
         _rb2D.mass = newMass; // 设置刚体质量
         _lastGroundedY = transform.position.y; // 初始化最后着地位置
-        // 订阅跳跃事件
-        GameInput.Instance.OnJumpAction += GameInput_OnJumpAction;
-        GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
+        GameInput.Instance.OnClickAction += GameInput_OnClickAction;
+        GameInput.Instance.OnJumpAction += GameInput_OnJumpAction; // 订阅跳跃事件
+        // GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
     }
 
     // 清理事件订阅，防止内存泄漏
@@ -144,7 +172,8 @@ public class PlayerController : MonoBehaviour
         if (GameInput.Instance != null)
         {
             GameInput.Instance.OnJumpAction -= GameInput_OnJumpAction;
-            GameInput.Instance.OnInteractAction -= GameInput_OnInteractAction;
+            GameInput.Instance.OnClickAction -= GameInput_OnClickAction;
+            // GameInput.Instance.OnInteractAction -= GameInput_OnInteractAction;
         }
     }
 
@@ -158,6 +187,7 @@ public class PlayerController : MonoBehaviour
     {
         CheckGround(); // 检测地面
         UpdateTimers(); // 更新计时器
+        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);//获取鼠标位置
 
         // 处理跳跃按住时间
         if (_isJumping && GameInput.Instance.JumpPressed)
@@ -253,11 +283,17 @@ public class PlayerController : MonoBehaviour
             _rb2D.AddForce(frictionForce * Time.fixedDeltaTime, ForceMode2D.Impulse);
         }
 
-        // 角色朝向 - 使用最后移动方向
-        if (Mathf.Abs(_lastMoveDirection) > 0.1f)
+
+        // 角色朝向 - 使用鼠标的位置来判断//TODO-Maybe我们可以用这个来控制角色的朝向或着没有鼠标的时候用键盘控制方向
+        if (mousePosition.x < transform.position.x)
         {
-            _spriteRenderer.flipX = _lastMoveDirection > 0;
+            _spriteRenderer.flipX = false;
         }
+        else
+        {
+            _spriteRenderer.flipX = true;
+        }
+
 
         // 更新下落检测
         if (!_isGrounded && _rb2D.linearVelocity.y < 0)
@@ -369,7 +405,7 @@ public class PlayerController : MonoBehaviour
     // 尝试执行跳跃
     // 说明：
     // 1. 检查是否满足跳跃条件（在地面上或在土狼时间内）
-    // 2. 检查垂直速度确保不会在上升时二次跳跃
+    // 2. 检查垂直速度确保不会在上升时第二次跳跃
     // 3. 执行跳跃并重置相关状态
     private void TryJump()
     {
@@ -406,7 +442,7 @@ public class PlayerController : MonoBehaviour
     // 说明：
     // 1. 在下落时增加重力
     // 2. 在短跳时（松开跳跃键）应用更大的下落速度
-    // 目的：实现更好的跳跃手感
+    // 目的：实现更好地跳跃手感
     private void ApplyFallMultiplier()
     {
         if (!_isGrounded) // 只在非地面状态应用
@@ -416,14 +452,14 @@ public class PlayerController : MonoBehaviour
             {
                 // 确保这是一个向下的力
                 float fallForce = fallMultiplier - 1;
-                _rb2D.linearVelocity += Vector2.up * gravity * (fallForce * Time.fixedDeltaTime);
+                _rb2D.linearVelocity += Vector2.up * (gravity.y * (fallForce * Time.fixedDeltaTime));
             }
             // 短跳（当玩家释放跳跃键时）
             else if (_rb2D.linearVelocity.y > 0 && !GameInput.Instance.JumpPressed)
             {
                 // 应用更大的向下力量
                 float shortJumpForce = shortJumpMultiplier - 1;
-                _rb2D.linearVelocity += Vector2.up * gravity * (shortJumpForce * Time.fixedDeltaTime);
+                _rb2D.linearVelocity += Vector2.up * (gravity.y * (shortJumpForce * Time.fixedDeltaTime));
             }
         }
     }
@@ -434,12 +470,22 @@ public class PlayerController : MonoBehaviour
 
     // 处理互动输入事件
     // 说明：当玩家按下互动键时，触发最近的可互动物体的交互功能
-    private void GameInput_OnInteractAction(object sender, EventArgs e)
+    // private void GameInput_OnInteractAction(object sender, EventArgs e)
+    // {
+    //     // 检查是否有最近的可互动物体
+    //     if (_nearestTriggerObject != null)
+    //     {
+    //         _nearestTriggerObject.Interact();
+    //     }
+    // }
+
+    private void GameInput_OnClickAction(object sender, EventArgs e)
     {
-        //TODO: 互动逻辑没写完
-        if (nearestTriggerObject != null)
+
+        // 检查是否有最近的可互动物体
+        if (_nearestTriggerObject != null)
         {
-            nearestTriggerObject.Interact();
+            _nearestTriggerObject.Interact();
         }
     }
 
@@ -451,13 +497,13 @@ public class PlayerController : MonoBehaviour
     // 3. 更新最近的可交互物体
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent<TriggerObject>(out var triggerObject)&&other.gameObject.CompareTag(CameraPlaceholder) is false)
+        if (other.TryGetComponent<TriggerObject>(out var triggerObject))
         {
-            triggerObjects.Add(triggerObject);
+            _triggerObjects.Add(triggerObject);
             float distance = Vector3.Distance(transform.position, triggerObject.transform.position);
-            if (nearestTriggerObject == null || distance < Vector3.Distance(transform.position, nearestTriggerObject.transform.position))
+            if (_nearestTriggerObject == null || distance < Vector3.Distance(transform.position, _nearestTriggerObject.transform.position))
             {
-                nearestTriggerObject = triggerObject;
+                _nearestTriggerObject = triggerObject;
                 FindNearestTriggerObject();
             }
         }
@@ -468,17 +514,23 @@ public class PlayerController : MonoBehaviour
     // 说明：
     // 1. 从列表中移除离开的可交互物体
     // 2. 如果移除的是当前最近的物体，重新寻找最近物体
+    //3. 如果最近的物体为空，触发选中事件
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.TryGetComponent<TriggerObject>(out var triggerObject))
         {
             // 从列表中移除
-            triggerObjects.Remove(triggerObject);
+            _triggerObjects.Remove(triggerObject);
 
             // 如果移除的是当前最近的触发物体，需要重新查找最近的触发物体
-            if (triggerObject == nearestTriggerObject)
+            if (triggerObject == _nearestTriggerObject)
             {
                 FindNearestTriggerObject();
+            }
+            if (_nearestTriggerObject == null)
+            {
+                // 如果没有最近的触发物体，触发选中事件
+                OnnearestTriggerObjectSelected(null);
             }
         }
     }
@@ -491,30 +543,33 @@ public class PlayerController : MonoBehaviour
     // 4. 触发选中事件
     private void FindNearestTriggerObject()
     {
-        nearestTriggerObject = null;
-        float nearestDistance = float.MaxValue;
+        _nearestTriggerObject = null;
+        float nearestDistance = float.MaxValue; // 初始化为最大值
 
-        foreach (var obj in triggerObjects)
+        foreach (var obj in _triggerObjects)
         {
-            float distance = Vector3.Distance(transform.position, obj.transform.position);
-            if (distance < nearestDistance)
+            float distance = Vector3.Distance(this.transform.position, obj.transform.position);
+            if (distance < nearestDistance && distance <= 30f) //距离小于30f才能交互
             {
-                nearestTriggerObject = obj;
+                _nearestTriggerObject = obj;
                 nearestDistance = distance;
-                OnnearestTriggerObjectChoosed();
+                OnnearestTriggerObjectSelected(_nearestTriggerObject); //触发选中事件
+                Debug.Log("最近的可交互物体是：" + _nearestTriggerObject.name);
             }
         }
     }
 
     // 当选中最近的可交互物体时触发事件
     // 说明：如果存在最近的可交互物体，触发选中事件
-    private void OnnearestTriggerObjectChoosed()
+    //说明：如果不存在最近的可交互物体，同样触发选中事件但是传递null
+    private void OnnearestTriggerObjectSelected(TriggerObject SelectedObject)
     {
-        if (nearestTriggerObject != null)
+        OnTriggerObjectSelected?.Invoke(this, new TriggerObjectSelectedEventArgs
         {
-            OnTriggerObjectChoosed?.Invoke(this, new OnTriggerObjectChoosedEventArgs());
-        }
+            SelectedObject = SelectedObject
+        });
     }
 
     #endregion
+
 }

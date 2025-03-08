@@ -12,6 +12,8 @@ namespace Managers
 		public event EventHandler OnInteractAction;//互动事件E
 		public event EventHandler OnOpenInventoryAction;//打开背包事件B
 
+		public event EventHandler OnClickAction; // 点击事件
+
 		public event EventHandler OnJumpAction; // 新增跳跃事件SPACE
 		public bool JumpPressed { get; private set; } // 跟踪跳跃按钮状态
 
@@ -22,9 +24,15 @@ namespace Managers
 			PlayerInput.Player.Interact.performed += Interact_performed;
 			PlayerInput.Player.OpenInventory.performed += OpenClosedInventory_performed;
 			PlayerInput.Player.Jump.performed += Jump_performed;
+			PlayerInput.Player.Click.performed += Clicked_performed;
 		}
 
-		private void Update()
+        private void Clicked_performed(InputAction.CallbackContext context)
+        {
+            OnClickAction?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void Update()
 		{
 			moveDir = PlayerInput.Player.Move.ReadValue<Vector2>();
 			JumpPressed = PlayerInput.Player.Jump.ReadValue<float>() > 0.1f; // 检查跳跃按钮是否被按下

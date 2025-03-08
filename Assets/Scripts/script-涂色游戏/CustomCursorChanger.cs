@@ -1,20 +1,32 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class CustomCursorChanger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class CustomCursorChanger : MonoBehaviour
 {
-    [SerializeField] private Texture2D cursorTexture; // ÔÚInspectorÖĞÖ¸¶¨Ã¿¸ö·½¿é¶ÔÓ¦µÄ¹â±êÎÆÀí
+    [SerializeField] private Texture2D cursorTexture; // è®¾ç½®å›¾ç‰‡
+     private Button _button;//çœ‹çœ‹èƒ½ä¸èƒ½å’ŒèƒŒåŒ…é‡Œé¢çš„ç‰©å“ç»“åˆä½¿ç”¨
 
-    public void OnPointerEnter(PointerEventData eventData)
+     private void Awake()
+     {
+         _button=GetComponent<Button>();
+     }
+
+     private void Start()
     {
-        // µ±Êó±ê½øÈë·½¿éÊ±£¬ÉèÖÃ×Ô¶¨Òå¹â±ê
-        Vector2 hotspot = new Vector2(cursorTexture.width / 2, cursorTexture.height / 2);
+        // ä¸ºæŒ‰é’®çš„ç‚¹å‡»äº‹ä»¶æ·»åŠ ç›‘å¬å™¨
+        _button.onClick.AddListener(ChangeCursor);
+    }
+
+    private void ChangeCursor()
+    {
+        // TODO-ifåœ¨è¿›å…¥ç»˜åˆ¶æ¨¡å¼=trueæ—¶è¿›è¡Œå…‰æ ‡æ›´æ”¹
+        Vector2 hotspot = new Vector2(cursorTexture.width / 2f, cursorTexture.height / 2f);
         Cursor.SetCursor(cursorTexture, hotspot, CursorMode.Auto);
     }
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        // µ±Êó±êÀë¿ª·½¿éÊ±£¬»Ö¸´Ä¬ÈÏ¹â±ê
+    
+    public void ResetCursor()
+    {        // TODO-å¦‚æœéœ€è¦åœ¨å…¶ä»–åœ°æ–¹æ¢å¤é»˜è®¤å…‰æ ‡(åœ¨é€€å‡ºç»˜åˆ¶æ¨¡å¼ä»¥å)ï¼Œå¯ä»¥è°ƒç”¨è¿™ä¸ªæ–¹æ³•
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 }

@@ -16,9 +16,9 @@ public class Continue : MonoBehaviour
 
     private void Continue_Game()
     {
-        
+
         Time.timeScale = 1f;
         stopMenuPanel.SetActive(false);
-        
+
     }
 }

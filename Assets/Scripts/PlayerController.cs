@@ -483,6 +483,7 @@ public class PlayerController : MonoBehaviour
     {
 
         // 检查是否有最近的可互动物体
+        // TODO-从主 相机射线检测物体
         if (_nearestTriggerObject != null)
         {
             _nearestTriggerObject.Interact();

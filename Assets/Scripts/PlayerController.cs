@@ -77,10 +77,14 @@ public class PlayerController : MonoBehaviour
     #region 互动
 
     [Header("互动物体检测")] private TriggerObject _nearestTriggerObject; // 最近的互动物体
-
     public TriggerObject NearestTriggerObject => _nearestTriggerObject; // 最近的互动物体
-
     [Header("互动物体")] private List<TriggerObject> _triggerObjects = new List<TriggerObject>(); // 互动物体列表
+
+    [Header("点击交互")]
+    private TriggerObject _clickedTriggerObject; // 当前点击的交互对象
+    private bool _isMovingToTarget; // 是否正在移动到目标
+    private Vector2 _targetPosition; // 目标位置
+    private float _clickTime; // 点击时间，用于判断双击
 
     #endregion
 
@@ -125,11 +129,13 @@ public class PlayerController : MonoBehaviour
 
     //=====================================================================
     //摄像机的移动空间
-    private const string CameraPlaceholder = "CameraPlaceholder";
+    private const string CameraPlaceholder = "CameraPlaceholder";//摄像机占位符
 
-    public static PlayerController Instance { get; private set; }
+    public float overlapRadius = 0.5f; // 重叠区域的半径
 
-    Vector3 mousePosition;
+    public static PlayerController Instance { get; private set; }//单例模式
+
+    Vector2 mousePosition;//鼠标位置
 
     #region 生命周期函数
 
@@ -212,6 +218,36 @@ public class PlayerController : MonoBehaviour
                 _isLanding = false;
             }
         }
+
+        // 处理自动移动到目标位置
+        if (_isMovingToTarget && _clickedTriggerObject != null)
+        {
+            float directionX = Mathf.Sign(_targetPosition.x - transform.position.x);
+            Vector2 autoMoveDirection = new Vector2(directionX, 0);
+
+            // 检查是否到达目标位置附近
+            if (Mathf.Abs(transform.position.x - _targetPosition.x) < 0.5f)
+            {
+                _isMovingToTarget = false;
+                autoMoveDirection = Vector2.zero;
+            }
+
+            // 如果有手动输入，取消自动移动
+            if (Mathf.Abs(GameInput.Instance.moveDir.x) > 0.1f)
+            {
+                _isMovingToTarget = false;
+                _clickedTriggerObject = null;
+                _moveDirection = GameInput.Instance.moveDir;
+            }
+            else
+            {
+                _moveDirection = autoMoveDirection;
+            }
+        }
+        else
+        {
+            _moveDirection = GameInput.Instance.moveDir;
+        }
     }
 
     // 固定时间间隔的物理更新
@@ -245,7 +281,11 @@ public class PlayerController : MonoBehaviour
     // 6. 处理下落检测和预落地效果
     private void HandleMovement()
     {
-        _moveDirection = GameInput.Instance.moveDir;
+        // 只在非自动移动时更新moveDirection
+        if (!_isMovingToTarget)
+        {
+            _moveDirection = GameInput.Instance.moveDir;
+        }
         _direction = _moveDirection.normalized;
 
         if (_direction != Vector2.zero && CanMove())
@@ -284,12 +324,12 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        // 角色朝向 - 使用鼠标的位置来判断//TODO-Maybe我们可以用这个来控制角色的朝向或着没有鼠标的时候用键盘控制方向
-        if (mousePosition.x < transform.position.x)
+        // 角色朝向 - 基于移动方向
+        if (_moveDirection.x < 0)
         {
             _spriteRenderer.flipX = false;
         }
-        else
+        else if (_moveDirection.x > 0)
         {
             _spriteRenderer.flipX = true;
         }
@@ -481,14 +521,44 @@ public class PlayerController : MonoBehaviour
 
     private void GameInput_OnClickAction(object sender, EventArgs e)
     {
+        // 从摄像机发射射线到鼠标点击位置
+        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-        // 检查是否有最近的可互动物体
-        // TODO-从主 相机射线检测物体
-        if (_nearestTriggerObject != null)
+        if (hit.collider != null)
         {
-            _nearestTriggerObject.Interact();
+            TriggerObject clickedObject = hit.collider.GetComponent<TriggerObject>();
+            
+            if (clickedObject != null)
+            {
+                Debug.Log("点击到TriggerObject: " + clickedObject.name);
+                
+                // 计算目标位置（保持玩家的Y坐标）
+                Vector2 targetPosition = new Vector2(
+                    clickedObject.transform.position.x,
+                    transform.position.y
+                );
+
+                // 如果点击了已点击过的物体且在触发区域内
+                if (clickedObject == _clickedTriggerObject && _triggerObjects.Contains(clickedObject))
+                {
+                    clickedObject.Interact();
+                    _clickedTriggerObject = null;
+                    _isMovingToTarget = false;
+                    _moveDirection = Vector2.zero;
+                }
+                else 
+                {
+                    _clickedTriggerObject = clickedObject;
+                    _targetPosition = targetPosition;
+                    _isMovingToTarget = true;
+                    
+                    Debug.Log($"开始移动到目标位置: {_targetPosition}");
+                }
+            }
         }
     }
+
+
 
     // 处理触发器进入事件
     // 参数：other - 进入触发区域的碰撞体

@@ -337,7 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 055311f50dea13945bdd300c04729ebb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorTexture: {fileID: 2800000, guid: b3a8deefb70a42b47ac4a829167128e1, type: 3}
+  cursorTexture: {fileID: 2800000, guid: ebbe355e0d2137740a00cd6add3d1455, type: 3}
 --- !u!114 &290078336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -817,8 +817,8 @@ RectTransform:
   m_GameObject: {fileID: 1124053438}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.060469717, y: 0.116580255, z: 0.19317983}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1.9279113, z: 3.194654}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 290078334}
   - {fileID: 1267367348}
@@ -829,7 +829,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -519.81}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1124053441
 MonoBehaviour:

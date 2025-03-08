@@ -1364,7 +1364,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 185630c62d7ab2147940b229e4fcaf7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 1531025203}
   selectedObject: {fileID: 1341985754}
   selectedEffect: {fileID: 1250270893}
 --- !u!1 &1101082077

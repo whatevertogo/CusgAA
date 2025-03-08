@@ -135,8 +135,8 @@ public class PlayerController : MonoBehaviour
     {
         _rb2D.mass = newMass; // 设置刚体质量
         _lastGroundedY = transform.position.y; // 初始化最后着地位置
-        // 订阅跳跃事件
-        GameInput.Instance.OnJumpAction += GameInput_OnJumpAction;
+        GameInput.Instance.OnClickAction += GameInput_OnClickAction;
+        GameInput.Instance.OnJumpAction += GameInput_OnJumpAction; // 订阅跳跃事件
         GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
     }
 
@@ -149,6 +149,7 @@ public class PlayerController : MonoBehaviour
         {
             GameInput.Instance.OnJumpAction -= GameInput_OnJumpAction;
             GameInput.Instance.OnInteractAction -= GameInput_OnInteractAction;
+            GameInput.Instance.OnClickAction -= GameInput_OnClickAction;
         }
     }
 
@@ -439,6 +440,15 @@ public class PlayerController : MonoBehaviour
     // 处理互动输入事件
     // 说明：当玩家按下互动键时，触发最近的可互动物体的交互功能
     private void GameInput_OnInteractAction(object sender, EventArgs e)
+    {
+        // 检查是否有最近的可互动物体
+        if (_nearestTriggerObject != null)
+        {
+            _nearestTriggerObject.Interact();
+        }
+    }
+
+    private void GameInput_OnClickAction(object sender, EventArgs e)
     {
         // 检查是否有最近的可互动物体
         if (_nearestTriggerObject != null)

@@ -12,8 +12,9 @@ public interface IInteract
     // 用途：
     // 1. 实现具体的交互逻辑
     // 2. 可以是开门、拾取物品、触发对话等各种行为
-     void Interact()
+    void Interact()
     {
-     Debug.Log("不应该在基类中调用此方法");
+        Debug.Log("不应该在基类中调用此方法");
     }
+    
 }

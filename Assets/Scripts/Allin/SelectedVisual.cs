@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class SelectedVisual : MonoBehaviour
 {
-    [SerializeField] private PlayerController playerController;
     [SerializeField] private TriggerObject selectedObject; // 选中的物体
     [SerializeField] private GameObject selectedEffect; // 选中时的特效
 
@@ -10,7 +9,7 @@ public class SelectedVisual : MonoBehaviour
     //订阅playerController中的OnTriggerObjectSelected事件
     void Start()
     {
-        playerController.OnTriggerObjectSelected += IamSelected;
+        PlayerController.Instance.OnTriggerObjectSelected += IamSelected;
     }
 
     public void IamSelected(object sender, PlayerController.TriggerObjectSelectedEventArgs e)

@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+
     #region 私有参数
 
     /*人物跳跃参数*/
@@ -109,7 +110,6 @@ public class PlayerController : MonoBehaviour
     private RaycastHit2D _groundHit; // 地面检测结果
 
     #endregion
-
 
 
     #region 事件

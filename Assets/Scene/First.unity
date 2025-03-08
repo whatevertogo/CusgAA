@@ -397,7 +397,7 @@ GameObject:
   - component: {fileID: 270638070}
   m_Layer: 0
   m_Name: CameraPlace
-  m_TagString: Untagged
+  m_TagString: CameraPlaceholder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -475,7 +475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f453f694addf4275988fac205bc91968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoundingShape2D: {fileID: 0}
+  BoundingShape2D: {fileID: 270638068}
   Damping: 0.5
   SlowingDistance: 5
   OversizeWindow:
@@ -764,7 +764,7 @@ GameObject:
   - component: {fileID: 549636438}
   m_Layer: 0
   m_Name: PlayerCamera
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1193,7 +1193,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.51084566, y: -1.2058154, z: -10}
+  m_LocalPosition: {x: 0.5108447, y: -1.2058154, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1862,7 +1862,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -2245,7 +2245,7 @@ GameObject:
   - component: {fileID: 1531025203}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2451,7 +2451,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 30, y: 30}
+  m_Size: {x: 30, y: 40}
   m_Direction: 0
 --- !u!1001 &1575177101
 PrefabInstance:

@@ -12,27 +12,34 @@ public class PlayerController : MonoBehaviour
 {
     #region 人物参数
 
-    [Header("人物移动参数")] [Tooltip("移动速度（参考蔚蓝）")] [SerializeField]
+    [Header("人物移动参数")]
+    [Tooltip("移动速度（参考蔚蓝）")]
+    [SerializeField]
     private float moveSpeed = 9f; // 移动速度（参考蔚蓝）
 
-    [Tooltip("最大移动速度限制")] [SerializeField] private float maxMoveSpeed = 10f; // 最大移动速度限制
-    [Tooltip("质量")] [SerializeField] private float newMass = 1f; // 质量
+    [Tooltip("最大移动速度限制")][SerializeField] private float maxMoveSpeed = 10f; // 最大移动速度限制
+    [Tooltip("质量")][SerializeField] private float newMass = 1f; // 质量
 
-    [Header("人物加减速度")] [Tooltip("加速度（调整）")] [SerializeField]
+    [Header("人物加减速度")]
+    [Tooltip("加速度（调整）")]
+    [SerializeField]
     private float acceleration = 90f; // 加速度（调整）
 
-    [Tooltip("减速度（增加）")] [SerializeField] private float deceleration = 60f; // 减速度（增加）
+    [Tooltip("减速度（增加）")][SerializeField] private float deceleration = 60f; // 减速度（增加）
 
-    [Header("速度曲线参数，空中控制系数，空气阻力")] [Tooltip("速度曲线指数")] [SerializeField]
+    [Header("速度曲线参数，空中控制系数，空气阻力")]
+    [Tooltip("速度曲线指数")]
+    [SerializeField]
     private float velocityPower = 0.9f; // 速度曲线指数
 
-    [Tooltip("空中控制系数（减小）")] [SerializeField]
+    [Tooltip("空中控制系数（减小）")]
+    [SerializeField]
     private float airControl = 0.6f; // 空中控制系数（减小）
 
-    [Tooltip("空气阻力（减小）")] [SerializeField] private float airDrag = 0.4f; // 空气阻力（减小）
+    [Tooltip("空气阻力（减小）")][SerializeField] private float airDrag = 0.4f; // 空气阻力（减小）
     [Tooltip("移动方向")] private Vector2 _moveDirection; // 移动方向
     [Tooltip("记录最后移动方向")] private float _lastMoveDirection; // 记录最后移动方向
-    [Header("地面检测")] [SerializeField] private LayerMask groundLayer; // 地面层
+    [Header("地面检测")][SerializeField] private LayerMask groundLayer; // 地面层
 
     //====================================================================================================
     /*跳跃参数
@@ -41,22 +48,27 @@ public class PlayerController : MonoBehaviour
     //====================================================================================================
 
 
-    [Header("人物跳跃参数")] [Tooltip("跳跃力度（调整）")] [SerializeField]
+    [Header("人物跳跃参数")]
+    [Tooltip("跳跃力度（调整）")]
+    [SerializeField]
     private float jumpForce = 10f; // 跳跃力度（调整）
 
-    [Tooltip("最大跳跃按住时间（调整）")] [SerializeField]
+    [Tooltip("最大跳跃按住时间（调整）")]
+    [SerializeField]
     private float maxJumpHoldTime = 0.2f; // 最大跳跃按住时间（调整）
 
-    [Tooltip("射线长度")] [SerializeField] private float rayLength = 1.6f; // 射线长度
-    [Tooltip("重力")] [SerializeField] private Vector2 gravity;
+    [Tooltip("射线长度")][SerializeField] private float rayLength = 1.6f; // 射线长度
+    [Tooltip("重力")][SerializeField] private Vector2 gravity;
 
-    [Header("跳跃优化")] [Tooltip("土狼时间")] [SerializeField]
+    [Header("跳跃优化")]
+    [Tooltip("土狼时间")]
+    [SerializeField]
     private float coyoteTime = 0.1f; // 土狼时间（缩短）
 
-    [Tooltip("跳跃缓冲(缩短)")] [SerializeField] private float jumpBuffer = 0.1f; // 跳跃缓冲（缩短）
-    [Tooltip("下落加速度倍数")] [SerializeField] private float fallMultiplier = 1.8f; // 下落加速度倍数
-    [Tooltip("短跳加速倍数")] [SerializeField] private float shortJumpMultiplier = 2.5f; // 短跳加速倍数（新增）
-    [Tooltip("落地特效时间")] [SerializeField] private float landingVFXTime = 0.15f; // 落地特效时间
+    [Tooltip("跳跃缓冲(缩短)")][SerializeField] private float jumpBuffer = 0.1f; // 跳跃缓冲（缩短）
+    [Tooltip("下落加速度倍数")][SerializeField] private float fallMultiplier = 1.8f; // 下落加速度倍数
+    [Tooltip("短跳加速倍数")][SerializeField] private float shortJumpMultiplier = 2.5f; // 短跳加速倍数（新增）
+    [Tooltip("落地特效时间")][SerializeField] private float landingVFXTime = 0.15f; // 落地特效时间
 
     //[Header("未使用")]
     //[SerializeField] private float minJumpForce = 7f;// 最小跳跃力度
@@ -98,8 +110,7 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    //摄像机的移动空间
-    private const string CameraPlaceholder = "CameraPlaceholder";
+
 
     #region 事件
 
@@ -111,6 +122,14 @@ public class PlayerController : MonoBehaviour
     public event EventHandler<TriggerObjectSelectedEventArgs> OnTriggerObjectSelected; // 选择互动物体事件
 
     #endregion
+
+    //=====================================================================
+    //摄像机的移动空间
+    private const string CameraPlaceholder = "CameraPlaceholder";
+
+    public static PlayerController Instance { get; private set; }
+
+    Vector3 mousePosition;
 
     #region 生命周期函数
 
@@ -124,6 +143,11 @@ public class PlayerController : MonoBehaviour
         _rb2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         Physics2D.gravity = gravity;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+
     }
 
     // 初始化角色状态和事件订阅
@@ -137,7 +161,7 @@ public class PlayerController : MonoBehaviour
         _lastGroundedY = transform.position.y; // 初始化最后着地位置
         GameInput.Instance.OnClickAction += GameInput_OnClickAction;
         GameInput.Instance.OnJumpAction += GameInput_OnJumpAction; // 订阅跳跃事件
-        GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
+        // GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
     }
 
     // 清理事件订阅，防止内存泄漏
@@ -148,8 +172,8 @@ public class PlayerController : MonoBehaviour
         if (GameInput.Instance != null)
         {
             GameInput.Instance.OnJumpAction -= GameInput_OnJumpAction;
-            GameInput.Instance.OnInteractAction -= GameInput_OnInteractAction;
             GameInput.Instance.OnClickAction -= GameInput_OnClickAction;
+            // GameInput.Instance.OnInteractAction -= GameInput_OnInteractAction;
         }
     }
 
@@ -163,6 +187,7 @@ public class PlayerController : MonoBehaviour
     {
         CheckGround(); // 检测地面
         UpdateTimers(); // 更新计时器
+        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);//获取鼠标位置
 
         // 处理跳跃按住时间
         if (_isJumping && GameInput.Instance.JumpPressed)
@@ -258,11 +283,17 @@ public class PlayerController : MonoBehaviour
             _rb2D.AddForce(frictionForce * Time.fixedDeltaTime, ForceMode2D.Impulse);
         }
 
-        // 角色朝向 - 使用最后移动方向
-        if (Mathf.Abs(_lastMoveDirection) > 0.1f)
+
+        // 角色朝向 - 使用鼠标的位置来判断//TODO-Maybe我们可以用这个来控制角色的朝向或着没有鼠标的时候用键盘控制方向
+        if (mousePosition.x < transform.position.x)
         {
-            _spriteRenderer.flipX = _lastMoveDirection > 0;
+            _spriteRenderer.flipX = false;
         }
+        else
+        {
+            _spriteRenderer.flipX = true;
+        }
+
 
         // 更新下落检测
         if (!_isGrounded && _rb2D.linearVelocity.y < 0)
@@ -439,17 +470,18 @@ public class PlayerController : MonoBehaviour
 
     // 处理互动输入事件
     // 说明：当玩家按下互动键时，触发最近的可互动物体的交互功能
-    private void GameInput_OnInteractAction(object sender, EventArgs e)
-    {
-        // 检查是否有最近的可互动物体
-        if (_nearestTriggerObject != null)
-        {
-            _nearestTriggerObject.Interact();
-        }
-    }
+    // private void GameInput_OnInteractAction(object sender, EventArgs e)
+    // {
+    //     // 检查是否有最近的可互动物体
+    //     if (_nearestTriggerObject != null)
+    //     {
+    //         _nearestTriggerObject.Interact();
+    //     }
+    // }
 
     private void GameInput_OnClickAction(object sender, EventArgs e)
     {
+
         // 检查是否有最近的可互动物体
         if (_nearestTriggerObject != null)
         {
@@ -465,7 +497,7 @@ public class PlayerController : MonoBehaviour
     // 3. 更新最近的可交互物体
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent<TriggerObject>(out var triggerObject) && other.gameObject.CompareTag(CameraPlaceholder) is false)
+        if (other.TryGetComponent<TriggerObject>(out var triggerObject))
         {
             _triggerObjects.Add(triggerObject);
             float distance = Vector3.Distance(transform.position, triggerObject.transform.position);
@@ -489,7 +521,7 @@ public class PlayerController : MonoBehaviour
         {
             // 从列表中移除
             _triggerObjects.Remove(triggerObject);
-            
+
             // 如果移除的是当前最近的触发物体，需要重新查找最近的触发物体
             if (triggerObject == _nearestTriggerObject)
             {
@@ -539,5 +571,5 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
-    
+
 }

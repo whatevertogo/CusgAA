@@ -12,9 +12,9 @@ using UnityEngine;
 // 3. 可以被继承以实现具体的触发行为
 public abstract class TriggerObject : MonoBehaviour, IInteract
 {
-    [SerializeField] private  InventoryManager inventoryManager;
+    [SerializeField] private InventoryManager inventoryManager;
 
-    
+
     // 实现IInteract接口的交互方法
     // 说明：定义物体被交互时的基础行为
     // 用途：派生类可以重写此方法实现具体的交互逻辑

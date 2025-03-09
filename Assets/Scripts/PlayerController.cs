@@ -118,6 +118,10 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    public float overlapRadius = 0.5f;
+    public static PlayerController Instance { get; private set; }
+    Vector2 mousePosition;
+   
     #region 事件
 
     /// <summary>
@@ -131,10 +135,7 @@ public class PlayerController : MonoBehaviour
     public event EventHandler<TriggerObjectSelectedEventArgs> OnTriggerObjectSelected;
 
     #endregion
-    public float overlapRadius = 0.5f;
-    public static PlayerController Instance { get; private set; }
-    Vector2 mousePosition;
-
+    
     #region 生命周期函数
 
     /// <summary>

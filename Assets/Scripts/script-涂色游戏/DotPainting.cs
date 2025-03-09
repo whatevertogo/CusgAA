@@ -1,48 +1,45 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-
-public class DotPainting : MonoBehaviour, IPointerClickHandler
+//TODO-æ·»åŠ åˆ°è¦æ¶‚è‰²çš„ç‰©å“ä¸Š
+/*
+public class HideImageOnClick : MonoBehaviour, IPointerClickHandler
 {
-    private CustomCursorChanger cursorChanger; // ×Ô¶¨Òå¹â±ê¸ü¸ÄÆ÷ÒıÓÃ
+    
+    // å¼•ç”¨å›¾ç‰‡çš„GameObject
+    public GameObject imageObject;
+    [SerializeField] private CustomCursorChanger cursorChanger;
 
-    [System.Obsolete]
-    private void Awake()
+    void Start()
     {
-        // »ñÈ¡×Ô¶¨Òå¹â±ê¸ü¸ÄÆ÷ÒıÓÃ
-        cursorChanger = FindObjectOfType<CustomCursorChanger>();
+        if (imageObject == null)
+        {
+            Debug.LogError("Image Object is not assigned.");
+        }
 
-        // ¼ì²éÊÇ·ñ³É¹¦»ñÈ¡ÒıÓÃ
-        if (cursorChanger != null)
-        {
-            Debug.Log("³É¹¦»ñÈ¡ CustomCursorChanger ÒıÓÃ");
-        }
-        else
-        {
-            Debug.LogError("Î´ÕÒµ½ CustomCursorChanger ½Å±¾ÊµÀı");
-        }
+        
     }
+
+    void Update()
+    {
+        
+    }
+    // å®ç°IPointerClickHandleræ¥å£çš„OnPointerClickæ–¹æ³•
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (cursorChanger.hasSelectedBrush)
+        
+        
+        if (imageObject != null)
         {
-            // »ñÈ¡µã»÷Î»ÖÃ
-            Vector2 clickPosition;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                cursorChanger.drawingArea.rectTransform,
-                eventData.position,
-                cursorChanger.drawingArea.canvas.worldCamera,
-                out clickPosition
-            );
-
-            // µ÷ÊÔÈÕÖ¾£¬¼ì²éµã»÷Î»ÖÃ
-            Debug.Log("Click Position: " + clickPosition);
-
-            cursorChanger.DotPaint(clickPosition);
-        }
-        else
-        {
-            // µ÷ÊÔÈÕÖ¾£¬¼ì²éÊÇ·ñÑ¡ÔñÁË»­±Ê
-            Debug.Log("No brush selected");
+            // éšè—å›¾ç‰‡
+            switch (cursorChanger.name)
+            {
+                case 1 :
+                 imageObject.SetActive(false);
+                 break;//TODO-æ ¹æ®å˜é‡å¯¹åº”é¢œè‰²æ¿å—å˜è‰²ï¼ˆå¾…å†™ï¼‰
+            }
+            
         }
     }
-}
+    //TODO-å½“å¯¹åº”æ¿å—å…¨éƒ¨æ¶ˆå¤±è·å¾—ç‰©å“åˆ°èƒŒåŒ…
+    */
+    //TODO-è¿™é‡Œå†™ä¸€ä¸ªæ´¾ç”Ÿç±»å§

@@ -23,7 +23,7 @@ namespace Managers
             InitializeLevel();
         }
 
-        private void InitializeLevel()
+        private static void InitializeLevel()
         {
             // 关卡初始化逻辑
         }

@@ -1,10 +1,14 @@
 using UnityEngine;
 
+/// <summary>
+/// 灯摇晃
+/// </summary>
+
 public class ShakingLight : MonoBehaviour
 {
     public Vector3 rotationCenter = new Vector3(1.75f, 8.8f, 0); // 旋转中心点
-    public float rotationSpeed = 45f; // 旋转速度，每秒旋转的角度
-    public float maxAngle = 90f; // 每次旋转的最大角度
+    public float rotationSpeed = 10f; // 旋转速度，每秒旋转的角度
+    public float maxAngle = 10f; // 每次旋转的最大角度
     private float _currentAngle = 0f; // 当前旋转角度
     private bool _clockwise = true; // 是否顺时针旋转，默认为顺时针
 

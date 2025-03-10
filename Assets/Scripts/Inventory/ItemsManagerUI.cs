@@ -3,142 +3,159 @@ using Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-///     背包UI管理器
-///     负责：
-///     1. 显示和隐藏背包界面
-///     2. 动态更新背包物品显示
-///     3. 处理背包相关的输入事件
-/// </summary>
+// 背包UI管理器
+// 说明：管理背包界面的显示、隐藏和更新
+// 功能：
+// 1. 显示和隐藏背包界面
+// 2. 动态更新背包物品显示
+// 3. 处理背包相关的输入事件
 public class ItemsManagerUI : MonoBehaviour
 {
-    #region 序列化字段
+    [SerializeField] private Transform AllItems;  // 所有物品的容器
+    [SerializeField] private GameObject itemContainerPrefab;  // 物品容器预制体
+    [SerializeField] private GameObject InventoryBackGround;
+    bool _done = true;
 
-    [Header("UI引用")] [Tooltip("所有物品的容器")] [SerializeField]
-    private Transform AllItems;
-
-    [Tooltip("物品容器预制体")] [SerializeField] private GameObject itemContainerPrefab;
-
-    [Tooltip("背包背景")] [SerializeField] private GameObject InventoryBackGround;
-
-    #endregion
-
-    #region Unity生命周期
-
-    /// <summary>
-    ///     初始化背包UI系统
-    ///     1. 订阅背包更新事件
-    ///     2. 订阅背包开关事件
-    ///     3. 设置初始状态
-    /// </summary>
-    private void Start()
+    // 初始化背包UI系统
+    // 说明：
+    // 1. 初始化背包界面显示
+    // 2. 订阅背包更新事件
+    // 3. 订阅背包开关事件
+    // 4. 初始设置物品容器为隐藏状态
+    void Start()
     {
-        // 订阅背包更新事件
-        EventManager.Instance.OnInventoryUpdated += EventManager_OnInventoryUpdated;
-
-        // 订阅背包开关事件
-        GameInput.Instance.OnOpenInventoryAction += InventoryManager_OnOpenInventoryAction;
-
-        // 初始化UI状态
-        AllItems.gameObject.SetActive(false);
-        InventoryBackGround.SetActive(false);
+        EventManager.Instance.OnInventoryUpdated += (sender, args) => UpdateVisual(); // 监听背包更新事件
+        GameInput.Instance.OnOpenInventoryAction += InventoryManager_OnOpenInventoryAction; // 监听背包开关事件
+        AllItems.gameObject.SetActive(false); // 初始设置所有物品容器为隐藏状态
+        InventoryBackGround.SetActive(false); // 初始设置背包背景为隐藏状态
         UpdateVisual();
     }
 
-    /// <summary>
-    ///     取消事件订阅
-    /// </summary>
-    private void OnDestroy()
-    {
-        if (EventManager.Instance != null) EventManager.Instance.OnInventoryUpdated -= EventManager_OnInventoryUpdated;
-
-        if (GameInput.Instance != null)
-            GameInput.Instance.OnOpenInventoryAction -= InventoryManager_OnOpenInventoryAction;
-    }
-
-    #endregion
-
-    #region 事件处理
-
-    /// <summary>
-    ///     处理背包内容更新事件
-    /// </summary>
-    private void EventManager_OnInventoryUpdated(object sender, EventManager.OnInventoryUpdatedArgs args)
-    {
-        UpdateVisual();
-    }
-
-    /// <summary>
-    ///     处理背包开关事件
-    /// </summary>
+    // 处理背包开关事件
+    // 参数：
+    // - sender: 事件发送者
+    // - e: 事件参数
+    // 说明：响应输入系统的背包开关命令
+    //GameInput的事件我没放在EventManager里面
     private void InventoryManager_OnOpenInventoryAction(object sender, EventArgs e)
     {
         Open_CloseInventory();
     }
 
-    #endregion
-
-    #region UI操作方法
-
-    /// <summary>
-    ///     切换背包显示状态
-    /// </summary>
+    // 切换背包显示状态
+    // 说明：根据当前状态打开或关闭背包界面
     public void Open_CloseInventory()
     {
         if (AllItems.gameObject.activeSelf)
+        {
             HideInventory();
+        }
         else
+        {
             ShowInventory();
+        }
     }
 
-    /// <summary>
-    ///     显示背包界面
-    /// </summary>
+    // 显示背包界面
+    // 说明：
+    // 1. 激活背包界面
+    // 2. 更新物品显示
     public void ShowInventory()
     {
         AllItems.gameObject.SetActive(true);
-        InventoryBackGround.SetActive(true);
+        InventoryBackGround.SetActive(true); // 显示背包背景
         UpdateVisual();
     }
 
-    /// <summary>
-    ///     隐藏背包界面
-    /// </summary>
+    // 隐藏背包界面
+    // 说明：禁用背包界面的显示
     public void HideInventory()
     {
         AllItems.gameObject.SetActive(false);
-        InventoryBackGround.SetActive(false);
+        InventoryBackGround.SetActive(false); // 隐藏背包背景
     }
 
-    /// <summary>
-    ///     更新背包界面显示
-    ///     1. 清理现有物品显示
-    ///     2. 为每个物品创建显示容器
-    ///     3. 设置物品图片和名称
-    /// </summary>
+    // 更新背包界面显示
+    // 说明：
+    // 1. 清理现有的物品显示
+    // 2. 为每个背包中的物品创建显示容器
+    // 3. 设置物品图片和名称
+    // 4. 可选：添加物品使用按钮
     public void UpdateVisual()
     {
         // 清空当前的UI元素
-        foreach (Transform child in AllItems) Destroy(child.gameObject);
+        foreach (Transform child in AllItems)
+        {
+            Destroy(child.gameObject);
+        }
 
         // 载入所有背包物品
-        if (InventoryManager.Instance != null)
-            foreach (var item in InventoryManager.Instance.items)
+        foreach (var item in InventoryManager.Instance.items)
+        {
+            // 创建物品容器
+            GameObject newItemContainer = Instantiate(itemContainerPrefab, AllItems);
+
+            // 设置物品图片
+            Image itemImage = newItemContainer.transform.Find("Image").GetComponent<Image>();
+            if (itemImage != null)
             {
-                // 创建物品容器
-                var newItemContainer = Instantiate(itemContainerPrefab, AllItems);
-
-                // 设置物品图片
-                if (newItemContainer.transform.Find("Image")?.TryGetComponent<Image>(out var itemImage) == true)
-                    itemImage.sprite = item.itemImage;
-
-                // 设置物品名称
-                if (newItemContainer.transform.Find("Text")?.TryGetComponent<Text>(out var itemNameText) == true)
-                    itemNameText.text = item.itemName;
+                itemImage.sprite = item.itemImage;
             }
 
-        //TODO-写一个更好的视觉效果
+            // 设置物品名称
+            Text itemNameText = newItemContainer.transform.Find("Text").GetComponent<Text>();
+            if (itemNameText != null)
+            {
+                itemNameText.text = item.itemName;
+            }
+            
+            #region 可选按钮
+            // 为物品添加使用功能（启用）
+             Button itemButton = newItemContainer.transform.Find("Button")?.GetComponent<Button>();
+             if (itemButton != null)
+             {
+                 itemButton.onClick.AddListener(() => UseItem(item));
+             }
+            #endregion
+        }
+        
+        
+    }
+    //TODO-写一个更好的视觉效果
+
+    private void UseItem(ItemSO item)
+    {
+
+        #region 操作光标
+         // 先取反
+        if (_done)
+        {
+            SetCursorTexture(item);
+            _done = !_done;
+        }
+        else
+        {
+            ResetCursorTexture();
+            _done = !_done;
+        }
+        #endregion
     }
 
+    #region 光标设置
+    private void SetCursorTexture(ItemSO item)
+    {
+        Texture2D texture = item.itemImage.texture;//转换类型
+        
+        // 设置自定义光标
+        Vector2 hotspot = new Vector2(texture.width /2f,texture.height / 2f);
+        Cursor.SetCursor(texture, hotspot, CursorMode.ForceSoftware);
+       
+    }
+    
+    private void ResetCursorTexture()
+    {
+        //TODO-（或者再次点击时调用）
+        Cursor.SetCursor(null,Vector2.zero, CursorMode.Auto);
+    }
     #endregion
 }

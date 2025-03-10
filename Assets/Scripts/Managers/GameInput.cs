@@ -37,6 +37,15 @@ namespace Managers
         {
             if (PlayerInput != null) PlayerInput.Enable();
         }
+        
+        private void OnDestroy()
+        {
+            if (Instance == this)
+            {
+                Instance = null;
+            }
+            Debug.Log("GameInput OnDestroy");
+        }
 
         private void OnDisable()
         {

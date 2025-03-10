@@ -2451,7 +2451,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: StopMenu
       objectReference: {fileID: 0}
-    m_RemovedComponents: [{fileID: 9220320157337651672, guid: 5a2eac4aa6c94fd4fa1252411236d004, type: 3}]
+    m_RemovedComponents:
+    - {fileID: 9220320157337651672, guid: 5a2eac4aa6c94fd4fa1252411236d004, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -3987,8 +3988,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AllItems: {fileID: 1227040031}
-  itemContainerPrefab: {fileID: 577538806}
-  InventoryBackGround: {fileID: 577538806}
+  itemContainerPrefab: {fileID: 3432980783960576732, guid: d81e53feee636eb4285ef59e865ccc3a, type: 3}
+  InventoryBackGround: {fileID: 1422581384}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

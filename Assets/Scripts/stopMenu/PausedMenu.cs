@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class PauseMenu : MonoBehaviour
 {
-    [Header("UI References")]
+    [Header("UI")]
     [SerializeField] private GameObject pauseMenuPanel;
     [SerializeField] private Button continueButton;
     [SerializeField] private Button resetButton;

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 5577b57608a762a4f834e94d52bc3386
+guid: ef825027bf33ecf4f81d19fed76f67a0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1053631182886905209
-    second: "\u5149\u6807 (3)_0"
+      213: -8913663657061953879
+    second: "\u5149\u6807_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -57,7 +57,7 @@ TextureImporter:
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 7
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -77,7 +77,7 @@ TextureImporter:
     textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
-    crunchedCompression: 0
+    crunchedCompression: 1
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\u5149\u6807 (3)_0"
+      name: "\u5149\u6807_0"
       rect:
         serializedVersion: 2
         x: 25
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 975af3c7aff3f9e00800000000000000
-      internalID: 1053631182886905209
+      spriteID: 9ae4389612e4c4480800000000000000
+      internalID: -8913663657061953879
       vertices: []
       indices: 
       edges: []
@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      "\u5149\u6807_0": -8913663657061953879
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

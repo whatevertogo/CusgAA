@@ -14,6 +14,7 @@ public class ItemsManagerUI : MonoBehaviour
     [SerializeField] private Transform AllItems;  // 所有物品的容器
     [SerializeField] private GameObject itemContainerPrefab;  // 物品容器预制体
     [SerializeField] private GameObject InventoryBackGround;
+    bool _done = true;
 
     // 初始化背包UI系统
     // 说明：
@@ -108,15 +109,52 @@ public class ItemsManagerUI : MonoBehaviour
             }
             
             #region 可选按钮
-            // 为物品添加使用功能（当前未启用）
-            // Button itemButton = newItemContainer.transform.Find("Button")?.GetComponent<Button>();
-            // if (itemButton != null)
-            // {
-            //     itemButton.onClick.AddListener(() => UseItem(item));
-            // }
+            // 为物品添加使用功能（启用）
+             Button itemButton = newItemContainer.transform.Find("Button")?.GetComponent<Button>();
+             if (itemButton != null)
+             {
+                 itemButton.onClick.AddListener(() => UseItem(item));
+             }
             #endregion
         }
         
-        //TODO-写一个更好的视觉效果
+        
     }
+    //TODO-写一个更好的视觉效果
+
+    private void UseItem(ItemSO item)
+    {
+
+        #region 操作光标
+         // 先取反
+        if (_done)
+        {
+            SetCursorTexture(item);
+            _done = !_done;
+        }
+        else
+        {
+            ResetCursorTexture();
+            _done = !_done;
+        }
+        #endregion
+    }
+
+    #region 光标设置
+    private void SetCursorTexture(ItemSO item)
+    {
+        Texture2D texture = item.itemImage.texture;//转换类型
+        
+        // 设置自定义光标
+        Vector2 hotspot = new Vector2(texture.width /2f,texture.height / 2f);
+        Cursor.SetCursor(texture, hotspot, CursorMode.ForceSoftware);
+       
+    }
+    
+    private void ResetCursorTexture()
+    {
+        //TODO-（或者再次点击时调用）
+        Cursor.SetCursor(null,Vector2.zero, CursorMode.Auto);
+    }
+    #endregion
 }

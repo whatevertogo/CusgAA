@@ -18,6 +18,9 @@ using System.Collections.Generic;
 public class PlayerController : MonoBehaviour
 {
     #region 人物参数
+    
+    
+    //==========================移动参数===============================================================
 
     [Header("人物移动参数")]
     [Tooltip("移动速度（参考蔚蓝）")]
@@ -79,7 +82,7 @@ public class PlayerController : MonoBehaviour
 
     #region 互动
     [Header("互动物体")]
-    private List<TriggerObject> _triggerObjects = new List<TriggerObject>(); // 触发范围内的物体列表
+    private readonly List<TriggerObject> _triggerObjects = new List<TriggerObject>(); // 触发范围内的物体列表
 
     // [旧版本] 最近物体检测相关变量和属性
     /*
@@ -118,6 +121,11 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    public float overlapRadius = 0.5f;
+    public static PlayerController Instance { get; private set; }
+    private Vector2 _mousePosition;
+    public Camera cam ;
+   
     #region 事件
 
     /// <summary>
@@ -131,10 +139,7 @@ public class PlayerController : MonoBehaviour
     public event EventHandler<TriggerObjectSelectedEventArgs> OnTriggerObjectSelected;
 
     #endregion
-    public float overlapRadius = 0.5f;
-    public static PlayerController Instance { get; private set; }
-    Vector2 mousePosition;
-
+    
     #region 生命周期函数
 
     /// <summary>
@@ -145,10 +150,13 @@ public class PlayerController : MonoBehaviour
         _rb2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         Physics2D.gravity = gravity;
-        if (Instance == null)
+        cam= Camera.main;
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
+            Destroy(gameObject);
+            return;
         }
+        Instance = this;
     }
 
     /// <summary>
@@ -181,7 +189,8 @@ public class PlayerController : MonoBehaviour
     {
         CheckGround();
         UpdateTimers();
-        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+       
+        _mousePosition = cam.ScreenToWorldPoint(Input.mousePosition);
         UpdateSelectedObject();
 
         // 处理跳跃持续时间
@@ -208,7 +217,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // 处理移动状态
-        if (_isMovingToTarget && _clickedTriggerObject != null)
+        if (_isMovingToTarget && _clickedTriggerObject is not null)
         {
             float directionX = Mathf.Sign(_targetPosition.x - transform.position.x);
             Vector2 autoMoveDirection = new Vector2(directionX, 0);
@@ -249,7 +258,7 @@ public class PlayerController : MonoBehaviour
             _rb2D.linearVelocity.y
         );
     }
-
+    
     #endregion
 
     #region 移动系统
@@ -440,7 +449,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void GameInput_OnClickAction(object sender, EventArgs e)
     {
-        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+        RaycastHit2D hit = Physics2D.Raycast(cam.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
         if (hit.collider != null)
         {
@@ -506,22 +515,22 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void UpdateSelectedObject()
     {
-        TriggerObject nearestToMouse = null;
+        TriggerObject nearestToMouseTriggerObject = null;
         float closestDistance = float.MaxValue;
 
         foreach (var obj in _triggerObjects)
         {
-            float distance = Vector2.Distance(mousePosition, obj.transform.position);
+            float distance = Vector2.Distance(_mousePosition, obj.transform.position);
             if (distance < selectRadius && distance < closestDistance)
             {
-                nearestToMouse = obj;
+                nearestToMouseTriggerObject = obj;
                 closestDistance = distance;
             }
         }
 
-        if (_selectedObject != nearestToMouse)
+        if (_selectedObject != nearestToMouseTriggerObject)
         {
-            _selectedObject = nearestToMouse;
+            _selectedObject = nearestToMouseTriggerObject;
             OnObjectSelected(_selectedObject);
         }
     }

@@ -56,12 +56,7 @@ namespace Managers
             PlayerInput.Player.ESC.performed -= Escape_performed;
             if (PlayerInput != null) PlayerInput.Disable();
         }
-
-        private void OnDestroy()
-        {
-            Destroy(gameObject);
-        }
-
+        
         public event EventHandler OnInteractAction;
         public event EventHandler OnOpenInventoryAction;
         public event EventHandler OnClickAction;

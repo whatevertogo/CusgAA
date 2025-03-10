@@ -5,11 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - CameraPlaceholder
-  - BlueBrush
-  - RedBrush
-  - PurpleBrush
-  - PinkBrush
-  - YellowBrush
+  - TriggerObject
   layers:
   - Default
   - TransparentFX
@@ -20,7 +16,7 @@ TagManager:
   - 
   - 
   - Ground
-  - 
+  - Interactable
   - 
   - 
   - 

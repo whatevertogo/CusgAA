@@ -42,6 +42,8 @@ namespace Managers
         private bool isLoading;
         public bool IsLoading => isLoading;
         #endregion
+        
+        #region 生命周期函数
 
         // 初始化场景管理器
         protected override void Awake()
@@ -63,6 +65,8 @@ namespace Managers
             SceneManager.sceneLoaded -= OnSceneLoaded;
             SceneManager.sceneUnloaded -= OnSceneUnloaded;
         }
+        
+        #endregion
 
         #region 场景加载方法
 
@@ -115,6 +119,7 @@ namespace Managers
             { 
                 SceneName = sceneName 
             });// 触发加载开始事件
+            //TODO-记得删掉
             Debug.Log($"开始异步加载场景: {sceneName}");
 
             // 使用默认配置
@@ -129,31 +134,39 @@ namespace Managers
             yield return new WaitForSeconds(0.1f); // 给UI一点时间来显示
 
             AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName, config.loadMode);
-            asyncOperation.allowSceneActivation = false; // 暂时不允许场景激活
-
-            float progress = 0;// 加载进度
-
-            while (!asyncOperation.isDone)
+            if (asyncOperation != null)
             {
-                // 更新加载进度（0-1）
-                progress = Mathf.Clamp01(asyncOperation.progress / 0.9f);// 限制进度在0-1之间
-                OnLoadingProgressChanged?.Invoke(this, new OnLoadingProgressChangedEventArgs 
-                { 
-                    Progress = progress 
-                });// 触发加载进度变化事件
+                asyncOperation.allowSceneActivation = false; // 暂时不允许场景激活
 
-                if (config.showProgressBar)
+                float progress = 0; // 加载进度
+
+                while (!asyncOperation.isDone)
                 {
-                    Debug.Log($"加载进度: {progress:P}");
-                }
+                    // 更新加载进度（0-1）
+                    progress = Mathf.Clamp01(asyncOperation.progress / 0.9f); // 限制进度在0-1之间
+                    OnLoadingProgressChanged?.Invoke(this, new OnLoadingProgressChangedEventArgs
+                    {
+                        Progress = progress
+                    }); // 触发加载进度变化事件
 
-                // 当加载进度达到90%且满足最小加载时间时，允许场景激活
-                if (asyncOperation.progress >= 0.9f && Time.time - startTime >= config.minimumLoadingTime)
-                {
-                    asyncOperation.allowSceneActivation = true;
-                }
+                    if (config.showProgressBar)
+                    {
+                        Debug.Log($"加载进度: {progress:P}");
+                    }
 
-                yield return null;
+                    // 当加载进度达到90%且满足最小加载时间时，允许场景激活
+                    if (asyncOperation.progress >= 0.9f && Time.time - startTime >= config.minimumLoadingTime)
+                    {
+                        asyncOperation.allowSceneActivation = true;
+                    }
+
+                    yield return null;
+                }
+            }
+            else
+            {
+                //TODO-记得删掉
+                Debug.Log("asyncOperation is null");
             }
 
             float loadTime = Time.time - startTime;// 计算加载耗时
@@ -172,7 +185,7 @@ namespace Managers
                 SceneName = sceneName,
                 LoadTime = loadTime
             });
-            
+            //TODO-记得删掉
             Debug.Log($"场景 {sceneName} 加载完成，耗时: {loadTime:F2}秒");
         }
 
@@ -207,7 +220,7 @@ namespace Managers
 
         #endregion
 
-        #region 场景预加载（TODO：实现场景预加载功能）
+        #region 场景预加载（TODO-：实现场景预加载功能）
         
         // public void PreloadScene(string sceneName)
         // {

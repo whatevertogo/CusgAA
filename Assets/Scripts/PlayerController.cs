@@ -1,196 +1,334 @@
-/* C# 中的 PlayerController 类管理玩家的移动、加速、跳跃和地面使用各种参数和优化进行检测。
- *加上互动功能
- * 
-*/
-
-using Managers;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using Managers;
 
+
+/// <summary>
+/// 玩家角色控制器
+/// 主要功能：
+/// 1. 平滑的移动和跳跃系统，包括加速度和空气阻力
+/// 2. 优化的跳跃手感，包括土狼时间和跳跃缓冲
+/// 3. 可交互物体的高亮和选择系统
+/// 4. 点击移动和自动寻路功能
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
-    #region 人物参数
-
+    #region 序列化字段
     [Header("人物移动参数")]
-    [Tooltip("移动速度（参考蔚蓝）")]
-    [SerializeField]
-    private float moveSpeed = 9f; // 移动速度（参考蔚蓝）
-
-    [Tooltip("最大移动速度限制")][SerializeField] private float maxMoveSpeed = 10f; // 最大移动速度限制
-    [Tooltip("质量")][SerializeField] private float newMass = 1f; // 质量
-
-    [Header("人物加减速度")]
-    [Tooltip("加速度（调整）")]
-    [SerializeField]
-    private float acceleration = 90f; // 加速度（调整）
-
-    [Tooltip("减速度（增加）")][SerializeField] private float deceleration = 60f; // 减速度（增加）
-
-    [Header("速度曲线参数，空中控制系数，空气阻力")]
+    [Tooltip("基础移动速度")]
+    [SerializeField] private float moveSpeed = 9f;           // 基础移动速度
+    [Tooltip("最大移动速度")]
+    [SerializeField] private float maxMoveSpeed = 10f;      // 最大移动速度
+    [Tooltip("新的质量")]
+    [SerializeField] private float newMass = 1f;            // 角色质量
+    [Tooltip("加速度")]
+    [SerializeField] private float acceleration = 90f;       // 加速度
+    [Tooltip("减速度")]
+    [SerializeField] private float deceleration = 60f;       // 减速度
     [Tooltip("速度曲线指数")]
-    [SerializeField]
-    private float velocityPower = 0.9f; // 速度曲线指数
-
-    [Tooltip("空中控制系数（减小）")]
-    [SerializeField]
-    private float airControl = 0.6f; // 空中控制系数（减小）
-
-    [Tooltip("空气阻力（减小）")][SerializeField] private float airDrag = 0.4f; // 空气阻力（减小）
-    [Tooltip("移动方向")] private Vector2 _moveDirection; // 移动方向
-    [Tooltip("记录最后移动方向")] private float _lastMoveDirection; // 记录最后移动方向
-    [Header("地面检测")][SerializeField] private LayerMask groundLayer; // 地面层
-
-    //====================================================================================================
-    /*跳跃参数
-     *跳跃力度，跳跃按住时间，射线长度等等
-     */
-    //====================================================================================================
-
-
-    [Header("人物跳跃参数")]
-    [Tooltip("跳跃力度（调整）")]
-    [SerializeField]
-    private float jumpForce = 10f; // 跳跃力度（调整）
-
-    [Tooltip("最大跳跃按住时间（调整）")]
-    [SerializeField]
-    private float maxJumpHoldTime = 0.2f; // 最大跳跃按住时间（调整）
-
-    [Tooltip("射线长度")][SerializeField] private float rayLength = 1.6f; // 射线长度
-    [Tooltip("重力")][SerializeField] private Vector2 gravity;
-
-    [Header("跳跃优化")]
+    [SerializeField] private float velocityPower = 0.9f;    // 速度曲线指数
+    [Tooltip("空中控制系数")]
+    [SerializeField] private float airControl = 0.6f;       // 空中控制系数
+    [Tooltip("空气阻力")]
+    [SerializeField] private float airDrag = 0.4f;          // 空气阻力
+    [Tooltip("选择CheckGround层级")]
+    [SerializeField] private LayerMask groundLayer;         // 地面层
+    [Tooltip("跳跃力度")]
+    [SerializeField] private float jumpForce = 10f;         // 跳跃力度
+    [Tooltip("最大跳跃按住时间")]
+    [SerializeField] private float maxJumpHoldTime = 0.2f;  // 最大跳跃按住时间 
+    [Tooltip("地面检测射线长度")]
+    [SerializeField] private float rayLength = 1.6f;        // 地面检测射线长度
+    [Tooltip("重力")]
+    [SerializeField] private Vector2 gravity;               // 重力
     [Tooltip("土狼时间")]
-    [SerializeField]
-    private float coyoteTime = 0.1f; // 土狼时间（缩短）
-
-    [Tooltip("跳跃缓冲(缩短)")][SerializeField] private float jumpBuffer = 0.1f; // 跳跃缓冲（缩短）
-    [Tooltip("下落加速度倍数")][SerializeField] private float fallMultiplier = 1.8f; // 下落加速度倍数
-    [Tooltip("短跳加速倍数")][SerializeField] private float shortJumpMultiplier = 2.5f; // 短跳加速倍数（新增）
-    [Tooltip("落地特效时间")][SerializeField] private float landingVFXTime = 0.15f; // 落地特效时间
-
-    //[Header("未使用")]
-    //[SerializeField] private float minJumpForce = 7f;// 最小跳跃力度
-    //[SerializeField] private float preLandingTime = 0.15f; // 预落地时间
-
-    #region 互动
-
-    [Header("互动物体检测")] private TriggerObject _nearestTriggerObject; // 最近的互动物体
-
-    public TriggerObject NearestTriggerObject => _nearestTriggerObject; // 最近的互动物体
-
-    [Header("互动物体")] private List<TriggerObject> _triggerObjects = new List<TriggerObject>(); // 互动物体列表
-
+    [SerializeField] private float coyoteTime = 0.1f;       // 土狼时间
+    [Tooltip("跳跃缓冲时间")]
+    [SerializeField] private float jumpBuffer = 0.1f;       // 跳跃缓冲时间
+    [Tooltip("下落加速倍数")]
+    [SerializeField] private float fallMultiplier = 1.8f;   // 下落加速倍数
+    [Tooltip("短跳加速倍数")]
+    [SerializeField] private float shortJumpMultiplier = 2.5f; // 短跳加速倍数
+    [Tooltip("特效持续事件")]
+    [SerializeField] private float landingVFXTime = 0.15f;  // 落地特效持续时间
+    [Tooltip("鼠标选择物体范围")]
+    [SerializeField] private float selectRadius = 1f;       // 物体选择范围
     #endregion
 
+    #region 私有字段
+    // 交互相关
+    private readonly List<TriggerObject> _triggerObjects = new();
+    private TriggerObject _clickedTriggerObject;
+    private TriggerObject _selectedObject;
+    private bool _isMovingToTarget;
+    private Vector2 _targetPosition;
+
+    // 移动相关
+    private Vector2 _moveDirection;
+    private float _lastMoveDirection;
+    private bool _isGrounded;
+    private float _coyoteTimeCounter;
+    private float _jumpBufferCounter;
+    private bool _hasBufferedJump;
+    private float _jumpHoldTime;
+    private bool _isJumping;
+    private float _fallDistance;
+    private float _lastGroundedY;
+    private bool _isPreLanding;
+    private bool _isLanding;
+    private Vector2 _direction;
+
+    // 组件引用
+    private Rigidbody2D _rb2D;
+    private SpriteRenderer _spriteRenderer;
+    private RaycastHit2D _groundHit;
+    private Vector2 _mousePosition;
     #endregion
 
-    #region 私有参数
-
-    /*人物跳跃参数*/
-
-    private bool _isGrounded; // 是否在地面上
-    private float _coyoteTimeCounter; // 土狼时间计数器
-    private float _jumpBufferCounter; // 跳跃缓冲计数器
-    private bool _hasBufferedJump; // 是否有缓冲的跳跃
-    private float _jumpHoldTime; // 跳跃按住时间
-    private bool _isJumping; // 是否正在跳跃
-    private float _fallDistance; // 下落距离
-    private float _lastGroundedY; // 上次着地Y位置
-    private bool _isPreLanding; // 是否预落地
-    private bool _isLanding; // 是否正在着地
-
-    private Vector2 _direction; // 向量化后的方向
-    private Rigidbody2D _rb2D; // 刚体组件
-    private SpriteRenderer _spriteRenderer; // 精灵渲染器组件
-
-    // 缓存射线检测结果
-    private RaycastHit2D _groundHit; // 地面检测结果
-
-    #endregion
-
-
-
-    #region 事件
-
-    public class TriggerObjectSelectedEventArgs : EventArgs
-    {
-        public TriggerObject SelectedObject;
-    }
-
-    public event EventHandler<TriggerObjectSelectedEventArgs> OnTriggerObjectSelected; // 选择互动物体事件
-
-    #endregion
-
-    //=====================================================================
-    //摄像机的移动空间
-    private const string CameraPlaceholder = "CameraPlaceholder";
-
+    #region 公共属性
+    [Header("公共属性")]
+    public float overlapRadius = 0.5f;
     public static PlayerController Instance { get; private set; }
+    public Camera cam;
+    public TriggerObject SelectedObject => _selectedObject;
+    #endregion
 
-    Vector3 mousePosition;
-
-    #region 生命周期函数
-
-    // 初始化组件和物理系统
-    // 说明：
-    // 1. 获取刚体组件
-    // 2. 获取精灵渲染器组件
-    // 3. 设置全局重力
+    #region Unity生命周期
+    /// <summary>
+    /// 初始化组件引用和单例
+    /// </summary>
     private void Awake()
     {
         _rb2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         Physics2D.gravity = gravity;
-        if (Instance == null)
-        {
-            Instance = this;
-        }
+        cam = Camera.main;
 
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
     }
 
-    // 初始化角色状态和事件订阅
-    // 说明：
-    // 1. 设置刚体质量
-    // 2. 初始化地面检测位置
-    // 3. 订阅输入系统的跳跃和互动事件
+    /// <summary>
+    /// 初始化状态和注册事件
+    /// </summary>
     private void Start()
     {
-        _rb2D.mass = newMass; // 设置刚体质量
-        _lastGroundedY = transform.position.y; // 初始化最后着地位置
-        GameInput.Instance.OnClickAction += GameInput_OnClickAction;
-        GameInput.Instance.OnJumpAction += GameInput_OnJumpAction; // 订阅跳跃事件
-        // GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
+        _rb2D.mass = newMass;
+        _lastGroundedY = transform.position.y;
+
+        if (GameInput.Instance != null)
+        {
+            GameInput.Instance.OnClickAction += GameInput_OnClickAction;
+            GameInput.Instance.OnJumpAction += GameInput_OnJumpAction;
+        }
     }
 
-    // 清理事件订阅，防止内存泄漏
-    // 说明：在对象销毁时取消对输入系统事件的订阅
+    /// <summary>
+    /// 注销事件
+    /// </summary>
     private void OnDestroy()
     {
-        // 取消订阅以防止内存泄漏
         if (GameInput.Instance != null)
         {
             GameInput.Instance.OnJumpAction -= GameInput_OnJumpAction;
             GameInput.Instance.OnClickAction -= GameInput_OnClickAction;
-            // GameInput.Instance.OnInteractAction -= GameInput_OnInteractAction;
         }
     }
 
-    // 每帧更新逻辑
-    // 说明：
-    // 1. 进行地面检测
-    // 2. 更新各种计时器
-    // 3. 处理跳跃持续时间
-    // 4. 处理着地效果
+    /// <summary>
+    /// 每帧更新状态和输入
+    /// </summary>
     private void Update()
     {
-        CheckGround(); // 检测地面
-        UpdateTimers(); // 更新计时器
-        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);//获取鼠标位置
+        CheckGround();
+        UpdateTimers();
 
-        // 处理跳跃按住时间
-        if (_isJumping && GameInput.Instance.JumpPressed)
+        _mousePosition = cam.ScreenToWorldPoint(Input.mousePosition);
+        UpdateSelectedObject();
+
+        HandleJumpingState();
+        HandleMovementState();
+    }
+
+    /// <summary>
+    /// 物理更新
+    /// </summary>
+    private void FixedUpdate()
+    {
+        HandleMovement();
+        ApplyFallMultiplier();
+
+        _rb2D.linearVelocity = new Vector2(
+            Mathf.Clamp(_rb2D.linearVelocity.x, -maxMoveSpeed, maxMoveSpeed),
+            _rb2D.linearVelocity.y
+        );
+    }
+    #endregion
+
+    #region 移动系统
+    /// <summary>
+    /// 处理角色移动
+    /// 包含加速度、空气阻力等计算
+    /// 在FixedUpdate中调用
+    /// </summary>
+    private void HandleMovement()
+    {
+        if (!_isMovingToTarget && GameInput.Instance != null)
+        {
+            _moveDirection = GameInput.Instance.moveDir;
+        }
+        _direction = _moveDirection.normalized;
+
+        if (_direction != Vector2.zero && CanMove())
+        {
+            ApplyMovementForce();
+        }
+        else
+        {
+            ApplyFriction();
+        }
+
+        UpdateSpriteDirection();
+        HandleFalling();
+    }
+
+    /// <summary>
+    /// 应用移动力
+    /// 使用加速度和速度曲线计算
+    /// 在HandleMovement中调用
+    /// </summary>
+    private void ApplyMovementForce()
+    {
+        _lastMoveDirection = _direction.x;
+        float targetSpeed = _direction.x * moveSpeed;
+        float controlModifier = _isGrounded ? 1f : airControl;
+        float currentSpeed = _rb2D.linearVelocity.x;
+        float speedDifference = targetSpeed - currentSpeed;
+        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
+        float movement = Mathf.Pow(Mathf.Abs(speedDifference) * accelRate, velocityPower) * Mathf.Sign(speedDifference);
+        movement *= controlModifier;
+
+        _rb2D.AddForce(Vector2.right * (movement * Time.fixedDeltaTime), ForceMode2D.Impulse);
+    }
+
+    /// <summary>
+    /// 应用摩擦力
+    /// 停止移动时减速
+    /// 在HandleMovement中调用
+    /// </summary>
+    private void ApplyFriction()
+    {
+        float friction = _isGrounded ? deceleration : (airDrag * deceleration);
+        Vector2 frictionForce = -_rb2D.linearVelocity.x * friction * Vector2.right;
+        _rb2D.AddForce(frictionForce * Time.fixedDeltaTime, ForceMode2D.Impulse);
+    }
+
+    /// <summary>
+    /// 处理移动状态
+    /// 包括自动移动和手动移动的切换
+    /// 在Update中调用
+    /// </summary>
+    private void HandleMovementState()
+    {
+        if (_isMovingToTarget && _clickedTriggerObject != null)
+        {
+            HandleTargetMovement();
+        }
+        else if (GameInput.Instance != null)
+        {
+            _moveDirection = GameInput.Instance.moveDir;
+        }
+    }
+
+    /// <summary>
+    /// 处理目标移动
+    /// 点击物体后自动移动到目标位置
+    /// 在HandleMovementState中调用
+    /// </summary>
+    private void HandleTargetMovement()
+    {
+        float directionX = Mathf.Sign(_targetPosition.x - transform.position.x);
+        Vector2 autoMoveDirection = new Vector2(directionX, 0);
+
+        if (Mathf.Abs(transform.position.x - _targetPosition.x) < 0.5f)
+        {
+            _isMovingToTarget = false;
+            autoMoveDirection = Vector2.zero;
+
+            if (_clickedTriggerObject != null &&
+                Vector2.Distance(transform.position, _clickedTriggerObject.transform.position) <= _clickedTriggerObject.InteractionRange)
+            {
+                _clickedTriggerObject.Interact();
+            }
+        }
+
+        if (GameInput.Instance != null && Mathf.Abs(GameInput.Instance.moveDir.x) > 0.1f)
+        {
+            _isMovingToTarget = false;
+            _clickedTriggerObject = null;
+            _moveDirection = GameInput.Instance.moveDir;
+        }
+        else
+        {
+            _moveDirection = autoMoveDirection;
+        }
+    }
+    #endregion
+
+    #region 跳跃系统
+    /// <summary>
+    /// 跳跃事件处理
+    /// 当按下跳跃键时触发
+    /// 由GameInput事件系统调用
+    /// </summary>
+    private void GameInput_OnJumpAction(object sender, EventArgs e)
+    {
+        _jumpBufferCounter = jumpBuffer;
+        TryJump();
+    }
+
+    /// <summary>
+    /// 尝试执行跳跃
+    /// 检查跳跃条件并执行跳跃
+    /// 在GameInput_OnJumpAction和UpdateTimers中调用
+    /// </summary>
+    private void TryJump()
+    {
+        if ((_isGrounded || _coyoteTimeCounter > 0) && _rb2D.linearVelocity.y <= 0.1f)
+        {
+            _isJumping = true;
+            _jumpHoldTime = 0f;
+            PerformJump(jumpForce);
+            _coyoteTimeCounter = 0;
+        }
+    }
+
+    /// <summary>
+    /// 执行跳跃
+    /// 应用跳跃力
+    /// 在TryJump中调用
+    /// </summary>
+    private void PerformJump(float force)
+    {
+        _rb2D.linearVelocity = new Vector2(_rb2D.linearVelocity.x, 0f);
+        _rb2D.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+        _hasBufferedJump = false;
+        _jumpBufferCounter = 0;
+    }
+
+    /// <summary>
+    /// 处理跳跃状态
+    /// 控制跳跃高度和落地状态
+    /// 在Update中调用
+    /// </summary>
+    private void HandleJumpingState()
+    {
+        if (_isJumping && GameInput.Instance != null && GameInput.Instance.JumpPressed)
         {
             _jumpHoldTime += Time.deltaTime;
             if (_jumpHoldTime >= maxJumpHoldTime)
@@ -203,152 +341,172 @@ public class PlayerController : MonoBehaviour
             _isJumping = false;
         }
 
-        // 处理着地效果
-        if (_isLanding)
+        if (_isLanding && Time.time >= landingVFXTime)
         {
-            // 可以在这里添加着地动画或特效
-            if (Time.time >= landingVFXTime)
+            _isLanding = false;
+        }
+    }
+    #endregion
+
+    #region 交互系统
+    /// <summary>
+    /// 点击事件处理
+    /// 检测点击的物体并处理交互
+    /// 由GameInput事件系统调用
+    /// </summary>
+    private void GameInput_OnClickAction(object sender, EventArgs e)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(cam.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+        if (hit.collider != null)
+        {
+            var clickedObject = hit.collider.GetComponent<TriggerObject>();
+
+            if (clickedObject != null && clickedObject.CanInteract)
             {
-                _isLanding = false;
+                HandleClickedObject(clickedObject);
             }
         }
     }
 
-    // 固定时间间隔的物理更新
-    // 说明：
-    // 1. 处理角色移动
-    // 2. 应用下落加速度
-    // 3. 限制最大水平速度
-    private void FixedUpdate()
+    /// <summary>
+    /// 处理点击的物体
+    /// 设置移动目标和交互状态
+    /// 在GameInput_OnClickAction中调用
+    /// </summary>
+    private void HandleClickedObject(TriggerObject clickedObject)
     {
-        HandleMovement(); // 处理移动
-        ApplyFallMultiplier(); // 应用下落加速
-
-        // 强制限制最大水平速度，防止角色飘浮
-        _rb2D.linearVelocity = new Vector2(
-            Mathf.Clamp(_rb2D.linearVelocity.x, -maxMoveSpeed, maxMoveSpeed),
-            _rb2D.linearVelocity.y
+        Vector2 targetPosition = new Vector2(
+            clickedObject.transform.position.x,
+            transform.position.y
         );
-    }
 
-    #endregion
-
-    #region 移动
-
-    // 处理角色移动
-    // 说明：
-    // 1. 获取输入方向并归一化
-    // 2. 计算目标速度和当前速度的差值
-    // 3. 应用加速度和控制系数
-    // 4. 处理地面和空中的不同移动状态
-    // 5. 更新角色朝向
-    // 6. 处理下落检测和预落地效果
-    private void HandleMovement()
-    {
-        _moveDirection = GameInput.Instance.moveDir;
-        _direction = _moveDirection.normalized;
-
-        if (_direction != Vector2.zero && CanMove())
+        if (clickedObject == _clickedTriggerObject && _triggerObjects.Contains(clickedObject))
         {
-            _lastMoveDirection = _direction.x;
-
-            // 计算目标速度
-            float targetSpeed = _direction.x * moveSpeed;
-
-            // 应用控制系数
-            float controlModifier = _isGrounded ? 1f : airControl;
-
-            // 获取当前水平速度
-            float currentSpeed = _rb2D.linearVelocity.x;
-
-            // 计算速度差距
-            float speedDifference = targetSpeed - currentSpeed;
-
-            // 选择合适的加速度
-            float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
-
-            // 应用加速度曲线
-            float movement = Mathf.Pow(Mathf.Abs(speedDifference) * accelRate, velocityPower) *
-                             Mathf.Sign(speedDifference);
-            movement *= controlModifier; // 应用空中/地面控制系数
-
-            // 改用脉冲力模式，避免持续累积
-            _rb2D.AddForce(Vector2.right * (movement * Time.fixedDeltaTime), ForceMode2D.Impulse);
-        }
-        else
-        {
-            // 停止移动时的减速 - 对地面和空中使用不同的减速度
-            float friction = _isGrounded ? deceleration : (airDrag * deceleration);
-            Vector2 frictionForce = -_rb2D.linearVelocity.x * friction * Vector2.right;
-            _rb2D.AddForce(frictionForce * Time.fixedDeltaTime, ForceMode2D.Impulse);
-        }
-
-
-        // 角色朝向 - 使用鼠标的位置来判断//TODO-Maybe我们可以用这个来控制角色的朝向或着没有鼠标的时候用键盘控制方向
-        if (mousePosition.x < transform.position.x)
-        {
-            _spriteRenderer.flipX = false;
-        }
-        else
-        {
-            _spriteRenderer.flipX = true;
-        }
-
-
-        // 更新下落检测
-        if (!_isGrounded && _rb2D.linearVelocity.y < 0)
-        {
-            _fallDistance = _lastGroundedY - transform.position.y;
-
-            // 预落地检测 - 只有在下落距离较大时进行检测以减少开销
-            if (!_isPreLanding && _fallDistance > 1f)
+            if (Vector2.Distance(transform.position, clickedObject.transform.position) <= clickedObject.InteractionRange)
             {
-                _groundHit = Physics2D.Raycast(transform.position, Vector2.down, rayLength * 3f, groundLayer);
-                if (_groundHit.collider is not null)
-                {
-                    _isPreLanding = true;
-                    // 这里可以触发预落地动画
-                }
+                clickedObject.Interact();
+                _clickedTriggerObject = null;
+                _isMovingToTarget = false;
+                _moveDirection = Vector2.zero;
             }
         }
+        else
+        {
+            _clickedTriggerObject = clickedObject;
+            _targetPosition = targetPosition;
+            _isMovingToTarget = true;
+        }
     }
 
-    // 检查角色是否可以移动
-    // 返回：true - 可以移动，false - 不能移动
-    // 说明：可以在这里添加各种移动限制条件
-    private bool CanMove()
+    /// <summary>
+    /// 更新选中的物体
+    /// 检测鼠标指向的最近可交互物体
+    /// 在Update中调用
+    /// </summary>
+    private void UpdateSelectedObject()
     {
-        return true;
-    }
+        TriggerObject nearestObject = null;
+        float closestDistance = float.MaxValue;
 
+        foreach (var obj in _triggerObjects)
+        {
+            if (!obj.CanInteract) continue;
+
+            float distance = Vector2.Distance(_mousePosition, obj.transform.position);
+            if (distance < selectRadius && distance < closestDistance)
+            {
+                nearestObject = obj;
+                closestDistance = distance;
+            }
+        }
+
+        if (_selectedObject != nearestObject)
+        {
+            if (_selectedObject != null)
+            {
+                _selectedObject.OnDeselected();
+            }
+
+            _selectedObject = nearestObject;
+
+            if (_selectedObject != null)
+            {
+                _selectedObject.OnSelected();
+            }
+
+            EventManager.Instance?.TriggerObjectSelected(_selectedObject);
+        }
+    }
     #endregion
 
-    #region 跳跃
-
-    // 处理跳跃输入事件
-    // 说明：
-    // 1. 设置跳跃缓冲计时器
-    // 2. 尝试执行跳跃
-    private void GameInput_OnJumpAction(object sender, EventArgs e)
+    #region 地面检测
+    /// <summary>
+    /// 检查地面状态
+    /// 使用射线检测判断是否着地
+    /// 在Update中调用
+    /// </summary>
+    private void CheckGround()
     {
-        _jumpBufferCounter = jumpBuffer;
-        TryJump();
+        _groundHit = Physics2D.Raycast(transform.position, Vector2.down, rayLength, groundLayer);
+        bool wasGrounded = _isGrounded;
+        _isGrounded = _groundHit.collider != null;
+
+        if (_isGrounded && !wasGrounded)
+        {
+            HandleLanding();
+        }
+        else if (!_isGrounded && wasGrounded)
+        {
+            HandleTakeoff();
+        }
     }
 
-    // 更新各种计时器状态
-    // 说明：
-    // 1. 更新土狼时间计数器
-    // 2. 更新跳跃缓冲计数器
-    // 3. 在合适的时机尝试执行跳跃
+    /// <summary>
+    /// 处理落地
+    /// 设置落地状态和效果
+    /// 在CheckGround中调用
+    /// </summary>
+    private void HandleLanding()
+    {
+        _hasBufferedJump = false;
+        _coyoteTimeCounter = coyoteTime;
+
+        if (_fallDistance > 1f)
+        {
+            _isLanding = true;
+        }
+
+        _isPreLanding = false;
+        _fallDistance = 0;
+        _lastGroundedY = transform.position.y;
+    }
+
+    /// <summary>
+    /// 处理起跳
+    /// 设置土狼时间和记录起跳高度
+    /// 在CheckGround中调用
+    /// </summary>
+    private void HandleTakeoff()
+    {
+        _coyoteTimeCounter = coyoteTime;
+        _lastGroundedY = transform.position.y;
+    }
+    #endregion
+
+    #region 辅助方法
+    /// <summary>
+    /// 更新计时器
+    /// 处理跳跃缓冲和土狼时间
+    /// 在Update中调用
+    /// </summary>
     private void UpdateTimers()
     {
-        // 更新土狼时间
         if (!_isGrounded)
         {
             _coyoteTimeCounter -= Time.deltaTime;
         }
 
-        // 更新跳跃缓冲
         if (_jumpBufferCounter > 0)
         {
             _jumpBufferCounter -= Time.deltaTime;
@@ -360,216 +518,110 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // 检测角色是否在地面上
-    // 说明：
-    // 1. 使用射线检测地面
-    // 2. 更新地面状态
-    // 3. 处理刚落地和刚离地的状态变化
-    // 4. 重置相关计数器和状态
-    private void CheckGround()
+    /// <summary>
+    /// 更新精灵朝向
+    /// 根据移动方向翻转角色
+    /// 在HandleMovement中调用
+    /// </summary>
+    private void UpdateSpriteDirection()
     {
-        // 从角色中心向下发射射线
-        _groundHit = Physics2D.Raycast(transform.position, Vector2.down, rayLength, groundLayer);
-
-        // 更新地面状态
-        bool wasGrounded = _isGrounded;
-        _isGrounded = _groundHit.collider is not null;
-
-        // 如果刚接触地面
-        if (_isGrounded && !wasGrounded)
+        if (Mathf.Abs(_moveDirection.x) > 0.1f)
         {
-            // 重置跳跃相关状态
-            _hasBufferedJump = false;
-            _coyoteTimeCounter = coyoteTime;
+            // 移动时根据移动方向朝向
+            _spriteRenderer.flipX = _moveDirection.x > 0;
+        }
+        else
+        {
+            // 静止时根据鼠标位置朝向
+            Vector2 lookDirection = _mousePosition - (Vector2)transform.position;
+            _spriteRenderer.flipX = lookDirection.x > 0;
+        }
+    }
 
-            // 处理着地效果
-            if (_fallDistance > 1f)
+    /// <summary>
+    /// 处理下落
+    /// 检测预落地状态
+    /// 在HandleMovement中调用
+    /// </summary>
+    private void HandleFalling()
+    {
+        if (!_isGrounded && _rb2D.linearVelocity.y < 0)
+        {
+            _fallDistance = _lastGroundedY - transform.position.y;
+
+            if (!_isPreLanding && _fallDistance > 1f)
             {
-                _isLanding = true;
-                // 这里可以添加着地音效或粒子效果
+                _groundHit = Physics2D.Raycast(transform.position, Vector2.down, rayLength * 3f, groundLayer);
+                if (_groundHit.collider != null)
+                {
+                    _isPreLanding = true;
+                }
             }
-
-            // 重置相关状态
-            _isPreLanding = false;
-            _fallDistance = 0;
-            _lastGroundedY = transform.position.y;
-        }
-        // 如果刚离开地面
-        else if (!_isGrounded && wasGrounded)
-        {
-            _coyoteTimeCounter = coyoteTime;
-            _lastGroundedY = transform.position.y;
         }
     }
 
-    // 尝试执行跳跃
-    // 说明：
-    // 1. 检查是否满足跳跃条件（在地面上或在土狼时间内）
-    // 2. 检查垂直速度确保不会在上升时第二次跳跃
-    // 3. 执行跳跃并重置相关状态
-    private void TryJump()
-    {
-        // 添加垂直速度检查，确保不会在上升过程中再次跳跃
-        if ((_isGrounded || _coyoteTimeCounter > 0) && _rb2D.linearVelocity.y <= 0.1f)
-        {
-            // 执行跳跃
-            _isJumping = true;
-            _jumpHoldTime = 0f;
-            PerformJump(jumpForce);
-            _coyoteTimeCounter = 0; // 确保清零土狼时间
-        }
-    }
-
-    // 执行跳跃动作
-    // 参数：force - 跳跃力度
-    // 说明：
-    // 1. 重置垂直速度
-    // 2. 应用跳跃力
-    // 3. 重置跳跃相关状态
-    private void PerformJump(float force)
-    {
-        // 重置垂直速度，确保每次跳跃都从0开始
-        _rb2D.linearVelocity = new Vector2(_rb2D.linearVelocity.x, 0f);
-
-        // 应用跳跃力 - 直接使用力而非插值，更接近蔚蓝的感觉
-        _rb2D.AddForce(Vector2.up * force, ForceMode2D.Impulse);
-
-        _hasBufferedJump = false;
-        _jumpBufferCounter = 0;
-    }
-
-    // 应用下落加速度修正
-    // 说明：
-    // 1. 在下落时增加重力
-    // 2. 在短跳时（松开跳跃键）应用更大的下落速度
-    // 目的：实现更好地跳跃手感
+    /// <summary>
+    /// 应用下落倍增器
+    /// 使下落和短跳感更好
+    /// 在FixedUpdate中调用
+    /// </summary>
     private void ApplyFallMultiplier()
     {
-        if (!_isGrounded) // 只在非地面状态应用
+        if (!_isGrounded)
         {
-            // 在下落时应用更大的重力
             if (_rb2D.linearVelocity.y < 0)
             {
-                // 确保这是一个向下的力
                 float fallForce = fallMultiplier - 1;
                 _rb2D.linearVelocity += Vector2.up * (gravity.y * (fallForce * Time.fixedDeltaTime));
             }
-            // 短跳（当玩家释放跳跃键时）
-            else if (_rb2D.linearVelocity.y > 0 && !GameInput.Instance.JumpPressed)
+            else if (GameInput.Instance != null && _rb2D.linearVelocity.y > 0 && !GameInput.Instance.JumpPressed)
             {
-                // 应用更大的向下力量
                 float shortJumpForce = shortJumpMultiplier - 1;
                 _rb2D.linearVelocity += Vector2.up * (gravity.y * (shortJumpForce * Time.fixedDeltaTime));
             }
         }
     }
 
+    /// <summary>
+    /// 是否可以移动
+    /// 可以在此添加额外的移动限制条件
+    /// 在HandleMovement中调用
+    /// </summary>
+    private bool CanMove() => true;
+    
     #endregion
 
-    #region 互动
-
-    // 处理互动输入事件
-    // 说明：当玩家按下互动键时，触发最近的可互动物体的交互功能
-    // private void GameInput_OnInteractAction(object sender, EventArgs e)
-    // {
-    //     // 检查是否有最近的可互动物体
-    //     if (_nearestTriggerObject != null)
-    //     {
-    //         _nearestTriggerObject.Interact();
-    //     }
-    // }
-
-    private void GameInput_OnClickAction(object sender, EventArgs e)
-    {
-
-        // 检查是否有最近的可互动物体
-        if (_nearestTriggerObject != null)
-        {
-            _nearestTriggerObject.Interact();
-        }
-    }
-
-    // 处理触发器进入事件
-    // 参数：other - 进入触发区域的碰撞体
-    // 说明：
-    // 1. 检查进入的物体是否是可交互物体
-    // 2. 将可交互物体添加到列表
-    // 3. 更新最近的可交互物体
+    #region 触发器方法
+    /// <summary>
+    /// 进入触发区域
+    /// 添加可交互物体
+    /// 由Unity触发器系统调用
+    /// </summary>
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent<TriggerObject>(out var triggerObject))
         {
             _triggerObjects.Add(triggerObject);
-            float distance = Vector3.Distance(transform.position, triggerObject.transform.position);
-            if (_nearestTriggerObject == null || distance < Vector3.Distance(transform.position, _nearestTriggerObject.transform.position))
-            {
-                _nearestTriggerObject = triggerObject;
-                FindNearestTriggerObject();
-            }
         }
     }
 
-    // 处理触发器退出事件
-    // 参数：other - 离开触发区域的碰撞体
-    // 说明：
-    // 1. 从列表中移除离开的可交互物体
-    // 2. 如果移除的是当前最近的物体，重新寻找最近物体
-    //3. 如果最近的物体为空，触发选中事件
+    /// <summary>
+    /// 离开触发区域
+    /// 移除可交互物体并取消选中
+    /// 由Unity触发器系统调用
+    /// </summary>
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.TryGetComponent<TriggerObject>(out var triggerObject))
         {
-            // 从列表中移除
             _triggerObjects.Remove(triggerObject);
-
-            // 如果移除的是当前最近的触发物体，需要重新查找最近的触发物体
-            if (triggerObject == _nearestTriggerObject)
+            if (_selectedObject == triggerObject)
             {
-                FindNearestTriggerObject();
-            }
-            if (_nearestTriggerObject == null)
-            {
-                // 如果没有最近的触发物体，触发选中事件
-                OnnearestTriggerObjectSelected(null);
+                _selectedObject = null;
+                EventManager.Instance?.TriggerObjectSelected(null);
             }
         }
     }
-
-    // 寻找最近的可交互物体
-    // 说明：
-    // 1. 遍历所有可交互物体
-    // 2. 计算与玩家的距离
-    // 3. 更新最近的可交互物体
-    // 4. 触发选中事件
-    private void FindNearestTriggerObject()
-    {
-        _nearestTriggerObject = null;
-        float nearestDistance = float.MaxValue; // 初始化为最大值
-
-        foreach (var obj in _triggerObjects)
-        {
-            float distance = Vector3.Distance(this.transform.position, obj.transform.position);
-            if (distance < nearestDistance && distance <= 30f) //距离小于30f才能交互
-            {
-                _nearestTriggerObject = obj;
-                nearestDistance = distance;
-                OnnearestTriggerObjectSelected(_nearestTriggerObject); //触发选中事件
-                Debug.Log("最近的可交互物体是：" + _nearestTriggerObject.name);
-            }
-        }
-    }
-
-    // 当选中最近的可交互物体时触发事件
-    // 说明：如果存在最近的可交互物体，触发选中事件
-    //说明：如果不存在最近的可交互物体，同样触发选中事件但是传递null
-    private void OnnearestTriggerObjectSelected(TriggerObject SelectedObject)
-    {
-        OnTriggerObjectSelected?.Invoke(this, new TriggerObjectSelectedEventArgs
-        {
-            SelectedObject = SelectedObject
-        });
-    }
-
     #endregion
-
 }
+

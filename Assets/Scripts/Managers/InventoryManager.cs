@@ -8,7 +8,7 @@ namespace Managers
     {
         [SerializeField] private ItemDatabaseSO itemDatabaseSO; // 物品数据库
         [SerializeField] private ItemsManagerUI itemsManagerUI; // UI 管理
-        public event EventHandler OnInventoryUpdated; // 背包更新事件
+        
         private readonly Dictionary<string, ItemSO> itemDictionary = new(); // 物品字典
         public List<ItemSO> items = new(); // 背包里的物品
 
@@ -68,7 +68,7 @@ namespace Managers
                 {
                     items.Add(itemSO);
                     //itemsManagerUI.UpdateVisual();
-                    OnInventoryUpdated?.Invoke(this, EventArgs.Empty);
+                    EventManager.Instance.InventoryUpdated();
                     Debug.Log($"Added {itemSO.itemName}");
                 }
                 else
@@ -100,7 +100,7 @@ namespace Managers
             {
                 items.Remove(itemSO);
                 //itemsManagerUI.UpdateVisual();
-                OnInventoryUpdated?.Invoke(this, EventArgs.Empty);
+                EventManager.Instance.InventoryUpdated();
                 Debug.Log($"Removed {itemSO.itemName}");
             }
         }

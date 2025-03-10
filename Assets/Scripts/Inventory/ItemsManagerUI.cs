@@ -23,7 +23,7 @@ public class ItemsManagerUI : MonoBehaviour
     // 4. 初始设置物品容器为隐藏状态
     void Start()
     {
-        InventoryManager.Instance.OnInventoryUpdated += (sender, args) => UpdateVisual(); // 监听背包更新事件
+        EventManager.Instance.OnInventoryUpdated += (sender, args) => UpdateVisual(); // 监听背包更新事件
         GameInput.Instance.OnOpenInventoryAction += InventoryManager_OnOpenInventoryAction; // 监听背包开关事件
         AllItems.gameObject.SetActive(false); // 初始设置所有物品容器为隐藏状态
         InventoryBackGround.SetActive(false); // 初始设置背包背景为隐藏状态
@@ -35,6 +35,7 @@ public class ItemsManagerUI : MonoBehaviour
     // - sender: 事件发送者
     // - e: 事件参数
     // 说明：响应输入系统的背包开关命令
+    //GameInput的事件我没放在EventManager里面
     private void InventoryManager_OnOpenInventoryAction(object sender, EventArgs e)
     {
         Open_CloseInventory();

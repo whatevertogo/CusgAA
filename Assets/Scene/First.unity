@@ -3354,8 +3354,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AllItems: {fileID: 1227040031}
-  itemContainerPrefab: {fileID: 577538806}
-  InventoryBackGround: {fileID: 577538806}
+  itemContainerPrefab: {fileID: 3432980783960576732, guid: d81e53feee636eb4285ef59e865ccc3a, type: 3}
+  InventoryBackGround: {fileID: 1422581384}
 --- !u!1001 &5767485195070332361
 PrefabInstance:
   m_ObjectHideFlags: 0

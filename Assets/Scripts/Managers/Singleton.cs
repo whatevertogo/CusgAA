@@ -26,6 +26,7 @@ namespace Managers
                 }
                 return _instance;
             }
+            set => _instance = value;
         }
 
         protected virtual void Awake()

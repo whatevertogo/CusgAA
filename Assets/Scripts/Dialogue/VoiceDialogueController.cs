@@ -18,10 +18,7 @@ public class VoiceDialogueController : DialogueController
     protected override void Awake()
     {
         base.Awake();
-        if (audioSource == null)
-        {
-            audioSource = GetComponent<AudioSource>();
-        }
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
     }
 
     // 开始带语音的对话

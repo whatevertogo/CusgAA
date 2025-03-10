@@ -1,10 +1,9 @@
+using Managers;
 using UnityEngine;
 
-
 /// <summary>
-/// 选择的视觉效果
+///     选择的视觉效果
 /// </summary>
-
 public class SelectedVisual : MonoBehaviour
 {
     [SerializeField] private TriggerObject selectedObject; // 选中的物体
@@ -12,12 +11,12 @@ public class SelectedVisual : MonoBehaviour
 
 
     //订阅playerController中的OnTriggerObjectSelected事件
-    void Start()
+    private void Start()
     {
-        Managers.EventManager.Instance.OnTriggerObjectSelected += IamSelected;
+        EventManager.Instance.OnTriggerObjectSelected += IamSelected;
     }
 
-    public void IamSelected(object sender, Managers.EventManager.TriggerObjectSelectedEventArgs e)
+    public void IamSelected(object sender, EventManager.TriggerObjectSelectedEventArgs e)
     {
         if (selectedObject == e.SelectedObject)
         {
@@ -29,8 +28,4 @@ public class SelectedVisual : MonoBehaviour
         selectedEffect.SetActive(false);
         Debug.Log($"取消选中{selectedObject.name}");
     }
-    
-
-
-
 }

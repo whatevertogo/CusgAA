@@ -4,7 +4,8 @@
  * 3. 跳过对话内容
  * 4. 切换对话内容
  * 5. 淡入淡出立绘（未实现）需要自己通过Dotween实现
-*/
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -14,19 +15,20 @@ using UnityEngine.UI;
 
 public class DialogueControl : MonoBehaviour
 {
-    [FormerlySerializedAs("DialoguePanel")]
-    [Header("对话框UI组件")]
-    [SerializeField] private GameObject dialoguePanel;
+    [FormerlySerializedAs("DialoguePanel")] [Header("对话框UI组件")] [SerializeField]
+    private GameObject dialoguePanel;
+
     [SerializeField] private Button nextlineButton;
     [SerializeField] private TextMeshProUGUI dialogueText;
-    [Header("对话内容")][SerializeField] private DialogueSO dialogue_SO;
-    [Header("对话显示速度")][SerializeField] private float typingSpeed = 0.1f;
-    [SerializeField] private float nextLineDelay = 2f;//下一行的时间
+    [Header("对话内容")] [SerializeField] private DialogueSO dialogue_SO;
+    [Header("对话显示速度")] [SerializeField] private float typingSpeed = 0.1f;
+    [SerializeField] private float nextLineDelay = 2f; //下一行的时间
 
     private int _currentLineIndex;
-    private List<string> dialogueLinesList = new();
     private bool _isTyping;
     private Coroutine _typingCoroutine;
+
+    private List<string> dialogueLinesList = new();
     // dialoguePanel 的访问已经通过 ShowDialogue() 和其他方法进行了合理封装
 
     // 初始化对话系统组件
@@ -82,9 +84,7 @@ public class DialogueControl : MonoBehaviour
                 Debug.LogWarning("No dialogue lines to display!");
             }
         }
-    }
-
-    // ReSharper disable Unity.PerformanceAnalysis
+    } // ReSharper disable Unity.PerformanceAnalysis
     // 显示下一行对话
     // 说明：
     // 1. 如果当前正在打字，则立即完成当前行
@@ -116,7 +116,9 @@ public class DialogueControl : MonoBehaviour
         }
         else
             // 所有对话行已显示完毕
+        {
             Debug.Log("All dialogue lines have been displayed");
+        }
         // 可选：关闭对话面板
         // dialoguePanel.SetActive(false);
     }
@@ -187,7 +189,7 @@ public class DialogueControl : MonoBehaviour
         _currentLineIndex = 0;
 
         Debug.Log($"切换对话数据: {newDialogueSO.name}");
-    
+
         ShowDialogue();
     }
 
@@ -213,7 +215,7 @@ public class DialogueControl : MonoBehaviour
         _currentLineIndex = lineIndex;
 
         Debug.Log($"返回对话数据: {oldDialogueSO.name}");
-    
+
         ShowDialogue();
     }
 

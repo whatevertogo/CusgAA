@@ -3,8 +3,6 @@
  */
 
 
-
-
 using UnityEngine;
 
 public class DialogueController : MonoBehaviour
@@ -32,10 +30,7 @@ public class DialogueController : MonoBehaviour
     // 用途：供外部调用以触发对话开始
     public virtual void StartDialogue()
     {
-        if (dialogueControl != null)
-        {
-            dialogueControl.ShowDialogue();
-        }
+        if (dialogueControl != null) dialogueControl.ShowDialogue();
     }
 
     // 跳过对话
@@ -45,9 +40,6 @@ public class DialogueController : MonoBehaviour
     // 用途：当玩家想要快速结束当前对话时调用
     public virtual void SkipDialogue()
     {
-        if (dialogueControl != null)
-        {
-            dialogueControl.SkipDialogue();
-        }
+        if (dialogueControl != null) dialogueControl.SkipDialogue();
     }
 }

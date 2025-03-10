@@ -1,34 +1,34 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using Utils;
+using Interfaces;
 
 namespace Managers
 {
     /// <summary>
-    /// 事件管理器 - 统一管理游戏中的事件系统
-    /// 特点：
-    /// 1. 使用对象池优化事件参数对象的创建和回收
-    /// 2. 支持自动重置和回收事件参数
-    /// 3. 统一管理所有游戏事件
+    ///     事件管理器 - 统一管理游戏中的事件系统
+    ///     特点：
+    ///     1. 使用对象池优化事件参数对象的创建和回收
+    ///     2. 支持自动重置和回收事件参数
+    ///     3. 统一管理所有游戏事件
     /// </summary>
     public class EventManager : Singleton<EventManager>
     {
         #region 对象池系统
+
         // 事件参数对象池字典
         // 键：事件参数类型
         // 值：该类型的对象池栈
         private readonly Dictionary<Type, Stack<EventArgs>> _eventArgsPool = new();
 
         /// <summary>
-        /// 从对象池获取事件参数对象
+        ///     从对象池获取事件参数对象
         /// </summary>
         /// <typeparam name="T">事件参数类型</typeparam>
         /// <returns>一个事件参数实例，可能是复用的或新创建的</returns>
         private T GetEventArgs<T>() where T : EventArgs, new()
         {
             var type = typeof(T);
-            
+
             // 获取或创建对象池
             if (!_eventArgsPool.TryGetValue(type, out var pool))
             {
@@ -41,18 +41,18 @@ namespace Managers
         }
 
         /// <summary>
-        /// 将事件参数对象回收到对象池
+        ///     将事件参数对象回收到对象池
         /// </summary>
         /// <param name="args">要回收的事件参数对象</param>
         /// <remarks>
-        /// 如果对象实现了IResettable接口，会在回收前调用Reset方法
+        ///     如果对象实现了IResettable接口，会在回收前调用Reset方法
         /// </remarks>
         private void ReleaseEventArgs<T>(T args) where T : EventArgs
         {
             if (args == null) return;
 
-            var type = typeof(T);
-            
+            var type = args.GetType();
+
             // 获取或创建对象池
             if (!_eventArgsPool.TryGetValue(type, out var pool))
             {
@@ -61,12 +61,9 @@ namespace Managers
             }
 
             // 如果对象支持重置，则在回收前重置
-            if (args is IResettable resettable)
-            {
-                resettable.Reset();
-            }
+            if (args is IResettable resettable) resettable.Reset();
 
-            pool.Push(args);
+            pool?.Push(args);
         }
 
         protected override void Awake()
@@ -74,14 +71,16 @@ namespace Managers
             base.Awake();
             _eventArgsPool.Clear();
         }
+
         #endregion
 
         #region 可交互物体选择事件
+
         public event EventHandler<TriggerObjectSelectedEventArgs> OnTriggerObjectSelected;
 
         /// <summary>
-        /// 触发物体选中事件参数类
-        /// 实现IResettable接口以支持对象池重置
+        ///     触发物体选中事件参数类
+        ///     实现IResettable接口以支持对象池重置
         /// </summary>
         public class TriggerObjectSelectedEventArgs : EventArgs, IResettable
         {
@@ -94,11 +93,11 @@ namespace Managers
         }
 
         /// <summary>
-        /// 触发物体选中事件
+        ///     触发物体选中事件
         /// </summary>
         /// <param name="selectedObject">被选中的物体</param>
         /// <remarks>
-        /// 使用对象池管理事件参数对象，自动处理创建和回收
+        ///     使用对象池管理事件参数对象，自动处理创建和回收
         /// </remarks>
         public void TriggerObjectSelected(TriggerObject selectedObject)
         {
@@ -118,14 +117,16 @@ namespace Managers
                 ReleaseEventArgs(args);
             }
         }
+
         #endregion
 
         #region 背包更新事件
+
         public event EventHandler<OnInventoryUpdatedArgs> OnInventoryUpdated;
 
         /// <summary>
-        /// 背包更新事件参数类
-        /// 实现IResettable接口以支持对象池重置
+        ///     背包更新事件参数类
+        ///     实现IResettable接口以支持对象池重置
         /// </summary>
         public class OnInventoryUpdatedArgs : EventArgs, IResettable
         {
@@ -136,10 +137,10 @@ namespace Managers
         }
 
         /// <summary>
-        /// 触发背包更新事件
+        ///     触发背包更新事件
         /// </summary>
         /// <remarks>
-        /// 使用对象池管理事件参数对象，避免重复创建
+        ///     使用对象池管理事件参数对象，避免重复创建
         /// </remarks>
         public void InventoryUpdated()
         {
@@ -155,10 +156,7 @@ namespace Managers
                 ReleaseEventArgs(args);
             }
         }
+
         #endregion
-
-
-
-        
     }
 }

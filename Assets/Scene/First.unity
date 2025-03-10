@@ -2339,7 +2339,7 @@ MonoBehaviour:
     rid: 2892498670897594449
   m_ShadowCastingSource: 2
   m_ShadowMesh:
-    m_Mesh: {fileID: 1837610288}
+    m_Mesh: {fileID: 1787730215}
     m_LocalBounds:
       m_Center: {x: 0.35114288, y: -1.3960037, z: 0}
       m_Extent: {x: 6.588829, y: 10.905312, z: 0}
@@ -2451,7 +2451,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: StopMenu
       objectReference: {fileID: 0}
-    m_RemovedComponents: [{fileID: 9220320157337651672, guid: 5a2eac4aa6c94fd4fa1252411236d004, type: 3}]
+    m_RemovedComponents:
+    - {fileID: 9220320157337651672, guid: 5a2eac4aa6c94fd4fa1252411236d004, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2789,19 +2790,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1701012369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1701012364}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7aeb0d1b7fc08124898fee7068fa84f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemsManagerUI: {fileID: 0}
 --- !u!1 &1745413841
 GameObject:
   m_ObjectHideFlags: 0
@@ -2980,7 +2968,6 @@ SpriteRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 9b89f05240e9f0a4c96b16236aadddfd, type: 2}
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3026,7 +3013,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ShadowGroup: 1
   m_Priority: 29
---- !u!43 &1837610288
+--- !u!43 &1787730215
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3183,8 +3170,8 @@ Mesh:
   m_CookingOptions: 30
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
-  m_MeshMetrics[0]: 1
-  m_MeshMetrics[1]: 1
+  'm_MeshMetrics[0]': 1
+  'm_MeshMetrics[1]': 1
   m_MeshOptimizationFlags: 1
   m_StreamData:
     serializedVersion: 2
@@ -3305,7 +3292,11 @@ Transform:
   m_LocalPosition: {x: 2.2, y: -1.2285876, z: 0}
   m_LocalScale: {x: 1.8933735, y: 1.8933735, z: 1.8933735}
   m_ConstrainProportionsScale: 0
-  m_Children: [{fileID: 39970674}, {fileID: 1866226970}, {fileID: 94341620}, {fileID: 466448898}]
+  m_Children:
+  - {fileID: 39970674}
+  - {fileID: 1866226970}
+  - {fileID: 94341620}
+  - {fileID: 466448898}
   m_Father: {fileID: 230175245}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -1.5}
 --- !u!212 &1924594645

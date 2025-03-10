@@ -55,6 +55,11 @@ namespace Managers
             }
         }
 
+        private void OnDestroy()
+        {
+            Destroy(gameObject);
+        }
+
         private void Update()
         {
             moveDir = PlayerInput.Player.Move.ReadValue<Vector2>();

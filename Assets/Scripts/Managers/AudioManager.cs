@@ -1,9 +1,7 @@
-
 namespace Managers
 {
     public class AudioManager : Singleton<AudioManager>
     {
-
         protected override void Awake()
         {
             base.Awake();
@@ -11,6 +9,4 @@ namespace Managers
         }
         //TODO-特定的AudioManager功能
     }
-    
 }
-

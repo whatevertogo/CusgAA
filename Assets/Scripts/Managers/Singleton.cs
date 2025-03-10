@@ -3,13 +3,13 @@ using UnityEngine;
 namespace Managers
 {
     /// <summary>
-    /// 单例模式基类
+    ///     单例模式基类
     /// </summary>
     /// <typeparam name="T">继承MonoBehaviour的类型</typeparam>
     public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         private static T _instance;
-        
+
         public static T Instance
         {
             get
@@ -24,6 +24,7 @@ namespace Managers
                         DontDestroyOnLoad(go);
                     }
                 }
+
                 return _instance;
             }
             set => _instance = value;

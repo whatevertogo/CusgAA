@@ -1,24 +1,24 @@
 using System;
 using Managers;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 /// <summary>
-///暂停面板
-/// 继续，退出，重置，选择关卡
+///     暂停面板
+///     继续，退出，重置，选择关卡
 /// </summary>
 public class PauseMenu : MonoBehaviour
 {
-    [Header("UI")]
-    [SerializeField] private GameObject pauseMenuPanel;
+    [Header("UI")] [SerializeField] private GameObject pauseMenuPanel;
+
     [SerializeField] private Button continueButton;
     [SerializeField] private Button resetButton;
-    [SerializeField] private Button exitButton; 
+    [SerializeField] private Button exitButton;
     [SerializeField] private Button setLevelButton;
-    
-    [Header("Settings")]
-    [SerializeField] private string sceneName;
+
+    [Header("Settings")] [SerializeField] private string sceneName;
 
     private void Awake()
     {
@@ -28,45 +28,41 @@ public class PauseMenu : MonoBehaviour
             continueButton.onClick.AddListener(ContinueGame);
             Debug.Log("绑定了");
         }
-        
+
         if (resetButton != null)
         {
             resetButton.onClick.AddListener(ResetGame);
             Debug.Log("绑定了");
         }
-        
+
         if (exitButton != null)
         {
             exitButton.onClick.AddListener(ExitGame);
             Debug.Log("绑定了");
         }
-        
+
         if (setLevelButton != null)
         {
             setLevelButton.onClick.AddListener(SetLevel);
             Debug.Log("绑定了");
         }
     }
-    
-    
+
+
     private void Start()
     {
         pauseMenuPanel.SetActive(false);
-        GameInput.Instance.OnEscapeAction+=PausedMenuOpen_Close;
+        GameInput.Instance.OnEscapeAction += PausedMenuOpen_Close;
     }
 
     private void PausedMenuOpen_Close(object sender, EventArgs e)
     {
         if (pauseMenuPanel.activeSelf)
-        {
             ContinueGame();
-        }
         else
-        {
             PauseGame();
-        }
     }
-    
+
     private void PauseGame()
     {
         pauseMenuPanel.SetActive(true);
@@ -83,9 +79,8 @@ public class PauseMenu : MonoBehaviour
     {
         Debug.Log("ResetGame");
         Time.timeScale = 1f;
-        MySceneManager.Instance.QuickReset((Sender, args) => { 
-            Debug.Log($"场景 {args.SceneName} ,耗时:{args.LoadTime}秒"); 
-        });
+        MySceneManager.Instance.QuickReset(
+            (Sender, args) => { Debug.Log($"场景 {args.SceneName} ,耗时:{args.LoadTime}秒"); });
     }
 
     private void SetLevel()
@@ -98,7 +93,7 @@ public class PauseMenu : MonoBehaviour
 
         Time.timeScale = 1f;
         pauseMenuPanel.SetActive(false);
-        
+
         sceneName = SceneManager.GetActiveScene().name;
         MySceneManager.Instance.LoadSceneByName(sceneName);
     }
@@ -110,7 +105,7 @@ public class PauseMenu : MonoBehaviour
 
         // If running in editor, stop play mode
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+        EditorApplication.isPlaying = false;
 #endif
     }
 }

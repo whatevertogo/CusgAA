@@ -8,17 +8,15 @@ using UnityEngine.UI;
 // 2. 关联物品管理器UI组件
 public class ItemButton : MonoBehaviour
 {
-    
     [SerializeField] private ItemsManagerUI itemsManagerUI;
+
     // 初始化按钮行为
     // 说明：
     // 1. 获取Button组件
     // 2. 添加点击事件监听
     // 3. 绑定背包界面的开关功能
-    void Start()
+    private void Start()
     {
-        GetComponent<Button>().onClick.AddListener(() =>itemsManagerUI.Open_CloseInventory());
+        GetComponent<Button>().onClick.AddListener(() => itemsManagerUI.Open_CloseInventory());
     }
-    
-    
 }

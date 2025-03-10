@@ -1,13 +1,11 @@
 /*
-    * 用于处理分支对话的控制器
-    * 通过选择不同的选项，进入不同的对话
-    */
+ * 用于处理分支对话的控制器
+ * 通过选择不同的选项，进入不同的对话
+ */
 
 
-
-
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class BranchingDialogueController : DialogueController
 {
@@ -29,7 +27,7 @@ public class BranchingDialogueController : DialogueController
     // 用途：当需要开始一段包含多个选项的对话时调用
     public override void StartDialogue()
     {
-        base.StartDialogue();//调用基类的方法
+        base.StartDialogue(); //调用基类的方法
         Debug.Log("开始分支对话");
     }
 

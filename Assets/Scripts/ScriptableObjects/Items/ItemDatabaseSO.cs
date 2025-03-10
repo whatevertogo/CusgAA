@@ -17,6 +17,5 @@ public class ItemDatabaseSO : ScriptableObject
     // 1. 在编辑器中配置所有游戏物品
     // 2. 运行时提供物品查询和管理功能
     // 3. 支持动态添加和移除物品
-    [Tooltip("游戏中所有可用物品的列表")]
-    public List<ItemSO> itemsList = new();
+    [Tooltip("游戏中所有可用物品的列表")] public List<ItemSO> itemsList = new();
 }

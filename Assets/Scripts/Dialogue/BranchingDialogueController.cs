@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class BranchingDialogueController : DialogueController
 {
-    private Dictionary<string, DialogueSO> branchOptions;
+    [SerializeField] private Dictionary<string, DialogueSO> branchOptions;
 
     // 初始化分支对话控制器
     // 说明：

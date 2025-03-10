@@ -206,7 +206,7 @@ public class DialogueControl : MonoBehaviour
     {
         if (oldDialogueSO is null)
         {
-            Debug.LogError("旧对话数据不为空");
+            Debug.LogError("旧对话数据为空");
             return;
         }
 

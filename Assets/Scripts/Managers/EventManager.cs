@@ -158,5 +158,7 @@ namespace Managers
         }
 
         #endregion
+    
+        //TODO-打开Panel后停止移动事件及与GameInput相关事件
     }
 }

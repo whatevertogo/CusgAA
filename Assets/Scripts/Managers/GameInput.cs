@@ -44,17 +44,28 @@ namespace Managers
             {
                 Instance = null;
             }
+            
+            // 确保在销毁时完全清理输入系统资源
+            if (PlayerInput != null)
+            {
+                PlayerInput.Disable();  // 确保先禁用
+                PlayerInput.Dispose();  // 完全释放资源
+                PlayerInput = null;
+            }
             Debug.Log("GameInput OnDestroy");
         }
 
         private void OnDisable()
         {
-            PlayerInput.Player.Interact.performed -= Interact_performed;
-            PlayerInput.Player.OpenInventory.performed -= OpenInventory_performed;
-            PlayerInput.Player.Jump.performed -= Jump_performed;
-            PlayerInput.Player.Click.performed -= Click_performed;
-            PlayerInput.Player.ESC.performed -= Escape_performed;
-            if (PlayerInput != null) PlayerInput.Disable();
+            if (PlayerInput != null)
+            {
+                PlayerInput.Player.Interact.performed -= Interact_performed;
+                PlayerInput.Player.OpenInventory.performed -= OpenInventory_performed;
+                PlayerInput.Player.Jump.performed -= Jump_performed;
+                PlayerInput.Player.Click.performed -= Click_performed;
+                PlayerInput.Player.ESC.performed -= Escape_performed;
+                PlayerInput.Disable();
+            }
         }
         
         public event EventHandler OnInteractAction;

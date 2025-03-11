@@ -267,7 +267,7 @@ public class PlayerController : MonoBehaviour
     ///     处理移动状态
     ///     包括自动移动和手动移动的切换
     ///     在Update中调用
-    /// </summary>
+    /// </summary>            
     private void HandleMovementState()
     {
         if (_isMovingToTarget && _clickedTriggerObject != null)

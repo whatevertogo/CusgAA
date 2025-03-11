@@ -15,8 +15,8 @@ public class PauseMenu : MonoBehaviour
 
     [SerializeField] private Button continueButton;
     [SerializeField] private Button resetButton;
-    [SerializeField] private Button exitButton;
     [SerializeField] private Button setLevelButton;
+    [SerializeField] private Button exitButton;
 
     [Header("Settings")] [SerializeField] private string sceneName;
 

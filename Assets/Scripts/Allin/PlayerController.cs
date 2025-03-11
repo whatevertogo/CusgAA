@@ -15,55 +15,59 @@ public class PlayerController : MonoBehaviour
 {
     #region 序列化字段
 
-    [Header("人物移动参数")] [Tooltip("基础移动速度")] [SerializeField]
+    [Header("人物移动参数")]
+    [Tooltip("基础移动速度")]
+    [SerializeField]
     private float moveSpeed = 9f; // 基础移动速度
 
-    [Tooltip("最大移动速度")] [SerializeField] private float maxMoveSpeed = 10f; // 最大移动速度
+    [Tooltip("最大移动速度")][SerializeField] private float maxMoveSpeed = 10f; // 最大移动速度
 
-    [Tooltip("新的质量")] [SerializeField] private float newMass = 1f; // 角色质量
+    [Tooltip("新的质量")][SerializeField] private float newMass = 1f; // 角色质量
 
-    [Tooltip("加速度")] [SerializeField] private float acceleration = 90f; // 加速度
+    [Tooltip("加速度")][SerializeField] private float acceleration = 90f; // 加速度
 
-    [Tooltip("减速度")] [SerializeField] private float deceleration = 60f; // 减速度
+    [Tooltip("减速度")][SerializeField] private float deceleration = 60f; // 减速度
 
-    [Tooltip("速度曲线指数")] [SerializeField] private float velocityPower = 0.9f; // 速度曲线指数
+    [Tooltip("速度曲线指数")][SerializeField] private AnimationCurve velocityCurve;
 
-    [Tooltip("空中控制系数")] [SerializeField] private float airControl = 0.6f; // 空中控制系数
+    [Tooltip("空中控制系数")][SerializeField] private float airControl = 0.6f; // 空中控制系数
 
-    [Tooltip("空气阻力")] [SerializeField] private float airDrag = 0.4f; // 空气阻力
+    [Tooltip("空气阻力")][SerializeField] private float airDrag = 0.4f; // 空气阻力
 
-    [Tooltip("选择CheckGround层级")] [SerializeField]
+    [Tooltip("选择CheckGround层级")]
+    [SerializeField]
     private LayerMask groundLayer; // 地面层
 
-    [Tooltip("跳跃力度")] [SerializeField] private float jumpForce = 10f; // 跳跃力度
+    [Tooltip("跳跃力度")][SerializeField] private float jumpForce = 10f; // 跳跃力度
 
-    [Tooltip("最大跳跃按住时间")] [SerializeField] private float maxJumpHoldTime = 0.2f; // 最大跳跃按住时间 
+    [Tooltip("最大跳跃按住时间")][SerializeField] private float maxJumpHoldTime = 0.2f; // 最大跳跃按住时间 
 
-    [Tooltip("地面检测射线长度")] [SerializeField] private float rayLength = 1.6f; // 地面检测射线长度
+    [Tooltip("地面检测射线长度")][SerializeField] private float rayLength = 1.6f; // 地面检测射线长度
 
-    [Tooltip("重力")] [SerializeField] private Vector2 gravity; // 重力
+    [Tooltip("重力")][SerializeField] private Vector2 gravity; // 重力
 
-    [Tooltip("土狼时间")] [SerializeField] private float coyoteTime = 0.1f; // 土狼时间
+    [Tooltip("土狼时间")][SerializeField] private float coyoteTime = 0.1f; // 土狼时间
 
-    [Tooltip("跳跃缓冲时间")] [SerializeField] private float jumpBuffer = 0.1f; // 跳跃缓冲时间
+    [Tooltip("跳跃缓冲时间")][SerializeField] private float jumpBuffer = 0.1f; // 跳跃缓冲时间
 
-    [Tooltip("下落加速倍数")] [SerializeField] private float fallMultiplier = 1.8f; // 下落加速倍数
+    [Tooltip("下落加速倍数")][SerializeField] private float fallMultiplier = 1.8f; // 下落加速倍数
 
-    [Tooltip("短跳加速倍数")] [SerializeField] private float shortJumpMultiplier = 2.5f; // 短跳加速倍数
+    [Tooltip("短跳加速倍数")][SerializeField] private float shortJumpMultiplier = 2.5f; // 短跳加速倍数
 
-    [Tooltip("特效持续事件")] [SerializeField] private float landingVFXTime = 0.15f; // 落地特效持续时间
+    [Tooltip("特效持续事件")][SerializeField] private float landingVFXTime = 0.15f; // 落地特效持续时间
 
-    [Tooltip("鼠标选择物体范围")] [SerializeField] private float selectRadius = 1f; // 物体选择范围
+    [Tooltip("鼠标选择物体范围")][SerializeField] private float selectRadius = 1f; // 物体选择范围
 
     #endregion
 
     #region 私有字段
 
     // 交互相关
-    private readonly List<TriggerObject> _triggerObjects = new();
+    private readonly List<TriggerObject> _triggerObjects = new(8); // 预设容量避免扩容
     private TriggerObject _clickedTriggerObject;
     private bool _isMovingToTarget;
     private Vector2 _targetPosition;
+    private readonly Collider2D[] _hitColliders = new Collider2D[5]; // 缓存物理检测结果
 
     // 移动相关
     private Vector2 _moveDirection;
@@ -85,6 +89,15 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private RaycastHit2D _groundHit;
     private Vector2 _mousePosition;
+
+    // 缓存计算结果
+    private float _cachedAirDragDeceleration;
+    private Vector2 _cachedRightVector;
+    private float _cachedTime;
+    private Vector2[] _rayDirections; // 多向射线检测
+
+    // 缓存交互参数
+    private float _sqrSelectRadius; // 平方选择范围
 
     #endregion
 
@@ -117,6 +130,19 @@ public class PlayerController : MonoBehaviour
         }
 
         Instance = this;
+
+        // 缓存常用计算
+        _cachedAirDragDeceleration = airDrag * deceleration;
+        _cachedRightVector = Vector2.right;
+        _sqrSelectRadius = selectRadius * selectRadius;
+
+        // 初始化多向射线
+        _rayDirections = new Vector2[]
+        {
+            Vector2.down,
+            new Vector2(-0.25f, -0.97f).normalized, // 稍微倾斜的左右射线，提高检测精度
+            new Vector2(0.25f, -0.97f).normalized
+        };
     }
 
     /// <summary>
@@ -211,8 +237,16 @@ public class PlayerController : MonoBehaviour
         var currentSpeed = _rb2D.linearVelocity.x;
         var speedDifference = targetSpeed - currentSpeed;
         var accelRate = Mathf.Abs(targetSpeed) > 0.01f ? acceleration : deceleration;
-        var movement = Mathf.Pow(Mathf.Abs(speedDifference) * accelRate, velocityPower) * Mathf.Sign(speedDifference);
-        movement *= controlModifier;
+
+        // 先获取“输入”强度，可根据需要对 speedDifference 做归一化
+        float inputValue = Mathf.Abs(speedDifference) * accelRate;
+
+        // 从曲线读取对应输出
+        float scaledInput = inputValue / 500;
+        float curveOutput = velocityCurve.Evaluate(scaledInput);
+
+        // 恢复方向并乘以控制系数
+        float movement = curveOutput * 500 * Mathf.Sign(speedDifference) * controlModifier;
 
         _rb2D.AddForce(Vector2.right * (movement * Time.fixedDeltaTime), ForceMode2D.Impulse);
     }
@@ -224,8 +258,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void ApplyFriction()
     {
-        var friction = _isGrounded ? deceleration : airDrag * deceleration;
-        var frictionForce = -_rb2D.linearVelocity.x * friction * Vector2.right;
+        var friction = _isGrounded ? deceleration : _cachedAirDragDeceleration;
+        var frictionForce = -_rb2D.linearVelocity.x * friction * _cachedRightVector;
         _rb2D.AddForce(frictionForce * Time.fixedDeltaTime, ForceMode2D.Impulse);
     }
 
@@ -325,6 +359,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void HandleJumpingState()
     {
+        _cachedTime = Time.time;
+
         if (_isJumping && GameInput.Instance != null && GameInput.Instance.JumpPressed)
         {
             _jumpHoldTime += Time.deltaTime;
@@ -335,7 +371,7 @@ public class PlayerController : MonoBehaviour
             _isJumping = false;
         }
 
-        if (_isLanding && Time.time >= landingVFXTime) _isLanding = false;
+        if (_isLanding && _cachedTime >= landingVFXTime) _isLanding = false;
     }
 
     #endregion
@@ -353,9 +389,9 @@ public class PlayerController : MonoBehaviour
 
         if (hit.collider != null)
         {
-            var clickedObject = hit.collider.GetComponent<TriggerObject>();
-
-            if (clickedObject != null && clickedObject.CanInteract) HandleClickedObject(clickedObject);
+            // 使用TryGetComponent避免GetComponent在组件不存在时的性能消耗
+            if (hit.collider.TryGetComponent<TriggerObject>(out var clickedObject) && clickedObject.CanInteract)
+                HandleClickedObject(clickedObject);
         }
     }
 
@@ -397,18 +433,24 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void UpdateSelectedObject()
     {
+        // 如果没有交互对象，快速返回
+        if (_triggerObjects.Count == 0)
+            return;
+
         TriggerObject nearestObject = null;
         var closestDistance = float.MaxValue;
 
         foreach (var obj in _triggerObjects)
         {
-            if (!obj.CanInteract) continue;
+            if (obj == null || !obj.CanInteract)
+                continue;
 
-            var distance = Vector2.Distance(_mousePosition, obj.transform.position);
-            if (distance < selectRadius && distance < closestDistance)
+            // 使用平方距离计算，避免开平方运算
+            var sqrDistance = (_mousePosition - (Vector2)obj.transform.position).sqrMagnitude;
+            if (sqrDistance < _sqrSelectRadius && sqrDistance < closestDistance)
             {
                 nearestObject = obj;
-                closestDistance = distance;
+                closestDistance = sqrDistance;
             }
         }
 
@@ -435,13 +477,26 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void CheckGround()
     {
-        _groundHit = Physics2D.Raycast(transform.position, Vector2.down, rayLength, groundLayer);
+        // 优化地面检测，使用多向射线
+        bool hitGround = false;
+
+        foreach (var direction in _rayDirections)
+        {
+            _groundHit = Physics2D.Raycast(transform.position, direction, rayLength, groundLayer);
+            if (_groundHit.collider != null)
+            {
+                hitGround = true;
+                break;
+            }
+        }
+
         var wasGrounded = _isGrounded;
-        _isGrounded = _groundHit.collider != null;
+        _isGrounded = hitGround;
 
         if (_isGrounded && !wasGrounded)
             HandleLanding();
-        else if (!_isGrounded && wasGrounded) HandleTakeoff();
+        else if (!_isGrounded && wasGrounded)
+            HandleTakeoff();
     }
 
     /// <summary>

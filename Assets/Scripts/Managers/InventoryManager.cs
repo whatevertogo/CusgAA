@@ -14,10 +14,13 @@ namespace Managers
     {
         #region 序列化字段
 
-        [Header("引用")] [Tooltip("物品数据库配置")] [SerializeField]
+        [Header("引用")]
+        [Tooltip("物品数据库配置")]
+        [SerializeField]
         private ItemDatabaseSO itemDatabaseSO; // 物品数据库
 
-        [Tooltip("背包UI管理器")] [SerializeField] private ItemsManagerUI itemsManagerUI; // UI 管理
+        [Tooltip("背包UI管理器")]
+        [SerializeField] private ItemsManagerUI itemsManagerUI; // UI 管理
 
         #endregion
 

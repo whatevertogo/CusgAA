@@ -9,13 +9,13 @@ using UnityEngine.UI;
 ///     暂停面板
 ///     继续，退出，重置，选择关卡
 /// </summary>
-public class PauseMenu : MonoBehaviour
+public class PausedMenu : MonoBehaviour
 {
     [Header("UI")] [SerializeField] private GameObject pauseMenuPanel;
 
     [SerializeField] private Button continueButton;
     [SerializeField] private Button resetButton;
-    [SerializeField] private Button setLevelButton;
+    [SerializeField] private Button reloadLevelButton;
     [SerializeField] private Button exitButton;
 
     [Header("Settings")] [SerializeField] private string sceneName;
@@ -26,25 +26,21 @@ public class PauseMenu : MonoBehaviour
         if (continueButton != null)
         {
             continueButton.onClick.AddListener(ContinueGame);
-            Debug.Log("绑定了");
         }
 
         if (resetButton != null)
         {
             resetButton.onClick.AddListener(ResetGame);
-            Debug.Log("绑定了");
         }
 
         if (exitButton != null)
         {
             exitButton.onClick.AddListener(ExitGame);
-            Debug.Log("绑定了");
         }
 
-        if (setLevelButton != null)
+        if (reloadLevelButton != null)
         {
-            setLevelButton.onClick.AddListener(SetLevel);
-            Debug.Log("绑定了");
+            reloadLevelButton.onClick.AddListener(ReloadCurrentLevel);
         }
     }
 
@@ -53,6 +49,14 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenuPanel.SetActive(false);
         GameInput.Instance.OnEscapeAction += PausedMenuOpen_Close;
+    }
+
+    private void OnDestroy()
+    {
+        if (GameInput.Instance != null)
+        {
+            GameInput.Instance.OnEscapeAction -= PausedMenuOpen_Close;
+        }
     }
 
     private void PausedMenuOpen_Close(object sender, EventArgs e)
@@ -83,19 +87,17 @@ public class PauseMenu : MonoBehaviour
             (Sender, args) => { Debug.Log($"场景 {args.SceneName} ,耗时:{args.LoadTime}秒"); });
     }
 
-    private void SetLevel()
+    private void ReloadCurrentLevel()
     {
-        if (sceneName == null)
-        {
-            sceneName = "First";
-            Debug.LogError("找不到场景名字，已经设置为默认场景名字");
-        }
-
         Time.timeScale = 1f;
         pauseMenuPanel.SetActive(false);
 
-        sceneName = SceneManager.GetActiveScene().name;
-        MySceneManager.Instance.LoadSceneByName(sceneName);
+        // 获取当前场景名
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        
+        // 使用异步加载以获得更好的用户体验
+        MySceneManager.Instance.LoadSceneAsync(currentSceneName, null, 
+            (sender, args) => { Debug.Log($"场景 {args.SceneName} 重新加载完成，耗时:{args.LoadTime}秒"); });
     }
 
     private void ExitGame()

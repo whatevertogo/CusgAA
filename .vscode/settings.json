@@ -58,5 +58,6 @@
     },
     "dotnet.defaultSolution": "tRY.sln",
     "dotnet.preferCSharpExtension": true,
-    "todo-tree.tree.showBadges": false
+    "todo-tree.tree.showBadges": false,
+    "marscode.chatLanguage": "cn"
 }

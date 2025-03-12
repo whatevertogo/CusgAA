@@ -2,6 +2,8 @@ using System;
 using Managers;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using DG.Tweening;
 
 // 背包UI管理器
 // 说明：管理背包界面的显示、隐藏和更新
@@ -15,6 +17,18 @@ public class ItemsManagerUI : MonoBehaviour
     [SerializeField] private GameObject itemContainerPrefab;  // 物品容器预制体
     [SerializeField] private GameObject InventoryBackGround;
     bool _done = true;
+    
+    [Header("动画")]
+    private Coroutine _currentCoroutine;
+    [SerializeField] private RectMask2D itemMask;
+    [SerializeField] private float targetBottom = 320f;
+    [SerializeField] private float duration = 1f;
+    
+    private Tweener currentTweener;
+
+    
+   
+    
 
     // 初始化背包UI系统
     // 说明：
@@ -62,17 +76,22 @@ public class ItemsManagerUI : MonoBehaviour
     // 2. 更新物品显示
     public void ShowInventory()
     {
+        DoKill();
         AllItems.gameObject.SetActive(true);
         InventoryBackGround.SetActive(true); // 显示背包背景
         UpdateVisual();
+        PlayMaskAnimation(targetBottom, 0f);
     }
 
     // 隐藏背包界面
     // 说明：禁用背包界面的显示
     public void HideInventory()
     {
-        AllItems.gameObject.SetActive(false);
-        InventoryBackGround.SetActive(false); // 隐藏背包背景
+        DoKill();
+        PlayMaskAnimation(0f, targetBottom).OnComplete(() => {
+            AllItems.gameObject.SetActive(false);
+            InventoryBackGround.SetActive(false); // 隐藏背包背景
+        });
     }
 
     // 更新背包界面显示
@@ -122,7 +141,20 @@ public class ItemsManagerUI : MonoBehaviour
         
     }
     //TODO-写一个更好的视觉效果
-
+    
+    private Tweener PlayMaskAnimation(float from, float to)
+    {
+        itemMask.padding = new Vector4(0, 0, 0, from);
+        return DOTween.To(() => itemMask.padding, x => itemMask.padding = x, new Vector4(0, 0, 0, to), duration);
+    }
+    
+    private void DoKill()
+    {
+        if (currentTweener != null && currentTweener.IsActive())
+        {
+            currentTweener.Kill();
+        }
+    }
     private void UseItem(ItemSO item)
     {
 

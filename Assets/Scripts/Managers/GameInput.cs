@@ -9,7 +9,12 @@ namespace Managers
     /// </summary>
     public class GameInput : Singleton<GameInput>
     {
-        private Vector2 moveDir = Vector2.zero;
+        private Vector2 MoveDir = Vector2.zero;
+        public Vector2 moveDir
+        {
+            get => MoveDir;
+            set => MoveDir = value;
+        }
         private PlayerInputSystem PlayerInput;
         public bool JumpPressed { get; private set; }
 
@@ -38,7 +43,7 @@ namespace Managers
         {
             if (PlayerInput != null) PlayerInput.Enable();
         }
-        
+
         private void OnDisable()
         {
             if (PlayerInput != null)
@@ -54,7 +59,7 @@ namespace Managers
             {
                 Instance = null;
             }
-            
+
             CleanupInputSystem();
         }
 

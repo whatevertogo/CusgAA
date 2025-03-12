@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Interfaces;
+using UnityEngine;
 
 namespace Managers
 {
@@ -111,6 +112,10 @@ namespace Managers
             {
                 OnTriggerObjectSelected(this, args);
             }
+            // catch (Exception e)
+            // {
+            //     Debug.LogError($"触发物体选中事件处理失败！{e.Message}");
+            // }
             finally
             {
                 // 确保事件处理完后回收参数对象
@@ -158,7 +163,60 @@ namespace Managers
         }
 
         #endregion
+
+        /*#region 音乐事件
+
+        public event EventHandler<OnVolumeChangedArgs> OnVolumeChanged;
+
+        public class OnVolumeChangedArgs : EventArgs,IResettable
+        {
+            public enum AudioType{
+                Master,
+                BGM,
+                SFX
+            }
+            public AudioType Type {get;set;}
+            public float Volume{get;set;}
+            public AudioClip Clip { get; set; }
+
+            public void Reset()
+            {
+                Type=default;
+                Clip = null;
+                Volume = 0f;
+            }
+
+        }
+
+        public void VolumeVisualUpdated(AudioType type, AudioClip clip, float volume=1f)
+        {
+            if (OnVolumeChanged == null) return;
+
+            var args = GetEventArgs<OnVolumeChangedArgs>();
+            args.Type = (OnVolumeChangedArgs.AudioType)type;
+            args.Clip = clip;
+            args.Volume = volume;
+
+            try
+            {
+                OnVolumeChanged(this, args);
+            }
+            catch{
+                Debug.LogError("音量改变事件处理失败！");
+            }
+            finally
+            {
+                ReleaseEventArgs(args);
+            }
+        }
     
+
+
+        #endregion*/
+        //后来想了像没必要，直接在UI中处理得了
+
+
         //TODO-打开Panel后停止移动事件及与GameInput相关事件
     }
+
 }

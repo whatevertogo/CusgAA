@@ -1,16 +1,72 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Managers;
+using System;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : Singleton<AudioManager>
 {
-    public static AudioManager Instance { get; private set; }
-    
+
     // 音量属性，用于与UI滑动条绑定
     [SerializeField] private float _masterVolume = 1f;
     [SerializeField] private float _bgmVolume = 1f;
     [SerializeField] private float _sfxVolume = 1f;
 
-    public float MasterVolume 
+    // 音量改变事件，用于通知UI更新
+    public System.Action onVolumeChanged;
+
+    [SerializeField] private AudioSource bgmSource;
+
+    [SerializeField] private AudioSource sfxSourcePrefab;
+    private List<AudioSource> sfxSources;
+
+    [System.Serializable]
+    public class AudioClipData
+    {
+        public string name;
+        public AudioClip clip;
+    }
+
+    [SerializeField] private List<AudioClipData> audioClipDataList = new List<AudioClipData>();
+
+
+
+
+    // private void Awake()
+    // {
+    //     base.Awake();
+    //Todo->将音量和滚动条什么之类的绑定
+    // }
+
+
+    // private void Start(){
+    //     ChangeBGMClip(bgmSource, audioClipDataList[0].clip);
+    // }//例子
+
+
+
+    private void Start()
+    {
+        // 初始化音频源
+        InitializeAudioSources();
+    }
+
+    private void InitializeAudioSources()
+    {
+        // 初始化BGM音源
+        bgmSource = gameObject.AddComponent<AudioSource>();
+        bgmSource.loop = true;
+
+        // 初始化音效列表
+        sfxSources = new List<AudioSource>();
+    }
+
+
+
+    /// <summary>
+    /// 主音量
+    /// </summary>
+    /// <value></value>
+    public float MasterVolume
     {
         get => _masterVolume;
         set
@@ -21,6 +77,10 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 通过属性得到背景音量
+    /// </summary>
+    /// <value></value>
     public float BGMVolume
     {
         get => _bgmVolume;
@@ -32,6 +92,10 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 属性得到音乐音量
+    /// </summary>
+    /// <value></value>
     public float SFXVolume
     {
         get => _sfxVolume;
@@ -43,54 +107,32 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    // 音量改变事件，用于通知UI更新
-    public System.Action onVolumeChanged;
 
-    private AudioSource bgmSource;
-    private List<AudioSource> sfxSources;
-
-    private void Awake()
-    {
-        // 单例模式
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-            InitializeAudioSources();
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    private void InitializeAudioSources()
-    {
-        // 初始化BGM音源
-        bgmSource = gameObject.AddComponent<AudioSource>();
-        bgmSource.loop = true;
-        
-        // 初始化音效列表
-        sfxSources = new List<AudioSource>();
-    }
-
-    // 播放背景音乐
+    /// <summary>
+    /// 播放背景音乐
+    /// </summary>
+    /// <param name="clip"></param>
     public void PlayBGM(AudioClip clip)
     {
         if (clip == null) return;
-        
+
         bgmSource.clip = clip;
         bgmSource.volume = _masterVolume * _bgmVolume;
         bgmSource.Play();
     }
 
-    // 停止背景音乐
+    /// <summary>
+    /// 停止背景音乐
+    /// </summary>
     public void StopBGM()
     {
         bgmSource.Stop();
     }
 
-    // 播放音效
+    /// <summary>
+    /// 播放音效
+    /// </summary>
+    /// <param name="clip"></param>
     public void PlaySFX(AudioClip clip)
     {
         if (clip == null) return;
@@ -102,14 +144,16 @@ public class AudioManager : MonoBehaviour
         sfxSource.Play();
 
         sfxSources.Add(sfxSource);
-        
+
         // 播放完成后销毁
         float clipLength = clip.length;
         Destroy(sfxSource, clipLength);
         sfxSources.Remove(sfxSource);
     }
 
-    // 更新所有音源的音量
+    /// <summary>
+    /// 更新所有音源的音量
+    /// </summary>
     private void UpdateVolumes()
     {
         // 更新BGM音量
@@ -127,8 +171,20 @@ public class AudioManager : MonoBehaviour
             }
         }
     }
-    ///
 
-    
+    /// <summary>
+    /// 改变音频源的片段
+    /// </summary>
+    /// <param name="audioSource">目标音频源</param>
+    /// <param name="clip">要播放的音频片段</param>
+    private void ChangeBGMClip(AudioSource audioSource, AudioClip clip)
+    {
+        if (audioSource == null) return;
+        audioSource.clip = clip;
+    }
+
+
+
+
 
 }

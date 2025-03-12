@@ -13,17 +13,18 @@ namespace Managers
         private PlayerInputSystem PlayerInput;
         public bool JumpPressed { get; private set; }
 
+        // 事件定义
+        public event EventHandler OnInteractAction;
+        public event EventHandler OnOpenInventoryAction;
+        public event EventHandler OnClickAction;
+        public event EventHandler OnJumpAction;
+        public event EventHandler OnEscapeAction;
+
         protected override void Awake()
         {
             base.Awake();
             PlayerInput = new PlayerInputSystem();
-
-            PlayerInput.Player.Interact.performed += Interact_performed;
-            PlayerInput.Player.OpenInventory.performed += OpenInventory_performed;
-            PlayerInput.Player.Jump.performed += Jump_performed;
-            PlayerInput.Player.Click.performed += Click_performed;
-            PlayerInput.Player.ESC.performed += Escape_performed;
-
+            RegisterInputCallbacks();
             PlayerInput.Enable();
         }
 
@@ -38,6 +39,15 @@ namespace Managers
             if (PlayerInput != null) PlayerInput.Enable();
         }
         
+        private void OnDisable()
+        {
+            if (PlayerInput != null)
+            {
+                UnregisterInputCallbacks();
+                PlayerInput.Disable();
+            }
+        }
+
         private void OnDestroy()
         {
             if (Instance == this)
@@ -45,58 +55,50 @@ namespace Managers
                 Instance = null;
             }
             
-            // 确保在销毁时完全清理输入系统资源
+            CleanupInputSystem();
+        }
+
+        #region 输入系统管理
+
+        /// <summary>
+        /// 注册所有输入回调
+        /// </summary>
+        private void RegisterInputCallbacks()
+        {
+            // 使用Lambda表达式简化事件处理
+            PlayerInput.Player.Interact.performed += ctx => OnInteractAction?.Invoke(this, EventArgs.Empty);
+            PlayerInput.Player.OpenInventory.performed += ctx => OnOpenInventoryAction?.Invoke(this, EventArgs.Empty);
+            PlayerInput.Player.Jump.performed += ctx => OnJumpAction?.Invoke(this, EventArgs.Empty);
+            PlayerInput.Player.Click.performed += ctx => OnClickAction?.Invoke(this, EventArgs.Empty);
+            PlayerInput.Player.ESC.performed += ctx => OnEscapeAction?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// 注销所有输入回调
+        /// </summary>
+        private void UnregisterInputCallbacks()
+        {
+            // 使用Lambda表达式简化事件注销
+            PlayerInput.Player.Interact.performed -= ctx => OnInteractAction?.Invoke(this, EventArgs.Empty);
+            PlayerInput.Player.OpenInventory.performed -= ctx => OnOpenInventoryAction?.Invoke(this, EventArgs.Empty);
+            PlayerInput.Player.Jump.performed -= ctx => OnJumpAction?.Invoke(this, EventArgs.Empty);
+            PlayerInput.Player.Click.performed -= ctx => OnClickAction?.Invoke(this, EventArgs.Empty);
+            PlayerInput.Player.ESC.performed -= ctx => OnEscapeAction?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// 清理输入系统资源
+        /// </summary>
+        private void CleanupInputSystem()
+        {
             if (PlayerInput != null)
             {
                 PlayerInput.Disable();  // 确保先禁用
                 PlayerInput.Dispose();  // 完全释放资源
                 PlayerInput = null;
             }
-            Debug.Log("GameInput OnDestroy");
         }
 
-        private void OnDisable()
-        {
-            if (PlayerInput != null)
-            {
-                PlayerInput.Player.Interact.performed -= Interact_performed;
-                PlayerInput.Player.OpenInventory.performed -= OpenInventory_performed;
-                PlayerInput.Player.Jump.performed -= Jump_performed;
-                PlayerInput.Player.Click.performed -= Click_performed;
-                PlayerInput.Player.ESC.performed -= Escape_performed;
-                PlayerInput.Disable();
-            }
-        }
-        
-        public event EventHandler OnInteractAction;
-        public event EventHandler OnOpenInventoryAction;
-        public event EventHandler OnClickAction;
-        public event EventHandler OnJumpAction;
-        public event EventHandler OnEscapeAction;
-
-        private void Interact_performed(InputAction.CallbackContext obj)
-        {
-            OnInteractAction?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void OpenInventory_performed(InputAction.CallbackContext obj)
-        {
-            OnOpenInventoryAction?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void Jump_performed(InputAction.CallbackContext obj)
-        {
-            OnJumpAction?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void Click_performed(InputAction.CallbackContext obj)
-        {
-            OnClickAction?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void Escape_performed(InputAction.CallbackContext obj)
-        {
-            OnEscapeAction?.Invoke(this, EventArgs.Empty);
-        }
+        #endregion
     }
 }

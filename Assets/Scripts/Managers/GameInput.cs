@@ -9,7 +9,7 @@ namespace Managers
     /// </summary>
     public class GameInput : Singleton<GameInput>
     {
-        public Vector2 moveDir = Vector2.zero;
+        private Vector2 moveDir = Vector2.zero;
         private PlayerInputSystem PlayerInput;
         public bool JumpPressed { get; private set; }
 

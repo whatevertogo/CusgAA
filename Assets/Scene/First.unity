@@ -3707,6 +3707,7 @@ GameObject:
   - component: {fileID: 1531025204}
   - component: {fileID: 1531025203}
   - component: {fileID: 1531025205}
+  - component: {fileID: 1531025206}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -4005,6 +4006,19 @@ MonoBehaviour:
     - rid: 2892498670897594449
       type: {class: ShadowShape2DProvider_Collider2D, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
       data: 
+--- !u!114 &1531025206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531025198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 177434321e29a5c44a94e0b2e01c20ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveDir: {x: 0, y: 0}
 --- !u!1 &1563940768
 GameObject:
   m_ObjectHideFlags: 0

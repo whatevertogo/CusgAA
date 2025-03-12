@@ -239,7 +239,7 @@ namespace Managers
                 yield break;
             }
             
-            // 将 yield return 移到 try-catch 块外部
+            
             yield return MonitorLoadingProgress(asyncOperation, config, startTime);
         }
         

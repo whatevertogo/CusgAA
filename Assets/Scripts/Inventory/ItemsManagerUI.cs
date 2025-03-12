@@ -26,6 +26,8 @@ public class ItemsManagerUI : MonoBehaviour
     
     private Tweener currentTweener;
 
+    private bool isAnimating = false; // 标记动画状态
+
     
    
     
@@ -60,6 +62,7 @@ public class ItemsManagerUI : MonoBehaviour
     // 说明：根据当前状态打开或关闭背包界面
     public void Open_CloseInventory()
     {
+        if(isAnimating) return;
         if (AllItems.gameObject.activeSelf)
         {
             HideInventory();
@@ -77,10 +80,11 @@ public class ItemsManagerUI : MonoBehaviour
     public void ShowInventory()
     {
         DoKill();
+        isAnimating = true; // 标记动画开始
         AllItems.gameObject.SetActive(true);
         InventoryBackGround.SetActive(true); // 显示背包背景
         UpdateVisual();
-        PlayMaskAnimation(targetBottom, 0f);
+         PlayMaskAnimation(targetBottom, 0f).OnComplete(() => isAnimating = false); 
     }
 
     // 隐藏背包界面
@@ -88,9 +92,11 @@ public class ItemsManagerUI : MonoBehaviour
     public void HideInventory()
     {
         DoKill();
+        isAnimating = true; // 标记动画开始
         PlayMaskAnimation(0f, targetBottom).OnComplete(() => {
             AllItems.gameObject.SetActive(false);
             InventoryBackGround.SetActive(false); // 隐藏背包背景
+            isAnimating = false; // 标记动画结束
         });
     }
 

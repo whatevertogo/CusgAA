@@ -28,10 +28,6 @@ public class ItemsManagerUI : MonoBehaviour
 
     private bool isAnimating = false; // 标记动画状态
 
-    
-   
-    
-
     // 初始化背包UI系统
     // 说明：
     // 1. 初始化背包界面显示
@@ -143,10 +139,9 @@ public class ItemsManagerUI : MonoBehaviour
              }
             #endregion
         }
-        
-        
+           
     }
-    //TODO-写一个更好的视觉效果
+    //TODO-最后在考虑有没有更好的啊吧
     
     private Tweener PlayMaskAnimation(float from, float to)
     {

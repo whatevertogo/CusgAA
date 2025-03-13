@@ -1,23 +1,28 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Managers;
-using System;
 
 public class AudioManager : Singleton<AudioManager>
 {
-
+    [Header("音量数据")]
     // 音量属性，用于与UI滑动条绑定
+    [Tooltip("主音量")]
     [SerializeField] private float _masterVolume = 1f;
+    [Tooltip("背景音乐音量")]
     [SerializeField] private float _bgmVolume = 1f;
+    [Tooltip("音效音量")]
     [SerializeField] private float _sfxVolume = 1f;
+    [Header("音频源/播放器")]
+    [Tooltip("背景音乐播放器")]
+    [SerializeField] private AudioSource bgmSource;
+    [Tooltip("音效播放器")]
+    [SerializeField] private AudioSource sfxSourcePrefab;
+    private List<AudioSource> sfxSources;
+    private Dictionary<string, AudioClip> AudioClipDictionary = new();
 
     // 音量改变事件，用于通知UI更新
     public System.Action onVolumeChanged;
 
-    [SerializeField] private AudioSource bgmSource;
-
-    [SerializeField] private AudioSource sfxSourcePrefab;
-    private List<AudioSource> sfxSources;
 
     [System.Serializable]
     public class AudioClipData
@@ -31,11 +36,11 @@ public class AudioManager : Singleton<AudioManager>
 
 
 
-    // private void Awake()
-    // {
-    //     base.Awake();
-    //Todo->将音量和滚动条什么之类的绑定
-    // }
+    protected override void Awake()
+    {
+        base.Awake();
+        //Todo->将音量和滚动条什么之类的绑定
+    }
 
 
     // private void Start(){
@@ -54,10 +59,12 @@ public class AudioManager : Singleton<AudioManager>
     {
         // 初始化BGM音源
         bgmSource = gameObject.AddComponent<AudioSource>();
-        bgmSource.loop = true;
 
-        // 初始化音效列表
-        sfxSources = new List<AudioSource>();
+        foreach (var audioClipData in audioClipDataList)
+        {
+            AudioClipDictionary[audioClipData.name] = audioClipData.clip;
+        }
+
     }
 
 
@@ -177,11 +184,19 @@ public class AudioManager : Singleton<AudioManager>
     /// </summary>
     /// <param name="audioSource">目标音频源</param>
     /// <param name="clip">要播放的音频片段</param>
-    private void ChangeBGMClip(AudioSource audioSource, AudioClip clip)
+    private void ChangeBGMClip(AudioSource audioSource = default, string name = null)
     {
         if (audioSource == null) return;
-        audioSource.clip = clip;
+        if (AudioClipDictionary.TryGetValue(name, out AudioClip Nowclip))
+        {
+            audioSource.clip = Nowclip;
+        }
+        else
+        {
+            Debug.Log("字典中没有clip值考虑是否没有在编辑器添加,或者并没有输入名字和audioSource，或者名字错误");
+        }
     }
+
 
 
 

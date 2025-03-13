@@ -216,7 +216,7 @@ namespace Managers
         //后来想了像没必要，直接在UI中处理得了
 
 
-        //TODO-打开Panel后停止移动事件及与GameInput相关事件
+        //TODO-打开Panel后停止移动事件
     }
 
 }

@@ -1,8 +1,4 @@
-using System;
-using Interfaces;
 using UnityEngine;
-using  UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class PasswordChest : TriggerObject

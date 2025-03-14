@@ -61,9 +61,10 @@ public class AudioManager : Singleton<AudioManager>
 
     private void Start()
     {
-        // 初始化音频源
-        InitializeAudioSources();
+        // 初始化BGM音频源
+        InitializeBGMAudioSources();
     }
+
 
     private void Update(){
         // 更新音量
@@ -78,16 +79,15 @@ public class AudioManager : Singleton<AudioManager>
         }
     }
 
-    private void InitializeAudioSources()
+/// <summary>
+/// 初始化音频源
+/// </summary>
+    private void InitializeBGMAudioSources()
     {
-        // 初始化BGM音源
-        bgmSource = gameObject.AddComponent<AudioSource>();
-
         foreach (var audioClipData in audioClipDataList)
         {
             BGMClipDictionary[audioClipData.name] = audioClipData.clip;
         }
-
     }
 
     /// <summary>

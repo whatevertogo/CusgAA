@@ -5094,7 +5094,11 @@ MonoBehaviour:
   sfxSourceList: []
   masterVolumeSlider: {fileID: 0}
   bgmVolumeSlider: {fileID: 0}
-  audioClipDataList: []
+  audioClipDataList:
+  - name: 
+    clip: {fileID: 0}
+  - name: 
+    clip: {fileID: 0}
 --- !u!4 &1952004267
 Transform:
   m_ObjectHideFlags: 0

@@ -22,11 +22,8 @@ public class BackPack : MonoBehaviour
 
     // 当前背包中的物品列表
     public List<ItemSO> items = new();
-    #region 私有字段
     // 物品字典：用于快速查找物品数据
     private readonly Dictionary<string, ItemSO> itemDictionary = new();
-
-    #endregion
 
     #region Unity生命周期
 
@@ -71,7 +68,7 @@ public class BackPack : MonoBehaviour
     ///     向背包添加物品
     /// 两种添加的方法，第一种用函数调用第二种用事件调用，
     /// /// 第一种示例 在一个需要调用添加物品的物品互动里面写AddItem(name)
-    /// 推荐第二种示例 在一个需要调用添加物品的物品互动里面写 EventManager.Instance.AddItemToBackPack(item);
+    /// 推荐第二种示例 在一个需要调用添加物品的物品互动里面写 Managers.EventManager.Instance.AddItemToBackPack(item);
     /// </summary>
     /// <param name="itemName">要添加的物品名称</param>
     /// <remarks>

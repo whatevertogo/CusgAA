@@ -22,6 +22,7 @@ public class SelectedVisual : MonoBehaviour
         {
             selectedEffect.SetActive(true);
             Debug.Log($"选中了{selectedObject.name}");
+            //这只是视觉效果
         }
 
         if (e.SelectedObject != null) return;

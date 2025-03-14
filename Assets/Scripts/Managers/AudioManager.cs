@@ -1,9 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Managers;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using System;
 
 public class AudioManager : Singleton<AudioManager>
 {
+    #region 音量
     [Header("音量数据")]
     // 音量属性，用于与UI滑动条绑定
     [Tooltip("主音量")]
@@ -12,16 +16,24 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private float _bgmVolume = 1f;
     [Tooltip("音效音量")]
     [SerializeField] private float _sfxVolume = 1f;
+    #endregion
     [Header("音频源/播放器")]
     [Tooltip("背景音乐播放器")]
     [SerializeField] private AudioSource bgmSource;
     [Tooltip("音效播放器")]
-    [SerializeField] private AudioSource sfxSourcePrefab;
-    private List<AudioSource> sfxSources;
-    private Dictionary<string, AudioClip> AudioClipDictionary = new();
+    [SerializeField] private AudioSource sfxSource;
+    [Header("音效音乐列表")]
+    [Tooltip("音效列表")]
+    public List<AudioSource> sfxSourceList;
+    [Tooltip("BGM音乐列表")]
+    private Dictionary<string, AudioClip> BGMClipDictionary = new();
+
+    [Header("绑定UI条")]
+    [SerializeField ] private Slider masterVolumeSlider;
+    [SerializeField ] private Slider bgmVolumeSlider;
 
     // 音量改变事件，用于通知UI更新
-    public System.Action onVolumeChanged;
+    public event EventHandler<EventArgs> onVolumeChanged;//TODO-留下空间给UI更新音量的事件
 
 
     [System.Serializable]
@@ -39,35 +51,40 @@ public class AudioManager : Singleton<AudioManager>
     protected override void Awake()
     {
         base.Awake();
-        //Todo->将音量和滚动条什么之类的绑定
     }
-
-
-    // private void Start(){
-    //     ChangeBGMClip(bgmSource, audioClipDataList[0].clip);
-    // }//例子
-
 
 
     private void Start()
     {
-        // 初始化音频源
-        InitializeAudioSources();
+        // 初始化BGM音频源
+        InitializeBGMAudioSources();
     }
 
-    private void InitializeAudioSources()
-    {
-        // 初始化BGM音源
-        bgmSource = gameObject.AddComponent<AudioSource>();
 
-        foreach (var audioClipData in audioClipDataList)
+    private void Update(){
+        //todo-把音量和滚动条绑定
+        // 更新音量
+        if (masterVolumeSlider != null)
         {
-            AudioClipDictionary[audioClipData.name] = audioClipData.clip;
+            MasterVolume = masterVolumeSlider.value;
         }
 
+        if (bgmVolumeSlider != null)
+        {
+            BGMVolume = bgmVolumeSlider.value;
+        }
     }
 
-
+/// <summary>
+/// 初始化音频源
+/// </summary>
+    private void InitializeBGMAudioSources()
+    {
+        foreach (var audioClipData in audioClipDataList)
+        {
+            BGMClipDictionary[audioClipData.name] = audioClipData.clip;
+        }
+    }
 
     /// <summary>
     /// 主音量
@@ -80,7 +97,7 @@ public class AudioManager : Singleton<AudioManager>
         {
             _masterVolume = Mathf.Clamp01(value);
             UpdateVolumes();
-            onVolumeChanged?.Invoke();
+            onVolumeChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -95,7 +112,7 @@ public class AudioManager : Singleton<AudioManager>
         {
             _bgmVolume = Mathf.Clamp01(value);
             UpdateVolumes();
-            onVolumeChanged?.Invoke();
+            onVolumeChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -110,7 +127,7 @@ public class AudioManager : Singleton<AudioManager>
         {
             _sfxVolume = Mathf.Clamp01(value);
             UpdateVolumes();
-            onVolumeChanged?.Invoke();
+           onVolumeChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -150,12 +167,12 @@ public class AudioManager : Singleton<AudioManager>
         sfxSource.volume = _masterVolume * _sfxVolume;
         sfxSource.Play();
 
-        sfxSources.Add(sfxSource);
+        sfxSourceList.Add(sfxSource);
 
         // 播放完成后销毁
         float clipLength = clip.length;
         Destroy(sfxSource, clipLength);
-        sfxSources.Remove(sfxSource);
+        sfxSourceList.Remove(sfxSource);
     }
 
     /// <summary>
@@ -170,7 +187,7 @@ public class AudioManager : Singleton<AudioManager>
         }
 
         // 更新所有音效音量
-        foreach (var source in sfxSources)
+        foreach (var source in sfxSourceList)
         {
             if (source != null)
             {
@@ -187,7 +204,7 @@ public class AudioManager : Singleton<AudioManager>
     private void ChangeBGMClip(AudioSource audioSource = default, string name = null)
     {
         if (audioSource == null) return;
-        if (AudioClipDictionary.TryGetValue(name, out AudioClip Nowclip))
+        if (BGMClipDictionary.TryGetValue(name, out AudioClip Nowclip))
         {
             audioSource.clip = Nowclip;
         }
@@ -196,10 +213,5 @@ public class AudioManager : Singleton<AudioManager>
             Debug.Log("字典中没有clip值考虑是否没有在编辑器添加,或者并没有输入名字和audioSource，或者名字错误");
         }
     }
-
-
-
-
-
 
 }

@@ -23,6 +23,8 @@ public class ItemsManagerUI : MonoBehaviour
     [SerializeField] private RectMask2D itemMask;
     [SerializeField] private float targetBottom = 320f;
     [SerializeField] private float duration = 1f;
+
+    [SerializeField] private BackPack playeBackPack; // 背包数据
     
     private Tweener currentTweener;
 
@@ -111,7 +113,7 @@ public class ItemsManagerUI : MonoBehaviour
         }
 
         // 载入所有背包物品
-        foreach (var item in InventoryManager.Instance.items)
+        foreach (var item in PlayerController.Instance.backPack.items)
         {
             // 创建物品容器
             GameObject newItemContainer = Instantiate(itemContainerPrefab, AllItems);

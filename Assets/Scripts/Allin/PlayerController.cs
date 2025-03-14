@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
     #region 私有字段
 
     // 交互相关
-    private readonly List<TriggerObject> _triggerObjects = new(8); // 预设容量避免扩容
+    private readonly List<TriggerObject> _triggerObjects = new();
     private TriggerObject _clickedTriggerObject;
     private bool _isMovingToTarget;
     private Vector2 _targetPosition;
@@ -107,7 +107,9 @@ public class PlayerController : MonoBehaviour
 
     public static PlayerController Instance { get; private set; }
     public Camera cam;
-    public TriggerObject SelectedObject { get; private set; }
+    public TriggerObject SelectedObject { get; private set; }   
+
+    public BackPack backPack; // 背包引用
 
     #endregion
 
@@ -122,14 +124,14 @@ public class PlayerController : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         Physics2D.gravity = gravity;
         cam = Camera.main;
-
+        backPack=GetComponent<BackPack>();
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
+
 
         // 缓存常用计算
         _cachedAirDragDeceleration = airDrag * deceleration;
@@ -204,6 +206,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region 移动系统
+
 
     /// <summary>
     ///     处理角色移动

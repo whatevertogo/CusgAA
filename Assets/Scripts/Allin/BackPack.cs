@@ -20,13 +20,13 @@ public class BackPack : MonoBehaviour
 
     #endregion
 
+    // 当前背包中的物品列表
+    public List<ItemSO> items = new();
     #region 私有字段
     // 物品字典：用于快速查找物品数据
     private readonly Dictionary<string, ItemSO> itemDictionary = new();
 
     #endregion
-    // 当前背包中的物品列表
-    public List<ItemSO> items = new();
 
     #region Unity生命周期
 

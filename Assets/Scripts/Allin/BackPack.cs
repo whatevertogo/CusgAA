@@ -68,16 +68,25 @@ public class BackPack : MonoBehaviour
     ///     向背包添加物品
     /// 两种添加的方法，第一种用函数调用第二种用事件调用，
     /// /// 第一种示例 在一个需要调用添加物品的物品互动里面写AddItem(name)
-    /// 推荐第二种示例 在一个需要调用添加物品的物品互动里面写 Managers.EventManager.Instance.AddItemToBackPack(item);
+    /// 第二种示例 在一个需要调用添加物品的物品互动通过事件管理写 Managers.EventManager.Instance.AddItemToBackPack(item);
+    /// 第三种就是哪里需要激活委托就在哪里写EventHanler，让多个对象监听，符合观察者模式，在其他类是不能激活这个类的事件的,但是可以通过方法简洁调用(我个人喜欢这样写，只是闲着无聊想学一下EventManager纯观察者模式实现(我有点不太喜欢这种写法,因为知道功能封装分类的好，事件是不会乱的，保证一个事件多个订阅者，而不是事件嵌套事件))
+    /// 前两种是你不会委托的情况下我为你封装了一个方法
+    /// 第三种是我给你一个正常哪怕不用EventManager的委托方法
+    /// 就是创建一个基于委托的事件激活，别的类激活后委托传递参数 (不需要的话可以不传递参数那就是TryToAddItem?.Invoke(this, EventArgs.Empty))
+    /// Managers.EventManager.Instance.TryToAddItem += AddItem; // 订阅添加物品委托
+    /// Managers.EventManager.Instance.TryToAddItem?.Invoke(this, new Managers.EventManagerAddItemEventArgs { Item = item }激活委托
     /// </summary>
     /// <param name="itemName">要添加的物品名称</param>
     /// <remarks>
-    ///     1. 检查物品是否存在于数据库中
-    ///     2. 检查物品是否已在背包中
-    ///     3. 添加成功后触发背包更新事件
+    ///     1. 检查背包是否已满
+    ///     2. 检查物品是否在数据库中
+    ///     3. 检查物品是否已存在于背包中
+    ///     4. 添加物品到背包
+    ///     5. 触发背包更新事件 
     /// </remarks>
     public void AddItem(string itemName)
     {
+        if (this.items.Count >= 6) return;
         if (itemDictionary.TryGetValue(itemName, out var itemSO))
         {
             if (!items.Contains(itemSO))
@@ -99,6 +108,7 @@ public class BackPack : MonoBehaviour
 
     public void AddItem(object sender, EventManager.AddItemEventArgs e)
     {
+        if (this.items.Count >= 6) return;
         if (e.Item == null) return;
         if (itemDictionary.TryGetValue(e.Item.itemName, out var itemSO))
         {

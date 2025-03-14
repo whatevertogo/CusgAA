@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Interfaces;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Managers
@@ -10,6 +11,13 @@ namespace Managers
     /// </summary>
     public class EventManager : Singleton<EventManager>
     {
+        protected override void Awake()
+        {
+            base.Awake();
+            // 初始化事件
+            OnTriggerObjectSelected = null;
+            OnInventoryUpdated = null;
+        }
         #region 可交互物体选择事件
 
         public event EventHandler<TriggerObjectSelectedEventArgs> OnTriggerObjectSelected;
@@ -28,14 +36,7 @@ namespace Managers
         /// <param name="selectedObject">被选中的物体</param>
         public void TriggerObjectSelected(TriggerObject selectedObject)
         {
-            if (OnTriggerObjectSelected == null) return;
-
-            var args = new TriggerObjectSelectedEventArgs
-            {
-                SelectedObject = selectedObject
-            };
-
-            OnTriggerObjectSelected(this, args);
+            OnTriggerObjectSelected?.Invoke(this, new TriggerObjectSelectedEventArgs { SelectedObject = selectedObject });
         }
 
         #endregion
@@ -77,18 +78,9 @@ namespace Managers
         /// ///     尝试添加物品到背包事件
         /// </summary>
         /// <param name="item">要添加的物品</param>
-        public void AddItemToBackPack(ItemSO item)
-        {
-            if (TryToAddItem == null) return;
-
-            var args = new AddItemEventArgs
-            {
-                Item = item
-            };
-
-            TryToAddItem(this, args);
+        public void AddItemToBackPack(ItemSO item) {
+        TryToAddItem?.Invoke(this, new AddItemEventArgs { Item = item });
         }
-
         #endregion
 
         //TODO-打开Panel后停止移动事件

@@ -54,10 +54,6 @@ public class AudioManager : Singleton<AudioManager>
     }
 
 
-    // private void Start(){
-    //     ChangeBGMClip(bgmSource, audioClipDataList[0].clip);
-    // }//例子
-
     private void Start()
     {
         // 初始化BGM音频源

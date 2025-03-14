@@ -1,5 +1,4 @@
 using Interfaces;
-using Managers;
 using UnityEngine;
 
 /// <summary>
@@ -53,7 +52,7 @@ public abstract class TriggerObject : MonoBehaviour, IInteract
         Debug.Log($"与{gameObject.name}交互");
         Debug.Log("不该在这里Interact,这里是基类，说明覆写失败");
     }
-
+    
     /// <summary>
     ///     当被选中时触发
     ///     在鼠标悬停到物体上时调用

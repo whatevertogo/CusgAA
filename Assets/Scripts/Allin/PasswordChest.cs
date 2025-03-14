@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class PasswordChest : TriggerObject
 {
-    [SerializeField] private GameObject passwordChestUI; 
-
+    [SerializeField] private GameObject passwordChestUI;
+    
     public override void Interact()
     {
         //TODO-互动逻辑
@@ -25,5 +26,12 @@ public class PasswordChest : TriggerObject
             passwordChestUI.SetActive(false);
         }
     }
+    
+    // //Todo-Debug完后记得删除
+    // private void OnDrawGizmos()
+    // {
+    //     Gizmos.color = Color.red;
+    //     Gizmos.DrawWireCube(transform.position, GetComponent<Collider2D>().bounds.size);
+    // }
 
 }

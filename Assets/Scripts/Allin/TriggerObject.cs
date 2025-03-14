@@ -18,7 +18,7 @@ public abstract class TriggerObject : MonoBehaviour, IInteract
 
     [Tooltip("交互范围")] [SerializeField] protected float interactionRange = 2f;
 
-    [Header("引用")] [SerializeField] private InventoryManager inventoryManager;
+    [Header("引用")] [SerializeField] private BackPack backPack;
 
     #endregion
 

@@ -51,7 +51,6 @@ public class AudioManager : Singleton<AudioManager>
     protected override void Awake()
     {
         base.Awake();
-        //Todo->将音量和滚动条什么之类的绑定
     }
 
 
@@ -67,6 +66,7 @@ public class AudioManager : Singleton<AudioManager>
 
 
     private void Update(){
+        //todo-把音量和滚动条绑定
         // 更新音量
         if (masterVolumeSlider != null)
         {

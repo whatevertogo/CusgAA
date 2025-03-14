@@ -7,8 +7,13 @@ namespace Managers
     /// <summary>
     ///     游戏输入管理器
     /// </summary>
-    public class GameInput : Singleton<GameInput>
+    public class GameInput : MonoBehaviour
     {
+        private static GameInput _instance;
+        private GameInput() { }// 私有构造函数，防止外部实例化
+
+        public static GameInput Instance => _instance; // 单例实例
+
         private Vector2 MoveDir = Vector2.zero;
         public Vector2 moveDir
         {
@@ -25,9 +30,9 @@ namespace Managers
         public event EventHandler OnJumpAction;
         public event EventHandler OnEscapeAction;
 
-        protected override void Awake()
+        protected  void Awake()
         {
-            base.Awake();
+            _instance = this;
             PlayerInput = new PlayerInputSystem();
             RegisterInputCallbacks();
             PlayerInput.Enable();
@@ -48,18 +53,12 @@ namespace Managers
         {
             if (PlayerInput != null)
             {
-                UnregisterInputCallbacks();
                 PlayerInput.Disable();
             }
         }
 
         private void OnDestroy()
         {
-            if (Instance == this)
-            {
-                Instance = null;
-            }
-
             CleanupInputSystem();
         }
 
@@ -78,19 +77,7 @@ namespace Managers
             PlayerInput.Player.ESC.performed += ctx => OnEscapeAction?.Invoke(this, EventArgs.Empty);
         }
 
-        /// <summary>
-        /// 注销所有输入回调
-        /// </summary>
-        private void UnregisterInputCallbacks()
-        {
-            // 使用Lambda表达式简化事件注销
-            PlayerInput.Player.Interact.performed -= ctx => OnInteractAction?.Invoke(this, EventArgs.Empty);
-            PlayerInput.Player.OpenInventory.performed -= ctx => OnOpenInventoryAction?.Invoke(this, EventArgs.Empty);
-            PlayerInput.Player.Jump.performed -= ctx => OnJumpAction?.Invoke(this, EventArgs.Empty);
-            PlayerInput.Player.Click.performed -= ctx => OnClickAction?.Invoke(this, EventArgs.Empty);
-            PlayerInput.Player.ESC.performed -= ctx => OnEscapeAction?.Invoke(this, EventArgs.Empty);
-        }
-
+        
         /// <summary>
         /// 清理输入系统资源
         /// </summary>

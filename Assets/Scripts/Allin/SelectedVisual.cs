@@ -1,4 +1,3 @@
-using Managers;
 using UnityEngine;
 
 /// <summary>
@@ -13,10 +12,10 @@ public class SelectedVisual : MonoBehaviour
     //订阅playerController中的OnTriggerObjectSelected事件
     private void Start()
     {
-        EventManager.Instance.OnTriggerObjectSelected += IamSelected;
+        PlayerController.Instance.TriggerObjectSelected += IamSelected;
     }
 
-    public void IamSelected(object sender, EventManager.TriggerObjectSelectedEventArgs e)
+    public void IamSelected(object sender, PlayerController.TriggerObjectSelectedEventArgs e)
     {
         if (selectedObject == e.SelectedObject)
         {

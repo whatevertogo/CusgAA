@@ -112,6 +112,18 @@ public class PlayerController : MonoBehaviour
     public BackPack backPack; // 背包引用
 
     #endregion
+    
+    public event EventHandler<TriggerObjectSelectedEventArgs> TriggerObjectSelected;
+
+    public class TriggerObjectSelectedEventArgs : EventArgs
+    {
+        public TriggerObject SelectedObject { get; }
+
+        public TriggerObjectSelectedEventArgs(TriggerObject triggerObject)
+        {
+            SelectedObject = triggerObject;
+        }
+    } 
 
     #region Unity生命周期
 
@@ -465,7 +477,7 @@ public class PlayerController : MonoBehaviour
 
             if (SelectedObject != null) SelectedObject.OnSelected();
 
-            EventManager.Instance?.TriggerObjectSelected(SelectedObject);
+            TriggerObjectSelected?.Invoke(this, new TriggerObjectSelectedEventArgs(SelectedObject));
         }
     }
 
@@ -652,7 +664,7 @@ public class PlayerController : MonoBehaviour
             if (SelectedObject == triggerObject)
             {
                 SelectedObject = null;
-                EventManager.Instance?.TriggerObjectSelected(null);
+                TriggerObjectSelected?.Invoke(this, new TriggerObjectSelectedEventArgs(null));
             }
         }
     }

@@ -1,6 +1,6 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
-using Managers;
 /// <summary>
 ///     背包管理器
 ///     负责：
@@ -24,6 +24,20 @@ public class BackPack : MonoBehaviour
     public List<ItemSO> items = new();
     // 物品字典：用于快速查找物品数据
     private readonly Dictionary<string, ItemSO> itemDictionary = new();
+    
+    public class ItemChangedEventArgs : EventArgs
+    {
+        public ItemSO Item { get; set; }
+        public bool IsAdded { get; set; }
+    }
+
+    public event EventHandler<InventoryUIUpdatedEventArgs> InventoryUIUpdated;
+    
+    public class InventoryUIUpdatedEventArgs: EventArgs
+    {
+        public List<ItemSO> Items { get; set; }
+    }
+    
 
     #region Unity生命周期
 
@@ -38,7 +52,7 @@ public class BackPack : MonoBehaviour
         items.ForEach(item => Debug.Log(item.itemName));
         AddItem("KeyForFirst"); // 测试物品添加
         AddItem("KeyForFirst1");
-        EventManager.Instance.TryToAddItem += AddItem; // 订阅添加物品事件
+        // 订阅添加物品事件
     }
 
     #endregion
@@ -92,7 +106,7 @@ public class BackPack : MonoBehaviour
             if (!items.Contains(itemSO))
             {
                 items.Add(itemSO);
-                EventManager.Instance?.InventoryUpdated();// 触发背包更新事件,事件实现解耦
+                InventoryUIUpdated?.Invoke(this,new InventoryUIUpdatedEventArgs{Items = items});// 触发背包更新事件,事件实现解耦
                 Debug.Log($"已添加物品：{itemSO.itemName}");
             }
             else
@@ -105,30 +119,7 @@ public class BackPack : MonoBehaviour
             Debug.LogWarning($"物品 {itemName} 在数据库中未找到！");
         }
     }
-
-    public void AddItem(object sender, EventManager.AddItemEventArgs e)
-    {
-        if (this.items.Count >= 6) return;
-        if (e.Item == null) return;
-        if (itemDictionary.TryGetValue(e.Item.itemName, out var itemSO))
-        {
-            if (!items.Contains(itemSO))
-            {
-                items.Add(itemSO);
-                EventManager.Instance?.InventoryUpdated();// 触发背包更新事件,事件实现解耦
-                Debug.Log($"已添加物品：{itemSO.itemName}");
-            }
-            else
-            {
-                Debug.Log($"物品 {itemSO.itemName} 已存在于背包中");
-            }
-        }
-        else
-        {
-            Debug.LogWarning($"物品 {e.Item.itemName} 在数据库中未找到！");
-        }
-
-    }
+    
 
     /// <summary>
     ///     检查背包中是否包含指定物品
@@ -154,7 +145,7 @@ public class BackPack : MonoBehaviour
         if (items.Contains(itemSO))
         {
             items.Remove(itemSO);
-            EventManager.Instance?.InventoryUpdated();// 触发背包更新事件,事件实现解耦
+            InventoryUIUpdated?.Invoke(this,new InventoryUIUpdatedEventArgs{Items = items});// 触发背包更新事件,事件实现解耦
             Debug.Log($"已移除物品：{itemSO.itemName}");
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -5,6 +6,7 @@ using UnityEngine.UIElements;
 public class PasswordChest : TriggerObject
 {
     [SerializeField] private GameObject passwordChestUI;
+    
     
     public override void Interact()
     {

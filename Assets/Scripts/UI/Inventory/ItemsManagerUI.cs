@@ -2,7 +2,6 @@ using System;
 using Managers;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using DG.Tweening;
 
 // 背包UI管理器
@@ -38,7 +37,7 @@ public class ItemsManagerUI : MonoBehaviour
     // 4. 初始设置物品容器为隐藏状态
     void Start()
     {
-        EventManager.Instance.OnInventoryUpdated += (sender, args) => UpdateVisual(); // 监听背包更新事件
+        PlayerController.Instance.backPack.InventoryUIUpdated += (sender, args) => UpdateVisual(); // 监听背包更新事件
         GameInput.Instance.OnOpenInventoryAction += InventoryManager_OnOpenInventoryAction; // 监听背包开关事件
         AllItems.gameObject.SetActive(false); // 初始设置所有物品容器为隐藏状态
         InventoryBackGround.SetActive(false); // 初始设置背包背景为隐藏状态

@@ -14,9 +14,12 @@ namespace Managers
         protected override void Awake()
         {
             base.Awake();
-            // 初始化事件
+            // 初始化所有事件
             OnTriggerObjectSelected = null;
             OnInventoryUpdated = null;
+            TryToAddItem = null;
+            OnPanelStateChanged = null;
+            OnGameStateChanged = null;
         }
         #region 可交互物体选择事件
 
@@ -57,10 +60,7 @@ namespace Managers
         /// </summary>
         public void InventoryUpdated()
         {
-            if (OnInventoryUpdated == null) return;
-
-            var args = new OnInventoryUpdatedArgs();
-            OnInventoryUpdated(this, args);
+            OnInventoryUpdated?.Invoke(this, new OnInventoryUpdatedArgs());
         }
 
         #endregion
@@ -81,6 +81,73 @@ namespace Managers
         public void AddItemToBackPack(ItemSO item) {
         TryToAddItem?.Invoke(this, new AddItemEventArgs { Item = item });
         }
+        #endregion
+
+        #region 面板状态事件
+
+        public event EventHandler<PanelStateEventArgs> OnPanelStateChanged;
+
+        /// <summary>
+        ///     面板状态事件参数类
+        /// </summary>
+        public class PanelStateEventArgs : EventArgs
+        {
+            public string PanelName { get; set; }
+            public bool IsOpen { get; set; }
+        }
+
+        /// <summary>
+        ///     触发面板状态改变事件
+        /// </summary>
+        /// <param name="panelName">面板名称</param>
+        /// <param name="isOpen">是否打开</param>
+        public void PanelStateChanged(string panelName, bool isOpen)
+        {
+            OnPanelStateChanged?.Invoke(this, new PanelStateEventArgs { PanelName = panelName, IsOpen = isOpen });
+        }
+
+        #endregion
+        
+        #region 游戏状态事件
+
+        public event EventHandler<GameStateEventArgs> OnGameStateChanged;
+
+        /// <summary>
+        ///     游戏状态事件参数类
+        /// </summary>
+        public class GameStateEventArgs : EventArgs
+        {
+            public GameState NewState { get; set; }
+            public GameState PreviousState { get; set; }
+        }
+
+        /// <summary>
+        ///     游戏状态枚举
+        /// </summary>
+        public enum GameState
+        {
+            MainMenu,
+            Playing,
+            Paused,
+            Dialogue,
+            Inventory,
+            GameOver
+        }
+
+        /// <summary>
+        ///     触发游戏状态改变事件
+        /// </summary>
+        /// <param name="newState">新状态</param>
+        /// <param name="previousState">前一个状态</param>
+        public void GameStateChanged(GameState newState, GameState previousState)
+        {
+            OnGameStateChanged?.Invoke(this, new GameStateEventArgs 
+            { 
+                NewState = newState, 
+                PreviousState = previousState 
+            });
+        }
+
         #endregion
 
         //TODO-打开Panel后停止移动事件

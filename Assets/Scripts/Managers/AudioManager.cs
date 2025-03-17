@@ -48,8 +48,6 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private List<AudioClipData> audioClipDataList = new List<AudioClipData>();
 
 
-
-
     protected override void Awake()
     {
         base.Awake();

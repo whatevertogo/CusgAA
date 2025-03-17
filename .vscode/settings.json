@@ -59,5 +59,6 @@
     "dotnet.defaultSolution": "tRY.sln",
     "dotnet.preferCSharpExtension": true,
     "todo-tree.tree.showBadges": false,
-    "marscode.chatLanguage": "cn"
+    "marscode.chatLanguage": "cn",
+    "docwriter.language": "Chinese"
 }

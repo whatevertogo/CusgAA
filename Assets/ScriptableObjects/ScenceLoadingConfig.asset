@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 787a57415c097de4a8878c490c865dc0, type: 3}
+  m_Name: ScenceLoadingConfig
+  m_EditorClassIdentifier: 
+  useLoadingScreen: 0
+  showProgressBar: 1
+  minimumLoadingTime: 0.5
+  loadMode: 0
+  fadeTime: 0.5
+  loadingScreenColor: {r: 0, g: 0, b: 0, a: 1}
+  resetPlayerPosition: 1
+  resetGameState: 1

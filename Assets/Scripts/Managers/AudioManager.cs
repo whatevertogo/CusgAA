@@ -17,6 +17,8 @@ public class AudioManager : Singleton<AudioManager>
     [Tooltip("音效音量")]
     [SerializeField] private float _sfxVolume = 1f;
     #endregion
+
+
     [Header("音频源/播放器")]
     [Tooltip("背景音乐播放器")]
     [SerializeField] private AudioSource bgmSource;

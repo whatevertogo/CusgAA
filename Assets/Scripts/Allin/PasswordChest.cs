@@ -1,12 +1,14 @@
 using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class PasswordChest : TriggerObject
 {
     [SerializeField] private GameObject passwordChestUI;
     
+    public event EventHandler PasswordChestUI_Open;
+
+
     
     public override void Interact()
     {
@@ -16,6 +18,8 @@ public class PasswordChest : TriggerObject
         //TODO-播放密码箱音效
         Debug.Log("打开密码箱");
     }
+
+    
 
     private void ChestSet()
     {

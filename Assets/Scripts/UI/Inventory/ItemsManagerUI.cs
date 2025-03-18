@@ -176,7 +176,7 @@ public class ItemsManagerUI : MonoBehaviour
     }
 
     #region 光标设置
-    private void SetCursorTexture(ItemSO item)
+    private static void SetCursorTexture(ItemSO item)
     {
         Texture2D texture = item.itemImage.texture;//转换类型
         
@@ -186,7 +186,7 @@ public class ItemsManagerUI : MonoBehaviour
        
     }
     
-    private void ResetCursorTexture()
+    private static void ResetCursorTexture()
     {
         //TODO-（或者再次点击时调用）
         Cursor.SetCursor(null,Vector2.zero, CursorMode.Auto);

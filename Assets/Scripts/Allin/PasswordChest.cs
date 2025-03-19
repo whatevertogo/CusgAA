@@ -5,9 +5,6 @@ using UnityEngine;
 public class PasswordChest : TriggerObject
 {
     [SerializeField] private GameObject passwordChestUI;
-    
-    public event EventHandler PasswordChestUI_Open;
-
 
     
     public override void Interact()

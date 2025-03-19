@@ -208,7 +208,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2565494210695086614, guid: 293ac8ab01475614691b17fd0e789543, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3884115116953673607, guid: 293ac8ab01475614691b17fd0e789543, type: 3}
       propertyPath: m_Pivot.x
@@ -289,6 +289,10 @@ PrefabInstance:
     - target: {fileID: 3884115116953673607, guid: 293ac8ab01475614691b17fd0e789543, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649729320683253161, guid: 293ac8ab01475614691b17fd0e789543, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5801245184392000031, guid: 293ac8ab01475614691b17fd0e789543, type: 3}
       propertyPath: dialogue_SO
@@ -414,7 +418,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
---- !u!43 &130100796
+--- !u!43 &134801271
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3973,7 +3977,7 @@ MonoBehaviour:
     rid: 1510950302313611341
   m_ShadowCastingSource: 2
   m_ShadowMesh:
-    m_Mesh: {fileID: 130100796}
+    m_Mesh: {fileID: 134801271}
     m_LocalBounds:
       m_Center: {x: 0.35114288, y: -1.3960037, z: 0}
       m_Extent: {x: 6.588829, y: 10.905312, z: 0}

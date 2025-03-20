@@ -16,4 +16,6 @@ MonoBehaviour:
   characterName2: 
   Character_Image: {fileID: 0}
   Character_Image2: {fileID: 0}
-  dialoguelinesList: []
+  dialoguelinesList:
+  - "\u6570\u636E\u4E22\u5931"
+  - "\u9A97\u4F60\u7684"

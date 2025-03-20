@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 /// <summary>
-///     背包管理器
+///     背包类(本来写的管理单例，后来想着试试用类)
 ///     负责：
 ///     1. 管理物品的添加和移除
 ///     2. 物品数据的加载和存储

@@ -15,6 +15,15 @@ public class LinearDialogueController : DialogueController
         base.Awake();
     }
 
+
+    private void Start()
+    {
+        //对话开始
+        //这只是个示例，你可以选择自由通过事件来通知他开始对话.或者使用已有的方法
+        StartDialogue();  
+
+    }
+
     // 开始线性对话
     // 说明：
     // 1. 调用基类的对话开始方法

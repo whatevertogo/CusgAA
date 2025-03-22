@@ -112,15 +112,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2958851581586480571}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ba12b6e69bce8c428a498e129cd704d, type: 3}
+  m_Script: {fileID: 11500000, guid: c0a369be576a72f49b9af1cb410d289e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseMenuPanel: {fileID: 9129926833258479933}
-  continueButton: {fileID: 61800998998773988}
+  resumeButton: {fileID: 61800998998773988}
   resetButton: {fileID: 667344599046501508}
-  exitButton: {fileID: 282384431709228548}
-  setLevelButton: {fileID: 2449080400365508394}
-  sceneName: 
+  levelSelectButton: {fileID: 2449080400365508394}
+  quitButton: {fileID: 282384431709228548}
+  levelSelectSceneName: "\u9009\u62E9\u5173\u5361"
+  pauseKey: 27
 --- !u!1 &3029542825432726512
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,53 +1,95 @@
-/*对话Control类
- * 1. 显示对话框
- * 2. 逐字显示对话内容
- * 3. 跳过对话内容
- * 4. 切换对话内容
- * 5. 淡入淡出立绘（未实现）需要自己通过Dotween实现
- */
+/// <summary>
+/// 对话系统的核心控制类，负责管理对话流程和内容展示。
+/// 
+/// 功能：
+/// - 作为对话系统的中央控制器，管理对话的加载、显示和进度
+/// - 使用单例模式提供全局访问点
+/// - 从DialogueSO加载对话数据并控制对话流程
+/// - 通过DialogueControlView处理UI显示
+/// - 提供事件系统用于监听对话状态变化
+/// - 支持动态切换和跳转不同对话内容
+/// 
+/// 用法：
+/// 1. 将此组件附加到场景中的GameObject上
+/// 2. 设置DialogueSO作为对话内容来源
+/// 3. 连接DialogueControlView处理UI显示
+/// 4. 通过StartDialogue()开始对话，或者使用SetDialogueSO()切换对话内容
+/// 
+/// 注意：
+/// - 目前在Start()中自动启动对话，可以通过需要再各个controller里面调整 
+/// - 实现了对象池模式，可通过Instance静态属性全局访问
+/// 
+/// 未考虑使用单例模式，单例模式的生命周期个人很讨厌，而这里又没必要
+/// 当然单例模式也没问题，场景里面多个对话共用一个Control里面的方法也是非常的good
+/// </summary>
 
-using System.Collections;
+
+using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 public class DialogueControl : MonoBehaviour
 {
-    [FormerlySerializedAs("DialoguePanel")] [Header("对话框UI组件")] [SerializeField]
-    private GameObject dialoguePanel;
-
-    [SerializeField] private Button nextlineButton;
-    [SerializeField] private TextMeshProUGUI dialogueText;
-    [Header("对话内容")] [SerializeField] private DialogueSO dialogue_SO;
-    [Header("对话显示速度")] [SerializeField] private float typingSpeed = 0.1f;
-    [SerializeField] private float nextLineDelay = 2f; //下一行的时间
+    [Header("对话内容")]
+    [SerializeField] private DialogueSO dialogue_SO;
+    [Tooltip("到下一行时间")]
+    [SerializeField] private float nextLineDelay = 2f;
+    [Tooltip("对话视觉")]
+    [SerializeField] private DialogueControlView dialogueView;
 
     private int _currentLineIndex;
-    private bool _isTyping;
-    private Coroutine _typingCoroutine;
-
     private List<string> dialogueLinesList = new();
-    // dialoguePanel 的访问已经通过 ShowDialogue() 和其他方法进行了合理封装
 
-    // 初始化对话系统组件
-    // 说明：
-    // 1. 检查必要UI组件是否已正确配置
-    // 2. 设置下一行按钮的点击事件监听
-    // 3. 从SO资源加载对话内容到列表
-    // 用途：确保所有必要组件和数据在游戏开始前准备就绪
+    /// <summary>
+    /// 事件定义,分别是对话开始，对话结束，暂时未用
+    /// </summary>
+    public event EventHandler OnDialogueStarted;
+    public event EventHandler OnDialogueEnded;
+    /// <summary>
+    /// 对话行变更事件，方便语音播放捏~(￣▽￣)~*
+    /// </summary> 
+    public event EventHandler<DialogueLineChangedEventArgs> OnDialogueLineChanged;
+
+    public class DialogueLineChangedEventArgs : EventArgs
+    {
+        public string DialogueLine;
+        public int LineIndex;
+    }
+
+    #region 事件生命周期(用于订阅和取消事件)方便Control控制(观察者模式的体现MVC分离)
+    private void OnEnable()
+    {
+        
+        
+        if (dialogueView != null)
+        {
+            dialogueView.OnNextLineRequested += HandleNextLineRequested;
+            dialogueView.OnDialogueSkipped += HandleDialogueSkipped;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (dialogueView != null)
+        {
+            dialogueView.OnNextLineRequested -= HandleNextLineRequested;
+            dialogueView.OnDialogueSkipped -= HandleDialogueSkipped;
+        }
+    }
+    #endregion
+
+    /// <summary>
+    /// 检查视图和SO是否为空
+    /// </summary>
     private void Awake()
     {
-        // 检查必要组件是否存在
-        if (dialoguePanel == null)
-            Debug.LogError("DialoguePanel is not assigned!");
-        if (dialogueText == null)
-            Debug.LogError("dialogueText is not assigned!");
-        if (dialogue_SO == null)
-            Debug.LogError("dialogue_SO is not assigned!");
-        if (nextlineButton is not null)
-            nextlineButton.onClick.AddListener(SkipDialogueLines);
+        // 检查对话视图
+        if (dialogueView == null)
+        {
+            dialogueView = FindFirstObjectByType<DialogueControlView>();
+            if (dialogueView == null)
+                Debug.LogError("DialogueControlView not found!");
+        }
 
         // 从SO资源中加载对话内容
         if (dialogue_SO != null)
@@ -55,130 +97,74 @@ public class DialogueControl : MonoBehaviour
             dialogueLinesList = dialogue_SO.dialoguelinesList;
             Debug.Log($"Loaded {dialogueLinesList.Count} dialogue lines");
         }
+        else
+            Debug.LogError("dialogue_SO is not assigned!");
     }
 
-    private void Start()
+    private void HandleNextLineRequested(object sender, EventArgs e)
     {
-        ShowDialogue();
+        ShowNextLine();
     }
 
-    // 显示对话框并开始对话
-    // 说明：
-    // 1. 激活对话面板
-    // 2. 如果有对话内容，从第一行开始显示
-    // 3. 如果没有对话内容，输出警告日志
-    // 用途：开始一段新的对话序列
+    private void HandleDialogueSkipped(object sender, EventArgs e)
+    {
+        SkipDialogue();
+    }
+    /// <summary>
+    /// 打开对话panel激活对话事件(未使用)
+    /// 这里是控制对话的主要事件
+    /// </summary>
+
     public void ShowDialogue()
     {
-        if (dialoguePanel != null)
-        {
-            dialoguePanel.SetActive(true);
+        dialogueView.ShowDialoguePanel();
+        OnDialogueStarted?.Invoke(this, EventArgs.Empty);
 
-            if (dialogueLinesList.Count > 0)
-            {
-                _currentLineIndex = 0;
-                ShowNextLine(); //调用对话
-            }
-            else
-            {
-                Debug.LogWarning("No dialogue lines to display!");
-            }
+        if (dialogueLinesList.Count > 0)
+        {
+            _currentLineIndex = 0;
+            ShowNextLine();
         }
-    } // ReSharper disable Unity.PerformanceAnalysis
-    // 显示下一行对话
-    // 说明：
-    // 1. 如果当前正在打字，则立即完成当前行
-    // 2. 如果不在打字，清空文本准备显示下一行
-    // 3. 如果还有更多对话，开始打字效果
-    // 4. 如果对话结束，输出日志提示
-    // 用途：推进对话进度，显示下一句对话内容
+        else
+        {
+            Debug.LogWarning("No dialogue lines to display!");
+        }
+    }
+
+    /// <summary>
+    /// 立刻完成这一行
+    /// </summary>
     public void ShowNextLine()
     {
-        // 如果正在打字，停止当前打字过程并立即显示完整的当前行
-        if (_isTyping)
+        if (_currentLineIndex < dialogueLinesList.Count)
         {
-            if (_typingCoroutine != null)
-                StopCoroutine(_typingCoroutine);
+            string currentLine = dialogueLinesList[_currentLineIndex];
 
-            dialogueText.text = dialogueLinesList[_currentLineIndex];
-            _isTyping = false;
-            return;
-        }
+            dialogueView.TypeDialogueLine(currentLine, nextLineDelay);
 
-        // 清空文本框，准备显示下一行
-        dialogueText.text = "";
+            OnDialogueLineChanged?.Invoke(this, new DialogueLineChangedEventArgs
+            {
+                DialogueLine = currentLine,
+                LineIndex = _currentLineIndex
+            });
 
-        // 检查是否还有下一行对话
-        if (_currentLineIndex + 1 < dialogueLinesList.Count)
-        {
-            _typingCoroutine = StartCoroutine(TypeDialogueLineByLine());
             _currentLineIndex++;
         }
         else
-            // 所有对话行已显示完毕
         {
             Debug.Log("All dialogue lines have been displayed");
+            OnDialogueEnded?.Invoke(this, EventArgs.Empty);
         }
-        // 可选：关闭对话面板
-        // dialoguePanel.SetActive(false);
     }
 
-    // 逐字显示对话文本的协程
-    // 说明：
-    // 1. 设置正在打字状态
-    // 2. 逐个字符显示文本，每个字符间有时间间隔
-    // 3. 显示完成后等待指定时间
-    // 4. 自动显示下一行
-    // 用途：实现打字机效果，增强对话的表现力
-    private IEnumerator TypeDialogueLineByLine()
-    {
-        _isTyping = true;
+    /// <summary>
+    /// 设置新的对话SO并默认为第0行，推荐无脑用下面的，因为下面的我默认的也是0行
+    /// </summary>
+    /// <param name="newDialogueSO"></param>
 
-        var currentLine = dialogueLinesList[_currentLineIndex];
-
-        foreach (var letter in currentLine)
-        {
-            dialogueText.text += letter;
-            yield return new WaitForSeconds(typingSpeed);
-        }
-
-        _isTyping = false;
-        Debug.Log($"Finished showing line {_currentLineIndex}");
-
-        yield return new WaitForSeconds(nextLineDelay);
-        ShowNextLine();
-    }
-
-    // 跳过当前对话行，显示下一行
-    // 说明：调用ShowNextLine显示下一行对话
-    // 用途：玩家手动跳过当前对话行时调用
-    public void SkipDialogueLines()
-    {
-        ShowNextLine();
-        Debug.Log("Moving to next dialogue line");
-    }
-
-    // 跳过当前所有对话
-    // 说明：停止所有协程，结束当前对话
-    // 用途：玩家想要直接结束整段对话时调用
-    public void SkipDialogue()
-    {
-        StopAllCoroutines();
-        //TODO-其他工作
-        Debug.Log("All dialogues skipped");
-    }
-
-    // 设置新的对话数据
-    // 参数：newDialogueSO - 新的对话数据SO文件
-    // 说明：
-    // 1. 检查新对话数据是否有效
-    // 2. 更新当前对话数据和列表
-    // 3. 重置对话进度
-    // 4. 开始显示新对话
-    // 用途：切换到新的对话内容时调用
     public void SetDialogueSO(DialogueSO newDialogueSO)
     {
-        if (newDialogueSO is null)
+        if (newDialogueSO == null)
         {
             Debug.LogError("新对话数据为空");
             return;
@@ -193,18 +179,14 @@ public class DialogueControl : MonoBehaviour
         ShowDialogue();
     }
 
-    // 跳转到指定对话数据的特定行
-    // 参数：
-    // - oldDialogueSO: 要跳转的对话数据
-    // - lineIndex: 目标行索引
-    // 说明：
-    // 1. 检查对话数据有效性
-    // 2. 设置对话数据和当前行索引
-    // 3. 开始显示对话
-    // 用途：在分支对话中返回特定位置时使用
-    public void GoDialogueSOToLine(DialogueSO oldDialogueSO, int lineIndex)
+    /// <summary>
+    /// 选择DialogueSO并选择跳到哪一行
+    /// </summary>
+    /// <param name="oldDialogueSO"></param>
+    /// <param name="lineIndex"></param>
+    public void GoDialogueSOToLine(DialogueSO oldDialogueSO, int lineIndex = 0)
     {
-        if (oldDialogueSO is null)
+        if (oldDialogueSO == null)
         {
             Debug.LogError("旧对话数据为空");
             return;
@@ -219,21 +201,19 @@ public class DialogueControl : MonoBehaviour
         ShowDialogue();
     }
 
-    // 角色立绘淡入效果
-    // 参数：characterImage - 要淡入的角色图片
-    // 说明：通过DOTween实现立绘的淡入效果（待实现）
-    // 用途：显示新角色或切换角色立绘时使用
-    public void FadeInCharacter(Image characterImage)
+/// <summary>
+/// 跳过所有对话，隐藏对话面板
+/// </summary>
+    public void SkipDialogue()
     {
-        // DOTween实现立绘淡入
-    }
+        Debug.Log("All dialogues skipped");
+        OnDialogueEnded?.Invoke(this, EventArgs.Empty);
 
-    // 角色立绘淡出效果
-    // 参数：characterImage - 要淡出的角色图片
-    // 说明：通过DOTween实现立绘的淡出效果（待实现）
-    // 用途：隐藏角色或切换角色立绘时使用
-    public void FadeOutCharacter(Image characterImage)
-    {
-        // DOTween实现立绘淡出
+        // 确保停止任何可能正在进行的打字效果
+        if (dialogueView != null)
+        {
+            dialogueView.CompleteCurrentLine(); // 先完成当前行的打字效果
+            dialogueView.HideDialoguePanel();   // 然后隐藏对话面板
+        }
     }
 }

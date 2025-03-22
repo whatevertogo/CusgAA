@@ -9,11 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35474ff045e98ed46a517fe5fd0128df, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a5153debaf72ed48a57a32d314414c2, type: 3}
   m_Name: Dialogue1
   m_EditorClassIdentifier: 
-  characterName: 
-  characterName2: 
+  characterName: "\u674E\u534E"
+  characterName2: "\u5C0F\u660E"
   Character_Image: {fileID: 0}
   Character_Image2: {fileID: 0}
-  dialoguelinesList: []
+  dialoguelinesList:
+  - "\u54C7\u54C7\u54C7\u54C7\u54C7"
+  - "\u554A\u554A\u554A\u554A\u554A"
+  - "\u6709\u5F20\u4E1C\u897F"
+  - "\u6361\u8D77\u963F\u91CC"
+  "\u5BF9\u8BDD\u4ECB\u7ECD": 
